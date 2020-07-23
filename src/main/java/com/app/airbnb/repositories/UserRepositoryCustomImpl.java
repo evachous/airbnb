@@ -16,12 +16,22 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     @PersistenceContext
     EntityManager entityManager;
 
-
     @Override
     public User findByUsername(String username) {
         User user = null;
         Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.username = ?1");
         query.setParameter(1, username);
+        List<User> users = query.getResultList();
+        if (users != null && users.size() > 0)
+            user = users.get(0);
+        return user;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        User user = null;
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = ?1");
+        query.setParameter(1, email);
         List<User> users = query.getResultList();
         if (users != null && users.size() > 0)
             user = users.get(0);

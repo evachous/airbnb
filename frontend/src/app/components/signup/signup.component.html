@@ -2,7 +2,13 @@
   <div class="signup row justify-content-center">
     <div class="col-md-7 shadow">
       <h3 class="signup-title">Signup Form</h3>
-      <form [formGroup]="signupForm">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div *ngIf="invalidSignup" class="alert alert-danger alert-dismissible fade show">
+          {{ errorMessage }}
+          <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>-->
+        </div>
         <div class="form-row form-group">
 
           <div class="col-md-6 mb-2">
@@ -38,21 +44,19 @@
 
           <div class="col-md-6 mb-2">
             <label>Password</label>
-            <input type="text" formControlName="password1" class="form-control" />
-            <div *ngIf="f.password1.invalid && f.password1.touched" class="alert alert-danger">
-              <div *ngIf="f.password1.errors.required">Password is required</div>
-              <div *ngIf="f.password1.errors.minlength">Password at least 4 characters</div>
+            <input type="password" formControlName="password" class="form-control" />
+            <div *ngIf="f.password.invalid && f.password.touched" class="alert alert-danger">
+              <div *ngIf="f.password.errors.required">Password is required</div>
+              <div *ngIf="f.password.errors.minlength">Password at least 4 characters</div>
             </div>
           </div>
           <div class="col-md-6 mb-2">
             <label>Confirm password</label>
-            <input type="text" formControlName="password2" class="form-control" />
-            <div *ngIf="f.password2.invalid && signupForm.errors?.notSame && f.password2.touched" class="cross-validation-error-message alert alert-danger">
-              <div *ngIf="f.password2.errors.required">Confirmation is required</div>
-              <div *ngIf="signupForm.errors?.notSame">Confirmation failed</div>
-            </div>
-            <div *ngIf="f.password2.invalid && f.password2.touched" class="alert alert-danger">
-              <div *ngIf="f.password2.errors.required">Confirmation is required</div>
+            <input type="password" formControlName="confirmPassword" class="form-control" />
+            <div *ngIf="(f.confirmPassword.invalid || signupForm.errors?.match) && f.confirmPassword.touched" class="alert alert-danger">
+              <div *ngIf="f.confirmPassword.errors.required">Confirmation is required</div>
+              <div *ngIf="f.confirmPassword.errors.minlength">Password at least 4 characters</div>
+              <div *ngIf="signupForm.errors?.match">Confirmation failed</div>
             </div>
           </div>
 

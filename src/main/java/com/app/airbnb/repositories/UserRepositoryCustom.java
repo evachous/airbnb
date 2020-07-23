@@ -4,4 +4,5 @@ import com.app.airbnb.model.User;
 
 public interface UserRepositoryCustom {
     User findByUsername(String username);
+    User findByEmail(String email);
 }

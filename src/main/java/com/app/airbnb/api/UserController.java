@@ -19,8 +19,6 @@ class UserController {
         this.userRepository = userRepository;
     }
 
-    // Aggregate root
-
     @CrossOrigin(origins = "*")
     @GetMapping("/users")
     List<User> all() {
@@ -29,20 +27,18 @@ class UserController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/users")
-    User newUser(@RequestBody User newUser) {
-
-        return userRepository.save(newUser);
-    }
-
-    // Single item
-
-    @CrossOrigin(origins = "*")
     @GetMapping("/users/{id}")
-    User one(@PathVariable Long id) {
+    User returnUserByID(@PathVariable Long id) {
 
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/users/{username}")
+    User returnUser(@PathVariable String username) {
+
+        return userRepository.findByUsername(username);
     }
 
 

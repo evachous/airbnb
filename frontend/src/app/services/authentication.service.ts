@@ -44,6 +44,7 @@ export class AuthenticationService {
       this.loggedin = true;
     }
   }
+
   get getTokenUsername(): string {
     return localStorage.getItem('username');
   }

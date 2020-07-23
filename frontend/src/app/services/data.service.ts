@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {catchError} from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json' })
@@ -18,8 +19,12 @@ export class DataService {
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.url + 'users');
   }
+
   getUser(id): Observable<User> {
-    const tempurl = this.url + 'users/' + id;
-    return this.http.get<User>(tempurl);
+    return this.http.get<User>(this.url + 'users/' + id);
+  }
+
+  signup(user: User): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'signup', user, { observe: 'response' });
   }
 }

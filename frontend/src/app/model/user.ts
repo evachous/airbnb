@@ -7,4 +7,6 @@ export class User {
   phone: string;
   profilePicture: File;
   isAdmin: boolean;
+  isHost: boolean;
+  isGuest: boolean;
 }

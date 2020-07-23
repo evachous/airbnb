@@ -17,11 +17,14 @@ public class User {
     private String phone;
     private File profilePicture;
     private Boolean isAdmin;
+    private Boolean isHost;
+    private Boolean isGuest;
 
     public User() {}
 
     public User(String username, String password, String firstName, String lastName,
-                String email, String phone, File profilePicture, Boolean isAdmin) {
+                String email, String phone, File profilePicture, Boolean isAdmin,
+                Boolean isHost, Boolean isGuest) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -30,5 +33,7 @@ public class User {
         this.phone = phone;
         this.profilePicture = profilePicture;
         this.isAdmin = isAdmin;
+        this.isHost = isHost;
+        this.isGuest = isGuest;
     }
 }

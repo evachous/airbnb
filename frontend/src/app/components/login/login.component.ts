@@ -28,9 +28,11 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(4)]]
     });
   }
+
   get f(): { [p: string]: AbstractControl } {
     return this.loginForm.controls;
   }
+
   onSubmit(): void {
     this.loading = true;
     this.authenticationService.login(this.f.username.value, this.f.password.value)
