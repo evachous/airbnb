@@ -1,0 +1,25 @@
+.signup {
+  padding-top: 90px;
+  padding-bottom: 50px;
+  margin: auto;
+  height: auto;
+}
+
+.signup-title {
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.signup-button {
+  margin-bottom: 1rem;
+  color: #fff;
+  background-color: #fc5892;
+  border-color: #fc5892;
+}
+
+.signup-button:hover {
+  color: #fff;
+  background-color: #e6477f;
+  border-color: #e6477f;
+}

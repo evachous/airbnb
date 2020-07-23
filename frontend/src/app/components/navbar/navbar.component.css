@@ -1,0 +1,23 @@
+.navbar {
+  background-color: #595959;
+}
+
+.navbar .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+  color: #fc5892;
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+}
+
+.navbar .navbar-nav .active > .nav-link {
+  color: #fc5892;
+}
+
+.navbar .navbar-nav li .dropdown-item:active {
+  background-color: #fc5892;
+}
