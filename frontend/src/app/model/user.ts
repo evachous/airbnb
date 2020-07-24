@@ -5,8 +5,8 @@ export class User {
   lastName: string;
   email: string;
   phone: string;
-  profilePicture: File;
   isAdmin: boolean;
   isHost: boolean;
   isGuest: boolean;
+  profilePicture: File;
 }

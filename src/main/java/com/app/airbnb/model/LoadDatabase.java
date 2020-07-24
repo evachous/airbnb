@@ -20,7 +20,7 @@ class LoadDatabase {
             String encodedPassword2 = bCryptPasswordEncoder.encode("1234");
             log.info("Preloading " + repository.save(new User("im_phoebe", encodedPassword2, "Phoebe", "B", "p@example.com", "9876543210", null, false)));*/
             // String encodedPassword3 = bCryptPasswordEncoder.encode("charli");
-            // log.info("Preloading " + repository.save(new User("charli", encodedPassword3, "charli", "charli", "charli@example.com", "1234567890", null, true)));
+            // log.info("Preloading " + repository.save(new User("charli", encodedPassword3, "charli", "charli", "charli@example.com", "1234567890", true, false, false, null)));
             // log.info("Encrypted katya " + bCryptPasswordEncoder.encode("5678"));
             // log.info("Encrypted phoebe " + bCryptPasswordEncoder.encode("1234"));
             log.info("Encrypted charli " + bCryptPasswordEncoder.encode("charli"));

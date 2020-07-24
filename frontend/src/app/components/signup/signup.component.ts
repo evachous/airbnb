@@ -30,10 +30,11 @@ export class SignupComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(4)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(4)]],
       phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('^[0-9]*$')]],
+      isAdmin: false,
+      isHost: false,
+      isGuest: false,
       profilePicture: ['', Validators.required],
-      isHost: [],
-      isGuest: [],
-      }, { validator: confirmPasswordValidator });
+      }, { validator: [confirmPasswordValidator, checkRolesValidator] });
   }
 
   get f(): { [p: string]: AbstractControl } {
@@ -41,18 +42,16 @@ export class SignupComponent implements OnInit {
   }
 
   onFileChange(event): void {
-    const reader = new FileReader();
-
     if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        this.signupForm.patchValue({
-          profilePicture: reader.result
-        });
-      };
+      const file = event.target.files[0];
+      this.signupForm.patchValue({
+        fileSource: file
+      });
     }
+  }
+
+  checkRoleTouched(): boolean {
+    return this.f.isHost.touched || this.f.isGuest.touched;
   }
 
   onSubmit(): void {
@@ -63,7 +62,7 @@ export class SignupComponent implements OnInit {
           this.invalidSignup = false;
           this.router.navigate(['/login']);
         },
-        (error: any) => {
+        (error: HttpErrorResponse) => {
           this.errorMessage = 'Error signing up: invalid username or email';  // TODO: different error messages
           this.signupForm.reset();
           this.invalidSignup = true;
@@ -75,6 +74,12 @@ export class SignupComponent implements OnInit {
 
 function confirmPasswordValidator(c: AbstractControl): { mismatch: boolean } {
   if (c.get('password').value !== c.get('confirmPassword').value) {
+    return {mismatch: true};
+  }
+}
+
+function checkRolesValidator(c: AbstractControl): { mismatch: boolean } {
+  if (!c.get('isHost').value && !c.get('isGuest').value) {
     return {mismatch: true};
   }
 }

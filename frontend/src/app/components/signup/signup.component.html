@@ -77,6 +77,18 @@
               <div *ngIf="f.profilePicture.errors.required">Picture is required</div>
             </div>
           </div>
+
+          <div class="col-md-6 mb-2">
+            <div class="mt-2"><label class="form-label">Role selection</label></div>
+            <div class="form-check form-check-inline">
+              <input type="checkbox" formControlName="isHost" class="form-control form-check-input" id="isHost" />
+              <label class="form-check-label" for="isHost">Host</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input type="checkbox" formControlName="isGuest" class="form-control form-check-input" id="isGuest" />
+              <label class="form-check-label" for="isGuest">Guest</label></div>
+              <div *ngIf="signupForm.errors?.match && checkRoleTouched()" class="alert alert-danger">Role required</div>
+          </div>
         </div>
 
         <button type="submit" [disabled]="signupForm.invalid" class="signup-button btn btn-lg">Done!</button>
