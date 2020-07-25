@@ -26,13 +26,13 @@ class UserController {
         return userRepository.findAll();
     }
 
-    @CrossOrigin(origins = "*")
+    /* @CrossOrigin(origins = "*")
     @GetMapping("/users/{id}")
     User returnUserByID(@PathVariable Long id) {
 
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-    }
+    }*/
 
     @CrossOrigin(origins = "*")
     @GetMapping("/users/{username}")

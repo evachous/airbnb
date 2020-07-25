@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     // const id = this.route.snapshot.paramMap.get('id');
-    const id = 1;
+    const id = 'charli';
     this.dataService.getUser(id).subscribe( user => this.user = user);
   }
 

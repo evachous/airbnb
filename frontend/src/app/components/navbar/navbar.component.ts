@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/authentication.service';
 import {User} from '../../model/user';
 import {Router} from '@angular/router';
+import {DataService} from '../../services/data.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,22 +11,45 @@ import {Router} from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   loggedin = false;
+  isAdmin = false;
+  isHost = false;
+  isGuest = false;
   username: any;
   user: User;
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private dataService: DataService
   ) {
     this.authenticationService.currentUser.subscribe(name => {
       this.username = name;
       this.loggedin = !(this.username == null || this.username === 'undefined');
+      this.findRoles();
     });
   }
 
   ngOnInit(): void {
     this.username = this.authenticationService.getTokenUsername;
     this.loggedin = !(this.username == null || this.username === 'undefined');
+    this.findRoles();
+  }
+
+  findRoles(): void {
+    if (this.loggedin) {
+      this.dataService.getUser(this.username).subscribe( user => {
+        this.user = user;
+        if (this.user.isAdmin) {
+          this.isAdmin = true;
+        }
+        if (this.user.isHost) {
+          this.isHost = true;
+        }
+        if (this.user.isGuest) {
+          this.isGuest = true;
+        }
+      });
+    }
   }
 
   logout(): void {

@@ -9,6 +9,21 @@
         <li class="nav-item text-center active">
           <a class="nav-link" href="#"><i class="fa fa-home fa-fw mr-1"></i>Home</a>
         </li>
+        <div *ngIf="isAdmin">
+          <li class="nav-item text-center">
+            <a class="nav-link" href="#">Admin</a>
+          </li>
+        </div>
+        <div *ngIf="isHost">
+          <li class="nav-item text-center">
+            <a class="nav-link" href="#">Host</a>
+          </li>
+        </div>
+        <div *ngIf="isGuest">
+          <li class="nav-item text-center">
+            <a class="nav-link" href="#">Guest</a>
+          </li>
+        </div>
         <li class="nav-item dropdown">
           <div *ngIf="loggedin">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw mr-1"></i>{{username}} </a>
