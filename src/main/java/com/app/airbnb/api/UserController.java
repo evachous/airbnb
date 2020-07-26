@@ -4,8 +4,12 @@ import com.app.airbnb.model.User;
 import com.app.airbnb.model.UserNotFoundException;
 import com.app.airbnb.repositories.UserRepository;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +42,14 @@ class UserController {
     @GetMapping("/users/{username}")
     User returnUser(@PathVariable String username) {
 
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException(username);
+        }
+        if (user.getProfilePicture() != null) {
+            user.setProfilePicture(decompressBytes(user.getProfilePicture()));
+        }
+        return user;
     }
 
 
@@ -64,5 +75,22 @@ class UserController {
     void deleteUser(@PathVariable Long id) {
 
         userRepository.deleteById(id);
+    }
+
+    public static byte[] decompressBytes(byte[] data) {
+        Inflater inflater = new Inflater();
+        inflater.setInput(data);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
+        byte[] buffer = new byte[1024];
+        try {
+            while (!inflater.finished()) {
+                int count = inflater.inflate(buffer);
+                outputStream.write(buffer, 0, count);
+            }
+            outputStream.close();
+        } catch (IOException | DataFormatException ioe) {
+            System.out.println("Error decompressing");
+        }
+        return outputStream.toByteArray();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -18,7 +18,7 @@ export class SignupComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
   ) { }
 
   ngOnInit(): void {
@@ -44,9 +44,7 @@ export class SignupComponent implements OnInit {
   onFileChange(event): void {
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
-      this.signupForm.patchValue({
-        fileSource: file
-      });
+      this.f.profilePicture.setValue(file);
     }
   }
 
@@ -55,7 +53,28 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.dataService.signup(this.signupForm.value)
+    // convert form to json
+    const jsonUser = JSON.stringify(this.signupForm.value, ((key, val) => {
+      if (key === 'profilePicture') {
+        return null;
+      }
+      else if (key === 'confirmPassword') {
+        return undefined;
+      }
+      else {
+        return val;
+      }
+    }));
+
+    // send post request with json user + profile picture
+    const formData = new FormData();
+    formData.append('user', jsonUser);
+    formData.append('profilePicture', this.f.profilePicture.value);
+
+    // console.log(formData.get('profilePicture'));
+    // console.log(formData.get('user'));
+
+    this.dataService.signup(formData)
       .subscribe(
         response => {
           window.alert('User signed up successfully!');

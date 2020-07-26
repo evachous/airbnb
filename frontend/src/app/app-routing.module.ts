@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { UserComponent } from './components/user/user.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
 
@@ -12,7 +13,8 @@ const appRoutes: Routes = [
   {
     path: 'users',
     children: [
-      { path: '', component: UserComponent, canActivate: [AuthGuard] }
+      { path: '', component: UserComponent, canActivate: [AuthGuard] },
+      { path: ':username', component: UserprofileComponent, canActivate: [AuthGuard] }
     ]
   },
   { path: 'signup', component: SignupComponent, canActivate: [SignupGuard] },

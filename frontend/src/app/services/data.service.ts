@@ -3,6 +3,7 @@ import { User } from '../model/user';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
+import {Form, FormGroup} from '@angular/forms';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json' })
@@ -24,7 +25,8 @@ export class DataService {
     return this.http.get<User>(this.url + 'users/' + id);
   }
 
-  signup(user: User): Observable<HttpResponse<string>> {
-    return this.http.post<string>(this.url + 'signup', user, { observe: 'response' });
+  signup(formData: FormData): Observable<HttpResponse<string>> {
+    console.log('sending request....');
+    return this.http.post<string>(this.url + 'signup', formData, {observe: 'response'});
   }
 }

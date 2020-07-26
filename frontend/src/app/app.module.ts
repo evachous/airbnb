@@ -14,6 +14,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { DataService } from './services/data.service';
 import { AuthGuard } from './guards/auth.guard';
+import { UserprofileComponent } from './components/userprofile/userprofile.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AuthGuard } from './guards/auth.guard';
     NavbarComponent,
     SignupComponent,
     LoginComponent,
+    UserprofileComponent,
   ],
   imports: [
     BrowserModule,

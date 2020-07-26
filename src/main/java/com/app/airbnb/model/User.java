@@ -8,22 +8,24 @@ import java.io.File;
 @Data
 @Entity
 public class User {
-    private @Id @GeneratedValue Long id;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phone;
-    private Boolean isAdmin;
-    private Boolean isHost;
-    private Boolean isGuest;
-    private File profilePicture;
+    @Id @GeneratedValue @Column(name="id") private Long id;
+    @Column(name="username") private String username;
+    @Column(name="password") private String password;
+    @Column(name="firstName") private String firstName;
+    @Column(name="lastName") private String lastName;
+    @Column(name="email") private String email;
+    @Column(name="phone") private String phone;
+    @Column(name="isAdmin") private Boolean isAdmin;
+    @Column(name="isHost") private Boolean isHost;
+    @Column(name="isGuest") private Boolean isGuest;
+    // private File profilePicture;
+    // private String profilePicture;
+    @Column(name="profilePicture", length=1000) private byte[] profilePicture;
 
     public User() {}
 
     public User(String username, String password, String firstName, String lastName, String email,
-                String phone, Boolean isAdmin, Boolean isHost, Boolean isGuest, File profilePicture) {
+                String phone, Boolean isAdmin, Boolean isHost, Boolean isGuest, byte[] profilePicture) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;

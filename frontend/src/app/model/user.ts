@@ -8,5 +8,5 @@ export class User {
   isAdmin: boolean;
   isHost: boolean;
   isGuest: boolean;
-  profilePicture: File;
+  profilePicture: any;
 }
