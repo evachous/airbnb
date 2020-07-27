@@ -1,8 +1,3 @@
-body {
-  padding-top: 68px;
-  padding-bottom: 50px;
-}
-
 .profile {
   margin-top: 5%;
 }
@@ -20,6 +15,25 @@ body {
   backface-visibility: hidden;
 }
 
+.image-container .changePicture {
+  position: relative;
+  margin-top: -40%;
+  overflow: hidden;
+  width: 100%;
+  font-size: 15px;
+  background: #212529b8;
+  padding: .25rem;
+  border: none;
+  border-radius: 0;
+}
+
+.image-container .changePicture input {
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  top: 0;
+}
+
 .img-thumbnail {
   width: 150px;
   height: 150px;
@@ -32,16 +46,4 @@ body {
 
 .image-container:hover .middle {
   opacity: 1;
-}
-
-.user-data .nav-tabs .nav-link {
-  color: #fc5892;
-}
-
-.user-data .nav-tabs .nav-link:hover {
-  color: #e6477f;
-}
-
-.user-data .nav-tabs .nav-link.active {
-  color: #495057;
 }

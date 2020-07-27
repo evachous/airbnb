@@ -15,6 +15,7 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
 import { DataService } from './services/data.service';
 import { AuthGuard } from './guards/auth.guard';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
+import { UsersettingsComponent } from './components/usersettings/usersettings.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { UserprofileComponent } from './components/userprofile/userprofile.compo
     SignupComponent,
     LoginComponent,
     UserprofileComponent,
+    UsersettingsComponent,
   ],
   imports: [
     BrowserModule,

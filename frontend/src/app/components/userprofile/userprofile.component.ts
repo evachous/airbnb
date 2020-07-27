@@ -25,7 +25,12 @@ export class UserprofileComponent implements OnInit {
     this.dataService.getUser(this.username).subscribe( user => {
       this.user = user;
       this.found = true;
-      this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
+      if (this.user.profilePicture === null) {
+        this.img = 'http://placehold.it/150x150';
+      }
+      else {
+        this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
+      }
     },
       error => {
         this.found = false;
