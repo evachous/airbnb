@@ -3,6 +3,8 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {DataService} from '../../services/data.service';
 import {User} from '../../model/user';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-usersettings',
@@ -12,12 +14,17 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/form
 export class UsersettingsComponent implements OnInit {
   username: string;
   user: User;
-  img: string;
-  userForm: FormGroup;
-  newPicture: any;
+  img: any;
+  infoForm: FormGroup;
+  invalidInfo: boolean;
+  newPicture: any = null;
+  passwordForm: FormGroup;
+  invalidPassword: boolean;
+  errorMessage: string;
 
   constructor(
     private formBuilder: FormBuilder,
+    private router: Router,
     private authenticationService: AuthenticationService,
     private dataService: DataService
   ) { }
@@ -33,39 +40,104 @@ export class UsersettingsComponent implements OnInit {
         this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
       }
 
-      this.initForm();
+      this.initForms();
     });
   }
 
-  get f(): { [p: string]: AbstractControl } {
-    return this.userForm.controls;
+  get f1(): { [p: string]: AbstractControl } {
+    return this.infoForm.controls;
   }
 
-  initForm(): void {
-    this.userForm = this.formBuilder.group({
+  get f2(): { [p: string]: AbstractControl } {
+    return this.passwordForm.controls;
+  }
+
+  checkRoleTouched(): boolean {
+    console.log('host: ' + this.f1.isHost.touched + ' guest: ' + this.f1.isGuest.touched);
+    return this.f1.isHost.touched || this.f1.isGuest.touched;
+  }
+
+  initForms(): void {
+    this.infoForm = this.formBuilder.group({
       firstName: [this.user.firstName],
       lastName: [this.user.lastName],
       username: [this.user.username],
       email: [this.user.email, [Validators.email]],
       password: [this.user.password, [Validators.required, Validators.minLength(4)]],
-      confirmPassword: [this.user.password, [Validators.required, Validators.minLength(4)]],
       phone: [this.user.phone, [Validators.minLength(10), Validators.maxLength(10), Validators.pattern('^[0-9]*$')]],
-      isAdmin: this.user.isAdmin,
-      isHost: this.user.isHost,
-      isGuest: this.user.isGuest,
+      isAdmin: [this.user.isAdmin],
+      isHost: [this.user.isHost],
+      isGuest: [this.user.isGuest],
+      profilePicture: [''],
+    }, { validator: [checkRolesValidator] });
+    this.newPicture = null;
+
+    this.passwordForm = this.formBuilder.group({
+      currentPassword: ['', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(4)]]
     }, { validator: [confirmPasswordValidator] });
   }
 
   onFileChange(event): void {
     if (event.target.files && event.target.files.length) {
       this.newPicture = event.target.files[0];
+
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+        this.img = event.target.result;
+      };
     }
+  }
+
+  onInfoSubmit(): void {
+    const jsonUser = JSON.stringify(this.infoForm.value, ((key, val) => {
+      if (key === 'profilePicture') {
+        return null;
+      }
+      else {
+        return val;
+      }
+    }));
+
+    const formData = new FormData();
+    formData.append('user', jsonUser);
+    formData.append('oldUsername', this.username);
+    formData.append('oldEmail', this.f1.email.value);
+    formData.append('profilePicture', this.newPicture);
+
+    console.log(formData.get('profilePicture'));
+    console.log(formData.get('user'));
+
+    this.dataService.changeInfo(formData)
+      .subscribe(
+        response => {
+          window.alert('User changed info successfully!');
+          this.invalidInfo = false;
+          this.router.navigate(['/']);
+        },
+        (error: HttpErrorResponse) => {
+          this.errorMessage = 'Settings error: invalid username or email';
+          this.invalidInfo = true;
+          window.alert(this.errorMessage);
+          // this.router.navigate(['/settings']);
+          // location.reload();
+        }
+      );
   }
 
 }
 
 function confirmPasswordValidator(c: AbstractControl): { mismatch: boolean } {
   if (c.get('password').value !== c.get('confirmPassword').value) {
+    return {mismatch: true};
+  }
+}
+
+function checkRolesValidator(c: AbstractControl): { mismatch: boolean } {
+  if (!c.get('isHost').value && !c.get('isGuest').value) {
     return {mismatch: true};
   }
 }

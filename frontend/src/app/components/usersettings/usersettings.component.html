@@ -9,58 +9,127 @@
               <h2 style="font-size: 1.5rem; font-weight: bold">User Settings: @{{user.username}}</h2>
               <hr />
             </div>
-            <div class="d-flex justify-content-start">
-              <div class="image-container">
-                <div *ngIf=img>
-                  <img [src]="img" id="profilePicture" class="img-thumbnail" />
-                </div>
-                <div class="changePicture btn btn-lg btn-primary">
-                  Change
-                  <input type="file" name="file" (change)="onFileChange($event)" />
-                </div>
-              </div>
-              <div class="ml-4">
-                <form [formGroup]="userForm">
-                  <div class="form-row form-group" style="width: 700px">
-                    <div class="col-6 mb-2">
-                      <label>First name</label>
-                      <input type="text" formControlName="firstName" class="form-control" />
-                      <div *ngIf="f.firstName.invalid && f.firstName.touched" class="alert alert-danger">
-                      </div>
-                    </div>
-                    <div class="col-6 mb-2">
-                      <label>Last name</label>
-                      <input type="text" formControlName="lastName" class="form-control" />
-                      <div *ngIf="f.lastName.invalid && f.lastName.touched" class="alert alert-danger">
-                      </div>
-                    </div>
 
-                    <div class="col-md-6 mb-2 ">
-                      <label>Username</label>
-                      <input type="text" formControlName="username" class="form-control" />
-                      <div *ngIf="f.username.invalid && f.username.touched" class="alert alert-danger">
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                      <label>Email</label>
-                      <input type="text" formControlName="email" class="form-control" placeholder="you@example.com" />
-                      <div *ngIf="f.email.invalid && f.email.touched" class="alert alert-danger">
-                        <div *ngIf="f.email.errors.email">Invalid email address</div>
-                      </div>
-                    </div>
+            <div class="col-12 user-data">
+              <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Change Basic Info</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="changePassword-tab" data-toggle="tab" href="#changePassword" role="tab" aria-controls="changePassword" aria-selected="false">Change Password</a>
+                </li>
+              </ul>
 
-                    <div class="col-md-6 mb-2">
-                      <label>Phone</label>
-                      <input type="text" formControlName="phone" class="form-control" />
-                      <div *ngIf="f.phone.invalid && f.phone.touched" class="alert alert-danger">
-                        <div *ngIf="f.phone.errors.pattern">Only numbers</div>
-                        <div *ngIf="f.phone.errors.maxlength">Phone must be 10 digits</div>
-                        <div *ngIf="f.phone.errors.minlength">Phone must be 10 digits</div>
+              <div class="tab-content ml-1" id="myTabContent">
+                <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+
+                  <div class="d-flex justify-content-start">
+                    <div class="image-container">
+                      <div *ngIf=img>
+                        <img [src]="img" id="profilePicture" class="img-thumbnail" />
                       </div>
+                      <div class="changePicture btn btn-lg btn-primary">
+                        Change
+                        <input type="file" name="file" (change)="onFileChange($event)" />
+                      </div>
+                    </div>
+                    <div class="ml-4">
+                      <form [formGroup]="infoForm" (ngSubmit)="onInfoSubmit()">
+                        <div class="form-row form-group" style="width: 650px">
+                          <div class="col-6 mb-3">
+                            <label class="form-label">First name</label>
+                            <input type="text" formControlName="firstName" class="form-control" />
+                            <div *ngIf="f1.firstName.invalid && f1.firstName.touched" class="alert alert-danger">
+                            </div>
+                          </div>
+                          <div class="col-6 mb-3">
+                            <label class="form-label">Last name</label>
+                            <input type="text" formControlName="lastName" class="form-control" />
+                            <div *ngIf="f1.lastName.invalid && f1.lastName.touched" class="alert alert-danger">
+                            </div>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" formControlName="username" class="form-control" />
+                            <div *ngIf="f1.username.invalid && f1.username.touched" class="alert alert-danger">
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" formControlName="email" class="form-control" placeholder="you@example.com" />
+                            <div *ngIf="f1.email.invalid && f1.email.touched" class="alert alert-danger">
+                              <div *ngIf="f1.email.errors.email">Invalid email address</div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" formControlName="phone" class="form-control" />
+                            <div *ngIf="f1.phone.invalid && f1.phone.touched" class="alert alert-danger">
+                              <div *ngIf="f1.phone.errors.pattern">Only numbers</div>
+                              <div *ngIf="f1.phone.errors.maxlength">Phone must be 10 digits</div>
+                              <div *ngIf="f1.phone.errors.minlength">Phone must be 10 digits</div>
+                            </div>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <div><label class="form-label">Role selection</label></div>
+                            <div class="form-check form-check-inline">
+                              <input type="checkbox" formControlName="isHost" class="form-control form-check-input" id="isHost" />
+                              <label class="form-check-label" for="isHost">Host</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input type="checkbox" formControlName="isGuest" class="form-control form-check-input" id="isGuest" />
+                              <label class="form-check-label" for="isGuest">Guest</label>
+                              <div *ngIf="infoForm.errors?.match" class="alert alert-danger">Role required</div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <button type="submit" [disabled]="infoForm.invalid" class="form-button btn btn-lg" style="float: right;">Save</button>
+                      </form>
                     </div>
                   </div>
-                </form>
+
+                </div>
+
+                <div class="tab-pane fade" id="changePassword" role="tabpanel" aria-labelledby="changePassword-tab">
+                  <div class="d-flex justify-content-start">
+                    <form [formGroup]="passwordForm">
+                      <div class="form-row form-group">
+                        <div class="col-8 mb-3">
+                          <label class="form-label">Current password</label>
+                          <input type="password" formControlName="currentPassword" class="form-control" />
+                          <div *ngIf="f2.currentPassword.invalid && f2.currentPassword.touched" class="alert alert-danger">
+                            <div *ngIf="f2.currentPassword.errors.required">Password is required</div>
+                            <div *ngIf="f2.currentPassword.errors.minlength">Password at least 4 characters</div>
+                          </div>
+                        </div>
+                        <div class="col-8 mb-3">
+                          <label class="form-label">New password</label>
+                          <input type="password" formControlName="password" class="form-control" />
+                          <div *ngIf="f2.password.invalid && f2.password.touched" class="alert alert-danger">
+                            <div *ngIf="f2.password.errors.required">Password is required</div>
+                            <div *ngIf="f2.password.errors.minlength">Password at least 4 characters</div>
+                          </div>
+                        </div>
+                        <div class="col-8 mb-3">
+                          <label class="form-label">Confirm new password</label>
+                          <input type="password" formControlName="confirmPassword" class="form-control" />
+                          <div *ngIf="(f2.confirmPassword.invalid || passwordForm.errors?.match) && f2.confirmPassword.touched" class="alert alert-danger">
+                            <div *ngIf="f2.confirmPassword.errors.required">Confirmation is required</div>
+                            <div *ngIf="f2.confirmPassword.errors.minlength">Password at least 4 characters</div>
+                            <div *ngIf="passwordForm.errors?.match">Confirmation failed</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button type="submit" [disabled]="passwordForm.invalid" class="form-button btn btn-lg">Change password</button>
+                    </form>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>

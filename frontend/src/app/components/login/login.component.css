@@ -9,10 +9,12 @@
   margin-bottom: 1rem;
   margin-top: 0.5rem;
   text-align: center;
+  font-weight: 600;
 }
 
 .login-button {
   margin-bottom: 1rem;
+  float: right;
   color: #fff;
   background-color: #fc5892;
   border-color: #fc5892;

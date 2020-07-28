@@ -47,3 +47,31 @@
 .image-container:hover .middle {
   opacity: 1;
 }
+
+.form-label {
+  font-weight: 600;
+}
+
+.user-data .nav-tabs .nav-link {
+  color: #fc5892;
+}
+
+.user-data .nav-tabs .nav-link:hover {
+  color: #e6477f;
+}
+
+.user-data .nav-tabs .nav-link.active {
+  color: #495057;
+}
+
+.form-button {
+  color: #fff;
+  background-color: #fc5892;
+  border-color: #fc5892;
+}
+
+.form-button:hover {
+  color: #fff;
+  background-color: #e6477f;
+  border-color: #e6477f;
+}

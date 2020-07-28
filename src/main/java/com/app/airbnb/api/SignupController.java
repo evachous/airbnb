@@ -40,32 +40,13 @@ class SignupController {
                 return ResponseEntity.badRequest().body("Email exists");
             } else {
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-                newUser.setProfilePicture(compressBytes(profilePicture.getBytes()));
-                userRepository.save(newUser);
+                newUser.setProfilePicture(this.userRepository.compressBytes(profilePicture.getBytes()));
+                this.userRepository.save(newUser);
                 System.out.println("New User added");
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static byte[] compressBytes(byte[] data) {
-        Deflater deflater = new Deflater();
-        deflater.setInput(data);
-        deflater.finish();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] buffer = new byte[1024];
-        while (!deflater.finished()) {
-            int count = deflater.deflate(buffer);
-            outputStream.write(buffer, 0, count);
-        }
-        try {
-            outputStream.close();
-        } catch (IOException ioe) {
-            System.out.println("Error compressing");
-        }
-        System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
-        return outputStream.toByteArray();
     }
 }
