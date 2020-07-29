@@ -15,23 +15,26 @@ public class User {
     @Column(name="lastName") private String lastName;
     @Column(name="email") private String email;
     @Column(name="phone") private String phone;
+    @Column(name="city") private String city;
+    @Column(name="country") private String country;
     @Column(name="isAdmin") private Boolean isAdmin;
     @Column(name="isHost") private Boolean isHost;
     @Column(name="isGuest") private Boolean isGuest;
-    // private File profilePicture;
-    // private String profilePicture;
-    @Column(name="profilePicture", length=1000) private byte[] profilePicture;
+    @Column(name="profilePicture", length=1000000) private byte[] profilePicture;
 
     public User() {}
 
     public User(String username, String password, String firstName, String lastName, String email,
-                String phone, Boolean isAdmin, Boolean isHost, Boolean isGuest, byte[] profilePicture) {
+                String phone, String city, String country, Boolean isAdmin, Boolean isHost,
+                Boolean isGuest, byte[] profilePicture) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.city = city;
+        this.country = country;
         this.isAdmin = isAdmin;
         this.isHost = isHost;
         this.isGuest = isGuest;

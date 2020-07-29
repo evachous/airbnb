@@ -70,6 +70,8 @@ export class UsersettingsComponent implements OnInit {
       email: [this.user.email, [Validators.email]],
       password: [this.user.password, [Validators.required, Validators.minLength(4)]],
       phone: [this.user.phone, [Validators.minLength(10), Validators.maxLength(10), Validators.pattern('^[0-9]*$')]],
+      city: [this.user.city],
+      country: [this.user.country],
       isAdmin: [this.user.isAdmin],
       isHost: [this.user.isHost],
       isGuest: [this.user.isGuest],

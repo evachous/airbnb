@@ -13,11 +13,12 @@
               <div class="d-flex justify-content-start">
                 <div class="image-container">
                   <div *ngIf=img>
-                    <img [src]="img" id="profilePicture" class="img-thumbnail" />
+                    <img [src]="img" alt="profile picture" id="profilePicture" class="img-thumbnail" />
                   </div>
                 </div>
                 <div class="ml-3">
                   <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{user.firstName}} {{user.lastName}} (@{{user.username}})</h2>
+                  <h6 class="d-block"><i class="fa fa-globe" aria-hidden="true"></i> {{user.city}}, {{user.country}}</h6>
                   <div *ngIf="user.isAdmin">
                     <h6 class="d-block">Admin</h6>
                   </div>
@@ -28,7 +29,7 @@
                     <h6 class="d-block">Host</h6>
                   </div>
                   <div *ngIf="!user.isHost && user.isGuest">
-                    <h6 class="d-block">Host</h6>
+                    <h6 class="d-block">Guest</h6>
                   </div>
                 </div>
               </div>
@@ -81,19 +82,19 @@
                     <hr />
                     <div class="row">
                       <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;">Something</label>
+                        <label style="font-weight:bold;">City</label>
                       </div>
                       <div class="col-md-8 col-6">
-                        Something
+                        {{user.city}}
                       </div>
                     </div>
                     <hr />
                     <div class="row">
                       <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;">Something</label>
+                        <label style="font-weight:bold;">Country</label>
                       </div>
                       <div class="col-md-8 col-6">
-                        Something
+                        {{user.country}}
                       </div>
                     </div>
                     <hr />

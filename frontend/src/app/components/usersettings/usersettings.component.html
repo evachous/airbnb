@@ -39,7 +39,7 @@
                   <div class="d-flex justify-content-start">
                     <div class="image-container">
                       <div *ngIf=img>
-                        <img [src]="img" id="profilePicture" class="img-thumbnail" />
+                        <img [src]="img" alt="profile picture" id="profilePicture" class="img-thumbnail" />
                       </div>
                       <div class="changePicture btn btn-lg btn-primary">
                         Change
@@ -96,6 +96,19 @@
                               <input type="checkbox" formControlName="isGuest" class="form-control form-check-input" id="isGuest" />
                               <label class="form-check-label" for="isGuest">Guest</label>
                               <div *ngIf="infoForm.errors?.match" class="alert alert-danger">Role required</div>
+                            </div>
+                          </div>
+
+                          <div class="col-6 mb-3">
+                            <label class="form-label">City</label>
+                            <input type="text" formControlName="city" class="form-control" />
+                            <div *ngIf="f1.city.invalid && f1.city.touched" class="alert alert-danger">
+                            </div>
+                          </div>
+                          <div class="col-6 mb-3">
+                            <label class="form-label">Country</label>
+                            <input type="text" formControlName="country" class="form-control" />
+                            <div *ngIf="f1.country.invalid && f1.country.touched" class="alert alert-danger">
                             </div>
                           </div>
 

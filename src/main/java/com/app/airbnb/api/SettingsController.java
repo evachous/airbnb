@@ -48,6 +48,8 @@ public class SettingsController {
                 oldUser.setUsername(newUser.getUsername());
                 oldUser.setEmail(newUser.getEmail());
                 oldUser.setPhone(newUser.getPhone());
+                oldUser.setCity(newUser.getCity());
+                oldUser.setCountry(newUser.getCountry());
                 oldUser.setIsAdmin(newUser.getIsAdmin());
                 oldUser.setIsHost(newUser.getIsHost());
                 oldUser.setIsGuest(newUser.getIsGuest());

@@ -1,7 +1,10 @@
-<div class="container">
-  <div class="signup row justify-content-center">
-    <div class="col-md-7 shadow">
-      <h3 class="signup-title">Signup Form</h3>
+<div class="container profile">
+  <div class="row justify-content-center">
+    <div class="col-8 card shadow">
+      <div class="card-body">
+        <div class="card-title">
+          <h3 class="signup-title">Signup Form</h3>
+        </div>
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div *ngIf="invalidSignup" class="alert alert-danger alert-dismissible fade show">
           {{ errorMessage }}
@@ -11,14 +14,14 @@
         </div>
         <div class="form-row form-group">
 
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
             <label class="form-label">First name</label>
             <input type="text" formControlName="firstName" class="form-control" />
             <div *ngIf="f.firstName.invalid && f.firstName.touched" class="alert alert-danger">
               <div *ngIf="f.firstName.errors.required">First name is required</div>
             </div>
           </div>
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
             <label class="form-label">Last name</label>
             <input type="text" formControlName="lastName" class="form-control" />
             <div *ngIf="f.lastName.invalid && f.lastName.touched" class="alert alert-danger">
@@ -26,14 +29,14 @@
             </div>
           </div>
 
-          <div class="col-md-6 mb-2 ">
+          <div class="col-6 mb-2 ">
             <label class="form-label">Username</label>
             <input type="text" formControlName="username" class="form-control" />
             <div *ngIf="f.username.invalid && f.username.touched" class="alert alert-danger">
               <div *ngIf="f.username.errors.required">Username is required</div>
             </div>
           </div>
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
             <label class="form-label">Email</label>
             <input type="text" formControlName="email" class="form-control" placeholder="you@example.com" />
             <div *ngIf="f.email.invalid && f.email.touched" class="alert alert-danger">
@@ -42,7 +45,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
             <label class="form-label">Password</label>
             <input type="password" formControlName="password" class="form-control" />
             <div *ngIf="f.password.invalid && f.password.touched" class="alert alert-danger">
@@ -50,7 +53,7 @@
               <div *ngIf="f.password.errors.minlength">Password at least 4 characters</div>
             </div>
           </div>
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
             <label class="form-label">Confirm password</label>
             <input type="password" formControlName="confirmPassword" class="form-control" />
             <div *ngIf="(f.confirmPassword.invalid || signupForm.errors?.match) && f.confirmPassword.touched" class="alert alert-danger">
@@ -60,7 +63,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
             <label class="form-label">Phone</label>
             <input type="text" formControlName="phone" class="form-control" />
             <div *ngIf="f.phone.invalid && f.phone.touched" class="alert alert-danger">
@@ -70,7 +73,7 @@
               <div *ngIf="f.phone.errors.minlength">Phone must be 10 digits</div>
             </div>
           </div>
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
             <label class="form-label">Profile Picture</label>
             <input type="file" formControlName="profilePicture" class="form-control" (change)="onFileChange($event)" />
             <div *ngIf="f.profilePicture.invalid && f.profilePicture.touched" class="alert alert-danger">
@@ -78,7 +81,22 @@
             </div>
           </div>
 
-          <div class="col-md-6 mb-2">
+          <div class="col-6 mb-2">
+            <label class="form-label">City</label>
+            <input type="text" formControlName="city" class="form-control" />
+            <div *ngIf="f.city.invalid && f.city.touched" class="alert alert-danger">
+              <div *ngIf="f.city.errors.required">City is required</div>
+            </div>
+          </div>
+          <div class="col-6 mb-2">
+            <label class="form-label">Country</label>
+            <input type="text" formControlName="country" class="form-control" />
+            <div *ngIf="f.country.invalid && f.country.touched" class="alert alert-danger">
+              <div *ngIf="f.country.errors.required">Country is required</div>
+            </div>
+          </div>
+
+          <div class="col-6 mb-2">
             <div class="mt-2"><label class="form-label">Role selection</label></div>
             <div class="form-check form-check-inline">
               <input type="checkbox" formControlName="isHost" class="form-control form-check-input" id="isHost" />
@@ -93,6 +111,7 @@
 
         <button type="submit" [disabled]="signupForm.invalid" class="signup-button btn btn-lg">Done!</button>
       </form>
+    </div>
     </div>
   </div>
 </div>

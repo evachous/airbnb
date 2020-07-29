@@ -5,6 +5,8 @@ export class User {
   lastName: string;
   email: string;
   phone: string;
+  city: string;
+  country: string;
   isAdmin: boolean;
   isHost: boolean;
   isGuest: boolean;

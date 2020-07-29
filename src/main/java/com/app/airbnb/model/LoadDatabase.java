@@ -16,7 +16,7 @@ class LoadDatabase {
     CommandLineRunner initDatabase(UserRepository repository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         return args -> {
             // String encodedPassword3 = bCryptPasswordEncoder.encode("charli");
-            // log.info("Preloading " + repository.save(new User("charli", encodedPassword3, "charli", "charli", "charli@example.com", "1234567890", true, false, false, null)));
+            // log.info("Preloading " + repository.save(new User("charli", encodedPassword3, "charli", "charli", "charli@example.com", "1234567890", "london", "uk", true, false, false, null)));
             log.info("Encrypted charli " + bCryptPasswordEncoder.encode("charli"));
         };
     }

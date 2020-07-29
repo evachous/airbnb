@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   loading = false;
   invalidLogin: boolean;
+  errorMessage: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,6 +24,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
+    this.errorMessage = this.authenticationService.getMessage;
+    localStorage.removeItem('message');
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(4)]]
@@ -40,14 +43,12 @@ export class LoginComponent implements OnInit {
         (response: any) => {
           this.authenticationService.setToken('token', response.headers.get('Authorization'));
           this.authenticationService.setToken('username', this.f.username.value);
-          /*console.log('User Logged In Successfully');
-          console.log(this.returnUrl);*/
           this.invalidLogin = false;
           this.router.navigate([this.returnUrl]);
         },
         error => {
           this.invalidLogin = true;
-          console.log('ERROR');
+          this.authenticationService.changeMessage('Error logging in');
         }
       );
   }
