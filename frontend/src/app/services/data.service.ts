@@ -26,12 +26,14 @@ export class DataService {
   }
 
   signup(formData: FormData): Observable<HttpResponse<string>> {
-    console.log('sending request....');
     return this.http.post<string>(this.url + 'signup', formData, {observe: 'response'});
   }
 
   changeInfo(formData: FormData): Observable<HttpResponse<string>> {
-    console.log('sending update....');
-    return this.http.post<string>(this.url + 'settings', formData, {observe: 'response'});
+    return this.http.post<string>(this.url + 'changeInfo', formData, {observe: 'response'});
+  }
+
+  changePassword(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'changePassword', formData, {observe: 'response'});
   }
 }

@@ -7,6 +7,8 @@ import com.app.airbnb.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,18 +18,19 @@ import java.io.IOException;
 public class SettingsController {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    SettingsController(UserRepository userRepository) {
+    SettingsController(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
 
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/settings")
+    @PostMapping("/changeInfo")
     ResponseEntity<String> changeInfo(@RequestParam("user") String jsonUser, @RequestParam("oldUsername") String oldUsername,
                                       @RequestParam("oldEmail") String oldEmail,
                                       @RequestParam(value="profilePicture", required=false) MultipartFile profilePicture) throws IOException {
-        System.out.println("IM HERE");
         try {
             User newUser = new ObjectMapper().readValue(jsonUser, User.class);
             if (!newUser.getUsername().equals(oldUsername) && this.userRepository.findByUsername(newUser.getUsername()) != null) {
@@ -49,11 +52,8 @@ public class SettingsController {
                 oldUser.setIsHost(newUser.getIsHost());
                 oldUser.setIsGuest(newUser.getIsGuest());
 
-                if (profilePicture == null)
-                    System.out.println("no new picture");
-                else {
+                if (profilePicture != null)
                     oldUser.setProfilePicture(this.userRepository.compressBytes(profilePicture.getBytes()));
-                }
 
                 this.userRepository.save(oldUser);
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -61,5 +61,20 @@ public class SettingsController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/changePassword")
+    ResponseEntity<String> changePassword(@RequestParam("username") String username,
+                                          @RequestParam("currentPassword") String currentPassword,
+                                          @RequestParam("newPassword") String newPassword) {
+        User user = this.userRepository.findByUsername(username);
+        if (!bCryptPasswordEncoder.matches(currentPassword, user.getPassword())) {
+            System.out.println("Current password doesn't match");
+            return ResponseEntity.badRequest().body("Current password doesn't match");
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        this.userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

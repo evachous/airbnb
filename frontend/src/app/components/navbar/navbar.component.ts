@@ -39,15 +39,6 @@ export class NavbarComponent implements OnInit {
     if (this.loggedin) {
       this.dataService.getUser(this.username).subscribe( user => {
         this.user = user;
-        if (this.user.isAdmin) {
-          this.isAdmin = true;
-        }
-        if (this.user.isHost) {
-          this.isHost = true;
-        }
-        if (this.user.isGuest) {
-          this.isGuest = true;
-        }
       });
     }
   }

@@ -45,8 +45,22 @@ export class AuthenticationService {
     }
   }
 
+  changeCurrentUsername(newUsername): void {
+    localStorage.removeItem('username');
+    this.setToken('username', newUsername);
+  }
+
+  changeMessage(message): void {
+    localStorage.removeItem('message');
+    this.setToken('message', message);
+  }
+
   get getTokenUsername(): string {
     return localStorage.getItem('username');
+  }
+
+  get getMessage(): string {
+    return localStorage.getItem('message');
   }
 
   logout(): void {
@@ -54,6 +68,7 @@ export class AuthenticationService {
     this.currentUser.next(null);
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('message');
     this.loggedin = false;
   }
 }

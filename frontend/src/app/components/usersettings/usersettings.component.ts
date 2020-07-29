@@ -20,7 +20,8 @@ export class UsersettingsComponent implements OnInit {
   newPicture: any = null;
   passwordForm: FormGroup;
   invalidPassword: boolean;
-  errorMessage: string;
+  message: string = null;
+  successMessage: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +40,10 @@ export class UsersettingsComponent implements OnInit {
       else {
         this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
       }
+
+      this.message = this.authenticationService.getMessage;
+      this.successMessage = this.message != null && (this.message === 'Password changed successfully!' || this.message === 'Basic info changed successfully!');
+      localStorage.removeItem('message');
 
       this.initForms();
     });
@@ -108,22 +113,42 @@ export class UsersettingsComponent implements OnInit {
     formData.append('oldEmail', this.f1.email.value);
     formData.append('profilePicture', this.newPicture);
 
-    console.log(formData.get('profilePicture'));
-    console.log(formData.get('user'));
+    // console.log(formData.get('profilePicture'));
+    // console.log(formData.get('user'));
 
     this.dataService.changeInfo(formData)
       .subscribe(
         response => {
-          window.alert('User changed info successfully!');
           this.invalidInfo = false;
-          this.router.navigate(['/']);
+          this.authenticationService.changeCurrentUsername(this.f1.username.value);
+          this.authenticationService.changeMessage('Basic info changed successfully!');
+          window.location.reload();
         },
         (error: HttpErrorResponse) => {
-          this.errorMessage = 'Settings error: invalid username or email';
           this.invalidInfo = true;
-          window.alert(this.errorMessage);
-          // this.router.navigate(['/settings']);
-          // location.reload();
+          this.authenticationService.changeMessage('Error: invalid username or email');
+          window.location.reload();
+        }
+      );
+  }
+
+  onPasswordSubmit(): void {
+    const formData = new FormData();
+    formData.append('username', this.username);
+    formData.append('currentPassword', this.f2.currentPassword.value);
+    formData.append('newPassword', this.f2.password.value);
+
+    this.dataService.changePassword(formData)
+      .subscribe(
+        response => {
+          this.invalidPassword = false;
+          this.authenticationService.changeMessage('Password changed successfully!');
+          window.location.reload();
+        },
+        (error: HttpErrorResponse) => {
+          this.invalidPassword = true;
+          this.authenticationService.changeMessage('Error: can\'t confirm current password');
+          window.location.reload();
         }
       );
   }
