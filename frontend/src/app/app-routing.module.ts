@@ -8,14 +8,15 @@ import { UserprofileComponent } from './components/userprofile/userprofile.compo
 import { UsersettingsComponent } from './components/usersettings/usersettings.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   {
     path: 'users',
     children: [
-      { path: '', component: UserComponent, canActivate: [AuthGuard] },
-      { path: ':username', component: UserprofileComponent, canActivate: [AuthGuard] }
+      { path: '', component: UserComponent, canActivate: [AdminGuard] },
+      { path: ':username', component: UserprofileComponent, canActivate: [AdminGuard] }
     ]
   },
   { path: 'settings', component: UsersettingsComponent, canActivate: [AuthGuard] },

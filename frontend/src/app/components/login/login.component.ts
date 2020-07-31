@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -13,18 +14,21 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   loading = false;
   invalidLogin: boolean;
-  errorMessage: string;
+  message: string = null;
+  successMessage: boolean;
+  warningMessage = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
-    this.errorMessage = this.authenticationService.getMessage;
+    this.findMessage();
     localStorage.removeItem('message');
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -48,8 +52,22 @@ export class LoginComponent implements OnInit {
         },
         error => {
           this.invalidLogin = true;
-          this.authenticationService.changeMessage('Error logging in');
+          this.alertService.changeMessage('Error logging in');
         }
       );
+  }
+
+  findMessage(): void {
+    this.message = this.alertService.getMessage;
+    if (this.message === 'User signed up successfully!') {
+      this.successMessage = true;
+    }
+    else if (this.message === 'Error logging in') {
+      this.successMessage = false;
+    }
+    else if (this.message === 'Waiting approval from admin...') {
+      this.successMessage = false;
+      this.warningMessage = true;
+    }
   }
 }

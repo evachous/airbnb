@@ -5,6 +5,7 @@ import {User} from '../../model/user';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {AlertService} from '../../services/alert.service';
 
 @Component({
   selector: 'app-usersettings',
@@ -27,7 +28,8 @@ export class UsersettingsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private dataService: DataService
+    private dataService: DataService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +43,7 @@ export class UsersettingsComponent implements OnInit {
         this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
       }
 
-      this.message = this.authenticationService.getMessage;
+      this.message = this.alertService.getMessage;
       this.successMessage = this.message != null && (this.message === 'Password changed successfully!' || this.message === 'Basic info changed successfully!');
       localStorage.removeItem('message');
 
@@ -123,12 +125,12 @@ export class UsersettingsComponent implements OnInit {
         response => {
           this.invalidInfo = false;
           this.authenticationService.changeCurrentUsername(this.f1.username.value);
-          this.authenticationService.changeMessage('Basic info changed successfully!');
+          this.alertService.changeMessage('Basic info changed successfully!');
           window.location.reload();
         },
         (error: HttpErrorResponse) => {
           this.invalidInfo = true;
-          this.authenticationService.changeMessage('Error: invalid username or email');
+          this.alertService.changeMessage('Error: invalid username or email');
           window.location.reload();
         }
       );
@@ -144,12 +146,12 @@ export class UsersettingsComponent implements OnInit {
       .subscribe(
         response => {
           this.invalidPassword = false;
-          this.authenticationService.changeMessage('Password changed successfully!');
+          this.alertService.changeMessage('Password changed successfully!');
           window.location.reload();
         },
         (error: HttpErrorResponse) => {
           this.invalidPassword = true;
-          this.authenticationService.changeMessage('Error: can\'t confirm current password');
+          this.alertService.changeMessage('Error: can\'t confirm current password');
           window.location.reload();
         }
       );

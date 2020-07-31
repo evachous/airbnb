@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DataService } from '../../services/data.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {HttpErrorResponse} from '@angular/common/http';
+import { AlertService } from '../../services/alert.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -19,6 +20,7 @@ export class SignupComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dataService: DataService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +37,7 @@ export class SignupComponent implements OnInit {
       isAdmin: false,
       isHost: false,
       isGuest: false,
+      isApproved: true,
       profilePicture: ['', Validators.required],
       }, { validator: [confirmPasswordValidator, checkRolesValidator] });
   }
@@ -63,6 +66,9 @@ export class SignupComponent implements OnInit {
       else if (key === 'confirmPassword') {
         return undefined;
       }
+      else if (key === 'isApproved') {
+        return !this.f.isHost.value;
+      }
       else {
         return val;
       }
@@ -73,13 +79,16 @@ export class SignupComponent implements OnInit {
     formData.append('user', jsonUser);
     formData.append('profilePicture', this.f.profilePicture.value);
 
-    // console.log(formData.get('profilePicture'));
-    // console.log(formData.get('user'));
-
     this.dataService.signup(formData)
       .subscribe(
         response => {
-          window.alert('User signed up successfully!');
+          // window.alert('User signed up successfully!');
+          if (!this.f.isHost.value) {
+            this.alertService.changeMessage('User signed up successfully!');
+          }
+          else {
+            this.alertService.changeMessage('Waiting approval from admin...');
+          }
           this.invalidSignup = false;
           this.router.navigate(['/login']);
         },

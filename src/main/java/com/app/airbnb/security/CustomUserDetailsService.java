@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.app.airbnb.model.User applicationUser = this.userRepository.findByUsername(username);
-        if (applicationUser == null) {
+        if (applicationUser == null || !applicationUser.getIsApproved()) {
             throw new UsernameNotFoundException(username);
         }
         return new User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());

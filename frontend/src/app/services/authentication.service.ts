@@ -50,17 +50,8 @@ export class AuthenticationService {
     this.setToken('username', newUsername);
   }
 
-  changeMessage(message): void {
-    localStorage.removeItem('message');
-    this.setToken('message', message);
-  }
-
   get getTokenUsername(): string {
     return localStorage.getItem('username');
-  }
-
-  get getMessage(): string {
-    return localStorage.getItem('message');
   }
 
   logout(): void {

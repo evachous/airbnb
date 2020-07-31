@@ -7,8 +7,20 @@
             <h3 class="login-title">Login Form</h3>
           </div>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
-              {{ errorMessage }}
+            <div *ngIf="message && successMessage" class="alert alert-success alert-dismissible fade show">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div *ngIf="message && !successMessage && !warningMessage" class="alert alert-danger alert-dismissible fade show">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div *ngIf="message && !successMessage && warningMessage" class="alert alert-warning alert-dismissible fade show">
+              {{ message }}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

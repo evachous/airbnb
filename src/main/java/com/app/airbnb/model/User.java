@@ -20,13 +20,14 @@ public class User {
     @Column(name="isAdmin") private Boolean isAdmin;
     @Column(name="isHost") private Boolean isHost;
     @Column(name="isGuest") private Boolean isGuest;
+    @Column(name="isApproved") private Boolean isApproved;
     @Column(name="profilePicture", length=1000000) private byte[] profilePicture;
 
     public User() {}
 
     public User(String username, String password, String firstName, String lastName, String email,
                 String phone, String city, String country, Boolean isAdmin, Boolean isHost,
-                Boolean isGuest, byte[] profilePicture) {
+                Boolean isGuest, Boolean isApproved, byte[] profilePicture) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -38,6 +39,7 @@ public class User {
         this.isAdmin = isAdmin;
         this.isHost = isHost;
         this.isGuest = isGuest;
+        this.isApproved = isApproved;
         this.profilePicture = profilePicture;
     }
 }

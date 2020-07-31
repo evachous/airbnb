@@ -21,8 +21,8 @@ export class DataService {
     return this.http.get<User[]>(this.url + 'users');
   }
 
-  getUser(id): Observable<User> {
-    return this.http.get<User>(this.url + 'users/' + id);
+  getUser(username): Observable<User> {
+    return this.http.get<User>(this.url + 'users/' + username);
   }
 
   signup(formData: FormData): Observable<HttpResponse<string>> {
@@ -35,5 +35,9 @@ export class DataService {
 
   changePassword(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'changePassword', formData, {observe: 'response'});
+  }
+
+  adminCheck(username): Observable<boolean> {
+    return this.http.get<boolean>(this.url + 'adminCheck/' + username);
   }
 }
