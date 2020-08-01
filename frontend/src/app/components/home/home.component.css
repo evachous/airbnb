@@ -1,3 +1,13 @@
-.home {
+.home-bg {
+  height: auto;
+  width: 100%;
+  top: 0;
+  position: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
+.welcome {
+  margin-top: 10%;
 }

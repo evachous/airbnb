@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
-import { AuthenticationService } from '../../services/authentication.service';
-
-import { User } from '../../model/user';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -10,16 +8,20 @@ import { User } from '../../model/user';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  users: User[];
-  user: User;
-  currentUser: string;
-  loading = false;
-  constructor(private dataService: DataService) { }
+  searchForm: FormGroup;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private dataService: DataService
+  ) { }
 
   ngOnInit(): void {
-    // const id = this.route.snapshot.paramMap.get('id');
-    const id = 'charli';
-    this.dataService.getUser(id).subscribe( user => this.user = user);
+    this.searchForm = this.formBuilder.group({
+      location: ['', Validators.required],
+      checkin: ['', Validators.required],
+      checkout: ['', Validators.required],
+      guests: ['', Validators.required]
+    });
   }
 
 }
