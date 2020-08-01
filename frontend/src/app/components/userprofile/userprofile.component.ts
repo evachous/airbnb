@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DataService} from '../../services/data.service';
 import {User} from '../../model/user';
-import {consoleTestResultHandler} from 'tslint/lib/test';
+import {AlertService} from '../../services/alert.service';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-userprofile',
@@ -14,11 +15,14 @@ export class UserprofileComponent implements OnInit {
   username: string;
   user: User;
   img: any;
+  message: string = null;
+  successMessage: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -33,10 +37,28 @@ export class UserprofileComponent implements OnInit {
           else {
             this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
           }
+
+          this.message = this.alertService.getMessage;
+          this.successMessage = this.message != null && (this.message === 'Host is now approved!');
+          localStorage.removeItem('message');
         },
         error => {
           this.found = false;
         });
     });
+  }
+
+  onApprove(): void {
+    this.dataService.approveHost(this.username)
+      .subscribe(
+        response => {
+          this.alertService.changeMessage('Host is now approved!');
+          window.location.reload();
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.changeMessage('Error: couldn\'t approve host');
+          window.location.reload();
+        }
+      );
   }
 }

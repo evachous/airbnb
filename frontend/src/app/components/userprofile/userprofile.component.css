@@ -1,8 +1,3 @@
-body {
-  padding-top: 68px;
-  padding-bottom: 50px;
-}
-
 .profile {
   margin-top: 5%;
 }
@@ -32,6 +27,10 @@ body {
 
 .image-container:hover .middle {
   opacity: 1;
+}
+
+.admin-button {
+  height: 10%;
 }
 
 .user-data .nav-tabs .nav-link {

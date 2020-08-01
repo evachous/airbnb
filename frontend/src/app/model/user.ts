@@ -10,5 +10,6 @@ export class User {
   isAdmin: boolean;
   isHost: boolean;
   isGuest: boolean;
+  isApproved: boolean;
   profilePicture: any;
 }

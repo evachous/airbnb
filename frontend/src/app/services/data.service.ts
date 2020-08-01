@@ -40,4 +40,8 @@ export class DataService {
   adminCheck(username): Observable<boolean> {
     return this.http.get<boolean>(this.url + 'adminCheck/' + username);
   }
+
+  approveHost(username): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'approveHost', username, {observe: 'response'});
+  }
 }
