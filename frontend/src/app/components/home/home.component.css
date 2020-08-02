@@ -11,3 +11,43 @@
 .welcome {
   margin-top: 10%;
 }
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+
+.custom-day.range, .custom-day:hover {
+  background-color: #fc5892;
+  color: #fff;
+}
+
+.custom-day.faded {
+  background-color: #e6477f;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.search-button {
+  height: 2.5em;
+  width: 3em;
+  color: #fff;
+  background-color: #fc5892;
+  border-color: #fc5892;
+  margin-top: 1em;
+}
+
+.search-button:hover {
+  color: #fff;
+  background-color: #e6477f;
+  border-color: #e6477f;
+}

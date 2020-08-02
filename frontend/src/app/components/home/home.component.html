@@ -5,15 +5,55 @@
       <div class="card">
 
         <div class="card-body">
+          <div *ngIf="invalidDate" class="alert alert-danger alert-dismissible fade show">
+            {{ errorMessage }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div class="card-title mb-4">
             <h2 style="font-size: 1.5rem; font-weight: bold">Welcome!</h2>
+            <hr />
           </div>
 
-          <form [formGroup]="searchForm">
+          <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
             <div class="form-row form-group">
 
+              <ng-template #t let-date let-focused="focused" let-disabled="disabled">
+                <span class="custom-day"
+                      [class.text-muted]="disabled"
+                      [class.focused]="focused"
+                      [class.range]="isRange(date)"
+                      [class.faded]="isHovered(date) || isInside(date)"
+                      (mouseenter)="hoveredDate = date"
+                      (mouseleave)="hoveredDate = null">
+                  {{ date.day }}
+                </span>
+              </ng-template>
+
+              <div class="col-4">
+                <label class="form-label">Location</label>
+                <input type="text" formControlName="location" class="form-control" placeholder="Where are you going?" />
+              </div>
+              <div class="col-2">
+                <label class="form-label">Check in</label>
+                <input class="col-12" ngbDatepicker (click)="datePicker1.toggle()" #datePicker1="ngbDatepicker" formControlName="checkin"
+                       placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="minDate" [maxDate]="f.checkout.value">
+              </div>
+              <div class="col-2">
+                <label class="form-label">Check out</label>
+                <input class="col-12" ngbDatepicker (click)="datePicker2.toggle()" #datePicker2="ngbDatepicker" formControlName="checkout"
+                       placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="f.checkin.value">
+              </div>
+              <div class="col-3 mr-2">
+                <label class="form-label">Guests</label>
+                <input type="text" formControlName="guests" class="form-control" placeholder="Add guests" />
+              </div>
+
+              <button type="submit" [disabled]="searchForm.invalid" class="search-button btn btn-lg"><i class="fa fa-search" aria-hidden="true"></i></button>
             </div>
           </form>
+
         </div>
 
       </div>

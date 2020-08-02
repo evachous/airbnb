@@ -11,7 +11,7 @@ import { SignupGuard } from './guards/signup.guard';
 import { AdminGuard } from './guards/admin.guard';
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent },
   {
     path: 'users',
     children: [
