@@ -1,5 +1,6 @@
 package com.app.airbnb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,6 +24,10 @@ public class User {
     @Column(name="isApproved") private Boolean isApproved;
     @Column(name="profilePicture", length=1000000) private byte[] profilePicture;
 
+    @OneToOne(cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("host")
+    private Accommodation[] accommodations;
+
     public User() {}
 
     public User(String username, String password, String firstName, String lastName, String email,
@@ -41,5 +46,6 @@ public class User {
         this.isGuest = isGuest;
         this.isApproved = isApproved;
         this.profilePicture = profilePicture;
+        this.accommodations = null;
     }
 }

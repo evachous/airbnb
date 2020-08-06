@@ -17,6 +17,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import { UsersettingsComponent } from './components/usersettings/usersettings.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AccommodationsComponent } from './components/accommodations/accommodations.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     UserprofileComponent,
     UsersettingsComponent,
+    AccommodationsComponent,
   ],
   imports: [
     BrowserModule,

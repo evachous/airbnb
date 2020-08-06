@@ -7,7 +7,7 @@ import { DataService } from '../services/data.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGuard implements CanActivate {
+export class HostGuard implements CanActivate {
   constructor(
     private router: Router,
     private dataService: DataService
@@ -16,7 +16,7 @@ export class AdminGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     const username = localStorage.getItem('username');
     if (username) {
-      return this.dataService.adminCheck(username).pipe(map(
+      return this.dataService.hostCheck(username).pipe(map(
         res => {
           if (!res) {
             this.router.navigate(['/'], { queryParams: { returnUrl: state.url }});

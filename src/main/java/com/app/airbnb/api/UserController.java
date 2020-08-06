@@ -33,14 +33,6 @@ class UserController {
         return userRepository.findAll();
     }
 
-    /* @CrossOrigin(origins = "*")
-    @GetMapping("/users/{id}")
-    User returnUserByID(@PathVariable Long id) {
-
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-    }*/
-
     @CrossOrigin(origins = "*")
     @GetMapping("/users/{username}")
     User returnUser(@PathVariable String username) {
@@ -53,6 +45,17 @@ class UserController {
             user.setProfilePicture(this.userRepository.decompressBytes(user.getProfilePicture()));
         }
         return user;
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/hostCheck/{username}")
+    boolean hostCheck(@PathVariable String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException(username);
+        }
+
+        return user.getIsHost();
     }
 
     @CrossOrigin(origins = "*")

@@ -1,0 +1,15 @@
+.accommodations {
+  margin-top: 5%;
+}
+
+.accommodation-data .nav-tabs .nav-link {
+  color: #fc5892;
+}
+
+.accommodation-data .nav-tabs .nav-link:hover {
+  color: #e6477f;
+}
+
+.accommodation-data .nav-tabs .nav-link.active {
+  color: #495057;
+}

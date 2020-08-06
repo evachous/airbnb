@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
-import {Form, FormGroup} from '@angular/forms';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json', 'Access-Control-Allow-Origin': '*' })
@@ -39,6 +37,10 @@ export class DataService {
 
   adminCheck(username): Observable<boolean> {
     return this.http.get<boolean>(this.url + 'adminCheck/' + username);
+  }
+
+  hostCheck(username): Observable<boolean> {
+    return this.http.get<boolean>(this.url + 'hostCheck/' + username);
   }
 
   approveHost(username): Observable<HttpResponse<string>> {

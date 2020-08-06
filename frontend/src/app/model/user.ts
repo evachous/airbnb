@@ -12,4 +12,5 @@ export class User {
   isGuest: boolean;
   isApproved: boolean;
   profilePicture: any;
+  accommodations: any;
 }
