@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 public class Accommodation {
     @Id @GeneratedValue private Long id;
-    private String description;
 
     @OneToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("accommodation")
@@ -29,7 +28,10 @@ public class Accommodation {
 
     public Accommodation() {}
 
-    public Accommodation(String description) {
-        this.description = description;
+    public Accommodation(AccommodationInfo info, AccommodationLocation location, AccommodationRules rules, User host) {
+        this.info = info;
+        this.location = location;
+        this.rules = rules;
+        this.host = host;
     }
 }

@@ -46,4 +46,8 @@ export class DataService {
   approveHost(username): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'approveHost', username, {observe: 'response'});
   }
+
+  addAccommodation(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'addAccommodation', formData, {observe: 'response'});
+  }
 }

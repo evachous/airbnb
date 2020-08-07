@@ -14,7 +14,8 @@ public class AccommodationInfo {
     private Integer bedrooms;
     private Integer bathrooms;
     private Boolean livingRoom;
-    private Long area;
+    private Integer area;
+    private String description;
 
     @OneToOne(mappedBy = "info")
     @JsonIgnoreProperties("info")

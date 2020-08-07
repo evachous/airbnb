@@ -10,26 +10,164 @@
               <hr />
             </div>
 
+            <div *ngIf="message && successMessage" class="alert alert-success alert-dismissible fade show">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div *ngIf="message && !successMessage" class="alert alert-danger alert-dismissible fade show">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
             <div class="col-12 accommodation-data">
               <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" id="userAccommodations-tab" data-toggle="tab" href="#userAccommodations" role="tab" aria-controls="changePassword" aria-selected="false">My Accommodations</a>
+                  <a class="nav-link active" id="newAccommodation-tab" data-toggle="tab" href="#newAccommodation" role="tab" aria-controls="newAccommodation"
+                     aria-selected="true">Register New Accommodation</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="newAccommodation-tab" data-toggle="tab" href="#newAccommodation" role="tab" aria-controls="newAccommodation" aria-selected="true">Register New Accommodation</a>
+                  <a class="nav-link" id="userAccommodations-tab" data-toggle="tab" href="#userAccommodations" role="tab" aria-controls="changePassword"
+                     aria-selected="false">My Accommodations</a>
                 </li>
               </ul>
 
               <div class="tab-content ml-1" id="myTabContent">
-                <div class="tab-pane fade show active" id="userAccommodations" role="tabpanel" aria-labelledby="userAccommodations-tab">
+                <div class="tab-pane fade show active" id="newAccommodation" role="tabpanel" aria-labelledby="newAccommodation-tab">
+
+                  <h4 style="font-style: italic">Basic Info</h4><hr />
                   <div class="d-flex justify-content-start">
-                    <p>tab1</p>
+                    <form [formGroup]="infoForm">
+                      <div class="form-row form-group" style="width: 800px">
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Type</label>
+                          <input type="text" formControlName="type" class="form-control" />
+                          <div *ngIf="f1.type.invalid && f1.type.touched" class="alert alert-danger">
+                            <div *ngIf="f1.type.errors.required">Type is required</div>
+                          </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Beds</label>
+                          <input type="number" min="1" formControlName="beds" class="form-control" />
+                          <div *ngIf="f1.beds.invalid && f1.beds.touched" class="alert alert-danger">
+                            <div *ngIf="f1.beds.errors.required">Number of beds is required</div>
+                          </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Bedrooms</label>
+                          <input type="number" min="0" formControlName="bedrooms" class="form-control" />
+                          <div *ngIf="f1.bedrooms.invalid && f1.bedrooms.touched" class="alert alert-danger">
+                            <div *ngIf="f1.bedrooms.errors.required">Number of bedrooms is required</div>
+                          </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Bathrooms</label>
+                          <input type="number" min="1" formControlName="bathrooms" class="form-control" />
+                          <div *ngIf="f1.bathrooms.invalid && f1.bathrooms.touched" class="alert alert-danger">
+                            <div *ngIf="f1.bathrooms.errors.required">Number of bathrooms is required</div>
+                          </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Area</label>
+                          <input type="number" min="1" formControlName="area" class="form-control" />
+                          <div *ngIf="f1.area.invalid && f1.area.touched" class="alert alert-danger">
+                            <div *ngIf="f1.area.errors.required">Area is required</div>
+                          </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <div><label class="form-label">Living Room</label></div>
+                          <div class="ml-1 form-check form-check-inline">
+                            <input type="checkbox" formControlName="livingRoom" class="form-control form-check-input" id="livingRoom" />
+                          </div>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                          <label class="form-label">Description</label>
+                          <textarea rows="4" cols="50"  formControlName="description" class="form-control"></textarea>
+                          <div *ngIf="f1.description.invalid && f1.description.touched" class="alert alert-danger">
+                            <div *ngIf="f1.description.errors.required">Description is required</div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+
+                  <h4 class="mt-1" style="font-style: italic">Location</h4><hr />
+                  <div class="d-flex justify-content-start">
+                    <form [formGroup]="locationForm">
+                      <div class="form-row form-group" style="width: 800px">
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Address</label>
+                          <input type="text" formControlName="address" class="form-control" />
+                          <div *ngIf="f2.address.invalid && f2.address.touched" class="alert alert-danger">
+                            <div *ngIf="f2.address.errors.required">Address is required</div>
+                          </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Neighborhood</label>
+                          <input type="text" formControlName="neighborhood" class="form-control" />
+                          <div *ngIf="f2.neighborhood.invalid && f2.neighborhood.touched" class="alert alert-danger">
+                            <div *ngIf="f2.neighborhood.errors.required">Neighborhood is required</div>
+                          </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Transportation</label>
+                          <input type="text" formControlName="transportation" class="form-control" />
+                          <div *ngIf="f2.transportation.invalid && f2.transportation.touched" class="alert alert-danger">
+                            <div *ngIf="f2.transportation.errors.required">Transportation is required</div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+
+                  <h4 class="mt-1" style="font-style: italic">Rules</h4><hr />
+                  <div class="d-flex justify-content-start">
+                    <form [formGroup]="rulesForm" (ngSubmit)="onSubmit()">
+                      <div class="form-row form-group" style="width: 800px">
+                        <div class="col-12 mb-3">
+                          <div class="form-check form-check-inline">
+                            <input type="checkbox" formControlName="smoking" class="form-control form-check-input" id="smoking" />
+                            <label class="form-check-label" for="smoking">Smoking</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input type="checkbox" formControlName="pets" class="form-control form-check-input" id="pets" />
+                            <label class="form-check-label" for="pets">Pets</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input type="checkbox" formControlName="events" class="form-control form-check-input" id="events" />
+                            <label class="form-check-label" for="events">Events</label>
+                          </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Minimum Days</label>
+                          <input type="number" min="1" formControlName="minDays" class="form-control" />
+                          <div *ngIf="f3.minDays.invalid && f3.minDays.touched" class="alert alert-danger">
+                            <div *ngIf="f3.minDays.errors.required">Minimum days is required</div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <button type="submit" [disabled]="infoForm.invalid || locationForm.invalid || rulesForm.invalid" class="form-button btn btn-lg"
+                              style="float: right;">Save</button>
+                    </form>
                   </div>
                 </div>
 
-                <div class="tab-pane fade" id="newAccommodation" role="tabpanel" aria-labelledby="newAccommodation-tab">
+                <div class="tab-pane fade" id="userAccommodations" role="tabpanel" aria-labelledby="userAccommodations-tab">
                   <div class="d-flex justify-content-start">
-                    <p>tab2</p>
+                    <div *ngIf="emptyAcc">no accommodation</div>
+                    <div *ngIf="!emptyAcc">no accommodation</div>
                   </div>
                 </div>
               </div>
