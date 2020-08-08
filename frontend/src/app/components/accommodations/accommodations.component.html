@@ -167,7 +167,13 @@
                 <div class="tab-pane fade" id="userAccommodations" role="tabpanel" aria-labelledby="userAccommodations-tab">
                   <div class="d-flex justify-content-start">
                     <div *ngIf="emptyAcc">no accommodation</div>
-                    <div *ngIf="!emptyAcc">got accommodation</div>
+                    <div *ngIf="!emptyAcc">
+                      <ol>
+                        <li *ngFor="let a of accommodations">
+                          {{a.id}} - {{a.info.description}}
+                        </li>
+                      </ol>
+                    </div>
                   </div>
                 </div>
               </div>

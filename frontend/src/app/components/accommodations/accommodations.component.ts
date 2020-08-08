@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../services/authentication.service";
 import {User} from "../../model/user";
 import {DataService} from "../../services/data.service";
-import {Accommodation} from "../../model/accommodation";
+import {Accommodation, AccommodationInfo} from "../../model/accommodation";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
@@ -15,7 +15,8 @@ import {AlertService} from "../../services/alert.service";
 export class AccommodationsComponent implements OnInit {
   username: string;
   user: User;
-  accommodations: Accommodation[];
+  accommodations: Accommodation[] = null;
+  info: AccommodationInfo;
   emptyAcc: boolean;
   infoForm: FormGroup;
   locationForm: FormGroup;
@@ -35,7 +36,7 @@ export class AccommodationsComponent implements OnInit {
     this.dataService.getUser(this.username).subscribe( user => {
       this.user = user;
       this.accommodations = this.user.accommodations;
-      this.emptyAcc = this.accommodations == null;
+      this.emptyAcc = this.accommodations.length == 0;
 
       this.message = this.alertService.getMessage;
       this.successMessage = this.message != null && (this.message === 'Added accommodation successfully!');
@@ -86,18 +87,16 @@ export class AccommodationsComponent implements OnInit {
     const jsonInfo = this.stringifyForm(this.infoForm);
     const jsonLocation = this.stringifyForm(this.locationForm);
     const jsonRules = this.stringifyForm(this.rulesForm);
-    const jsonUser = JSON.stringify(this.user);
 
     const formData = new FormData();
     formData.append('info', jsonInfo);
     formData.append('location', jsonLocation);
     formData.append('rules', jsonRules);
-    formData.append('user', jsonUser);
+    formData.append('username', this.username);
 
     console.log(jsonInfo);
     console.log(jsonLocation);
     console.log(jsonRules);
-    console.log(jsonUser);
 
     this.dataService.addAccommodation(formData)
       .subscribe(

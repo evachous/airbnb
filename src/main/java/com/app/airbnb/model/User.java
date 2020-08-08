@@ -24,11 +24,9 @@ public class User {
     @Column(name="isApproved") private Boolean isApproved;
     @Column(name="profilePicture", length=1000000) private byte[] profilePicture;
 
-    /*@OneToOne(cascade=CascadeType.ALL)
-    @JsonIgnoreProperties("host")
-    private Accommodation[] accommodations;*/
     @OneToMany
     @JoinColumn(name = "host")
+    @JsonIgnoreProperties("host")
     private List<Accommodation> accommodations;
 
     public User() {}

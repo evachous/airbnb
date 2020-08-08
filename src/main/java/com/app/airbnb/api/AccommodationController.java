@@ -26,9 +26,9 @@ class AccommodationController {
     @CrossOrigin(origins = "*")
     @PostMapping("/addAccommodation")
     ResponseEntity<String> addAccommodation(@RequestParam("info") String jsonInfo, @RequestParam("location") String jsonLocation,
-                                                 @RequestParam("rules") String jsonRules, @RequestParam("user") String jsonUser) {
+                                            @RequestParam("rules") String jsonRules, @RequestParam("username") String username) {
         try {
-            User user = new ObjectMapper().readValue(jsonUser, User.class);
+            User user = this.userRepository.findByUsername(username);
             AccommodationInfo info = new ObjectMapper().readValue(jsonInfo, AccommodationInfo.class);
             AccommodationLocation location = new ObjectMapper().readValue(jsonLocation, AccommodationLocation.class);
             AccommodationRules rules = new ObjectMapper().readValue(jsonRules, AccommodationRules.class);
@@ -38,6 +38,7 @@ class AccommodationController {
             List<Accommodation> accommodations = user.getAccommodations();
             accommodations.add(accommodation);
             user.setAccommodations(accommodations);
+            this.userRepository.save(user);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IOException e) {

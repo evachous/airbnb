@@ -1,4 +1,5 @@
 export class Accommodation {
+  id: number;
   info: AccommodationInfo;
   location: AccommodationLocation;
   rules: AccommodationRules;

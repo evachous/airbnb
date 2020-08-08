@@ -22,10 +22,9 @@ public class Accommodation {
     @JsonIgnoreProperties("accommodation")
     private AccommodationRules rules;
 
-    /*@OneToOne(mappedBy = "accommodations")
-    @JsonIgnoreProperties("accommodations")*/
     @ManyToOne
     @JoinColumn(name = "host", insertable = false, updatable = false)
+    @JsonIgnoreProperties("accommodations")
     private User host;
 
     public Accommodation() {}
