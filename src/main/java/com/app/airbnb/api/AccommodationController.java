@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 class AccommodationController {
@@ -32,15 +33,11 @@ class AccommodationController {
             AccommodationLocation location = new ObjectMapper().readValue(jsonLocation, AccommodationLocation.class);
             AccommodationRules rules = new ObjectMapper().readValue(jsonRules, AccommodationRules.class);
             Accommodation accommodation = new Accommodation(info, location, rules, user);
+            this.accommodationRepository.save(accommodation);
 
-            this.accommodationRepository.save(accommodation);   //TODO: error
-
-            Accommodation[] accommodations = user.getAccommodations();
-            int i = 0;
-            while (accommodations[i] != null) i++;
-            accommodations[i] = accommodation;
+            List<Accommodation> accommodations = user.getAccommodations();
+            accommodations.add(accommodation);
             user.setAccommodations(accommodations);
-            this.userRepository.save(user);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IOException e) {

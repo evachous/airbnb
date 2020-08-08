@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 @Entity
 public class AccommodationLocation {
-    @Id private Long id;
+    @Id @GeneratedValue private Long id;
     private String address;
     private String neighborhood;
     private String transportation;

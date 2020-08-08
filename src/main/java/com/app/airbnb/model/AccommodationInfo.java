@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 @Entity
 public class AccommodationInfo {
-    @Id private Long id;
+    @Id @GeneratedValue private Long id;
     private String type;
     private Integer beds;
     private Integer bedrooms;
@@ -20,4 +20,6 @@ public class AccommodationInfo {
     @OneToOne(mappedBy = "info")
     @JsonIgnoreProperties("info")
     private Accommodation accommodation;
+
+    public AccommodationInfo() {}
 }

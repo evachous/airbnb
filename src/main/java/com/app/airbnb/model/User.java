@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,9 +24,12 @@ public class User {
     @Column(name="isApproved") private Boolean isApproved;
     @Column(name="profilePicture", length=1000000) private byte[] profilePicture;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    /*@OneToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("host")
-    private Accommodation[] accommodations;
+    private Accommodation[] accommodations;*/
+    @OneToMany
+    @JoinColumn(name = "host")
+    private List<Accommodation> accommodations;
 
     public User() {}
 
@@ -48,15 +49,5 @@ public class User {
         this.isGuest = isGuest;
         this.isApproved = isApproved;
         this.profilePicture = profilePicture;
-
-        if (!isHost) {
-            this.accommodations = null;
-        }
-        else {
-            this.accommodations = new Accommodation[100];
-            for (int i = 0; i < this.accommodations.length; i++) {
-                this.accommodations[i] = null;
-            }
-        }
     }
 }

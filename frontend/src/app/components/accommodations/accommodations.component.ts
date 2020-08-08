@@ -106,9 +106,8 @@ export class AccommodationsComponent implements OnInit {
           window.location.reload();
         },
         (error: HttpErrorResponse) => {
-          // this.alertService.changeMessage('Error adding accommodation');
-          // window.location.reload();
-          console.log('ERROR');
+          this.alertService.changeMessage('Error adding accommodation');
+          window.location.reload();
         }
       )
   }

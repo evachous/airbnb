@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 @Entity
 public class AccommodationRules {
-    @Id private Long id;
+    @Id @GeneratedValue private Long id;
     private Boolean smoking;
     private Boolean pets;
     private Boolean events;

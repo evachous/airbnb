@@ -1,6 +1,6 @@
 package com.app.airbnb.api;
 
-import com.app.airbnb.model.User;
+import com.app.airbnb.model.*;
 import com.app.airbnb.repositories.UserRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,9 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.zip.Deflater;
 
 @RestController
 class SignupController {
@@ -35,14 +33,15 @@ class SignupController {
             if (this.userRepository.findByUsername(newUser.getUsername()) != null) {
                 System.out.println("Username exists");
                 return ResponseEntity.badRequest().body("Username exists");
-            } else if (this.userRepository.findByEmail(newUser.getEmail()) != null) {
+            }
+            else if (this.userRepository.findByEmail(newUser.getEmail()) != null) {
                 System.out.println("Email exists");
                 return ResponseEntity.badRequest().body("Email exists");
-            } else {
+            }
+            else {
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
                 newUser.setProfilePicture(this.userRepository.compressBytes(profilePicture.getBytes()));
                 this.userRepository.save(newUser);
-                System.out.println("New User added");
                 return new ResponseEntity<>(HttpStatus.OK);
             }
         } catch (IOException e) {
