@@ -28,23 +28,29 @@ export class UserprofileComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.username = params.username;
-      this.dataService.getUser(this.username).subscribe( user => {
-          this.user = user;
-          this.found = true;
-          if (this.user.profilePicture === null) {
-            this.img = 'http://placehold.it/150x150';
-          }
-          else {
-            this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
-          }
 
-          this.message = this.alertService.getMessage;
-          this.successMessage = this.message != null && (this.message === 'Host is now approved!');
-          localStorage.removeItem('message');
-        },
+      this.dataService.getUserPicture(this.username).subscribe(pic => {
+        if (pic === '')
+          this.img = 'http://placehold.it/150x150';
+        else
+          this.img = 'data:image/jpeg;base64,' + pic;
+      },
         error => {
-          this.found = false;
-        });
+          this.img = 'http://placehold.it/150x150';
+          console.log(error);
+      });
+
+      this.dataService.getUser(this.username).subscribe( user => {
+        this.user = user;
+        this.found = true;
+
+        this.message = this.alertService.getMessage;
+        this.successMessage = this.message != null && (this.message === 'Host is now approved!');
+        localStorage.removeItem('message');
+      },
+        error => {
+        this.found = false;
+      });
     });
   }
 

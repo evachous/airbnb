@@ -23,6 +23,10 @@ export class DataService {
     return this.http.get<User>(this.url + 'users/' + username);
   }
 
+  getUserPicture(username): any {
+    return this.http.get(this.url + 'getUserPicture/' + username, {responseType: "text"});
+  }
+
   signup(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'signup', formData, {observe: 'response'});
   }

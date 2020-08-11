@@ -22,18 +22,21 @@ public class User {
     @Column(name="isHost") private Boolean isHost;
     @Column(name="isGuest") private Boolean isGuest;
     @Column(name="isApproved") private Boolean isApproved;
-    @Column(name="profilePicture", length=1000000) private byte[] profilePicture;
 
     @OneToMany
     @JoinColumn(name = "host")
     @JsonIgnoreProperties("host")
     private List<Accommodation> accommodations;
 
+    @OneToOne(cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private Image profilePicture;
+
     public User() {}
 
     public User(String username, String password, String firstName, String lastName, String email,
                 String phone, String city, String country, Boolean isAdmin, Boolean isHost,
-                Boolean isGuest, Boolean isApproved, byte[] profilePicture) {
+                Boolean isGuest, Boolean isApproved) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -46,6 +49,5 @@ public class User {
         this.isHost = isHost;
         this.isGuest = isGuest;
         this.isApproved = isApproved;
-        this.profilePicture = profilePicture;
     }
 }

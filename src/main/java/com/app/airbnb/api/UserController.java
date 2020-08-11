@@ -4,17 +4,14 @@ import com.app.airbnb.model.User;
 import com.app.airbnb.model.UserNotFoundException;
 import com.app.airbnb.repositories.UserRepository;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 class UserController {
@@ -41,9 +38,6 @@ class UserController {
         if (user == null) {
             throw new UserNotFoundException(username);
         }
-        if (user.getProfilePicture() != null) {
-            user.setProfilePicture(this.userRepository.decompressBytes(user.getProfilePicture()));
-        }
         return user;
     }
 
@@ -56,6 +50,19 @@ class UserController {
         }
 
         return user.getIsHost();
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getUserPicture/{username}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody byte[] getUserPicture(@PathVariable String username) throws IOException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException(username);
+        }
+
+        if (user.getProfilePicture() != null)
+            return Base64.encodeBase64(Files.readAllBytes(Paths.get(user.getProfilePicture().getPath())));
+        else return null;
     }
 
     @CrossOrigin(origins = "*")

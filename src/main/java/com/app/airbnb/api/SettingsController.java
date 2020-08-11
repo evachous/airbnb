@@ -1,18 +1,22 @@
 package com.app.airbnb.api;
 
+import com.app.airbnb.model.Image;
 import com.app.airbnb.model.User;
-import com.app.airbnb.model.UserNotFoundException;
 import com.app.airbnb.repositories.UserRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Random;
 
 @RestController
 public class SettingsController {
@@ -54,8 +58,22 @@ public class SettingsController {
                 oldUser.setIsHost(newUser.getIsHost());
                 oldUser.setIsGuest(newUser.getIsGuest());
 
-                if (profilePicture != null)
-                    oldUser.setProfilePicture(this.userRepository.compressBytes(profilePicture.getBytes()));
+                if (profilePicture != null) {
+                    byte[] bytes = profilePicture.getBytes();
+                    String UPLOADED_FOLDER = "C://temp//";
+                    File folder = new File(UPLOADED_FOLDER);
+                    if (!folder.exists()) {
+                        folder.mkdir();
+                    }
+                    Path path = Paths.get(UPLOADED_FOLDER
+                            + profilePicture.getOriginalFilename()
+                            .substring(0, profilePicture.getOriginalFilename().lastIndexOf('.'))
+                            + new Random().nextInt(1 << 20)
+                            + profilePicture.getOriginalFilename().substring(profilePicture.getOriginalFilename().lastIndexOf("."))
+                    );
+                    Files.write(path, bytes);
+                    oldUser.setProfilePicture(new Image(path.toString()));
+                }
 
                 this.userRepository.save(oldUser);
                 return new ResponseEntity<>(HttpStatus.OK);

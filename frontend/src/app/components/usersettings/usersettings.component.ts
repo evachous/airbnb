@@ -34,14 +34,20 @@ export class UsersettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = this.authenticationService.getTokenUsername;
+
+    this.dataService.getUserPicture(this.username).subscribe(pic => {
+      if (pic === '')
+        this.img = 'http://placehold.it/150x150';
+      else
+        this.img = 'data:image/jpeg;base64,' + pic;
+    },
+      error => {
+        this.img = 'http://placehold.it/150x150';
+        console.log(error);
+    });
+
     this.dataService.getUser(this.username).subscribe( user => {
       this.user = user;
-      if (this.user.profilePicture === null) {
-        this.img = 'http://placehold.it/150x150';
-      }
-      else {
-        this.img = 'data:image/jpeg;base64,' + this.user.profilePicture;
-      }
 
       this.message = this.alertService.getMessage;
       this.successMessage = this.message != null && (this.message === 'Password changed successfully!' || this.message === 'Basic info changed successfully!');
@@ -57,11 +63,6 @@ export class UsersettingsComponent implements OnInit {
 
   get f2(): { [p: string]: AbstractControl } {
     return this.passwordForm.controls;
-  }
-
-  checkRoleTouched(): boolean {
-    console.log('host: ' + this.f1.isHost.touched + ' guest: ' + this.f1.isGuest.touched);
-    return this.f1.isHost.touched || this.f1.isGuest.touched;
   }
 
   initForms(): void {
