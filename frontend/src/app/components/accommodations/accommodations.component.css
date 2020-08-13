@@ -1,5 +1,6 @@
 .accommodations {
   margin-top: 5%;
+  margin-bottom: 2%;
 }
 
 .accommodation-data .nav-tabs .nav-link {
@@ -12,6 +13,27 @@
 
 .accommodation-data .nav-tabs .nav-link.active {
   color: #495057;
+}
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+
+.custom-day.range, .custom-day:hover {
+  background-color: #fc5892;
+  color: #fff;
+}
+
+.custom-day.faded {
+  background-color: #e6477f;
 }
 
 .form-label {

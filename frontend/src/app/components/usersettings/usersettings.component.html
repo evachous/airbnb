@@ -36,8 +36,8 @@
               <div class="tab-content ml-1" id="myTabContent">
                 <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
-                  <div class="d-flex justify-content-start">
-                    <div class="image-container">
+                  <div class="d-flex justify-content-center">
+                    <div class="image-container mr-2">
                       <div *ngIf=img>
                         <img [src]="img" alt="profile picture" id="profilePicture" class="img-thumbnail" />
                       </div>
@@ -46,10 +46,10 @@
                         <input type="file" name="file" (change)="onFileChange($event)" />
                       </div>
                     </div>
-                    <div class="ml-4">
+                    <div class="col-9">
                       <form [formGroup]="infoForm" (ngSubmit)="onInfoSubmit()">
 
-                        <div class="form-row form-group" style="width: 650px">
+                        <div class="form-row form-group">
                           <div class="col-6 mb-3">
                             <label class="form-label">First name</label>
                             <input type="text" formControlName="firstName" class="form-control" />
@@ -121,7 +121,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="changePassword" role="tabpanel" aria-labelledby="changePassword-tab">
-                  <div class="d-flex justify-content-start">
+                  <div class="col-12 d-flex justify-content-start">
                     <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()">
                       <div class="form-row form-group">
                         <div class="col-8 mb-3">
@@ -151,7 +151,7 @@
                         </div>
                       </div>
 
-                      <button type="submit" [disabled]="passwordForm.invalid" class="form-button btn btn-lg">Change password</button>
+                      <button type="submit" [disabled]="passwordForm.invalid" class="form-button btn btn-lg mb-2">Change password</button>
                     </form>
                   </div>
                 </div>

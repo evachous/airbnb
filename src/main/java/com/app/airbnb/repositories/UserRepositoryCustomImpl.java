@@ -1,15 +1,22 @@
 package com.app.airbnb.repositories;
 
+import com.app.airbnb.model.Image;
 import com.app.airbnb.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Random;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -77,5 +84,27 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             System.out.println("Error decompressing");
         }
         return outputStream.toByteArray();
+    }
+
+    public String uploadImage(MultipartFile image) {
+        try {
+            String UPLOADED_FOLDER = "C://temp//";
+            File folder = new File(UPLOADED_FOLDER);
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            byte[] bytes = image.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER
+                    + image.getOriginalFilename()
+                    .substring(0, image.getOriginalFilename().lastIndexOf('.'))
+                    + new Random().nextInt(1 << 20)
+                    + image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf("."))
+            );
+            Files.write(path, bytes);
+            return path.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

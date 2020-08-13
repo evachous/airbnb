@@ -6,13 +6,24 @@ export class Accommodation {
 }
 
 export class AccommodationInfo {
+  startDate: any;
+  endDate: any;
+  minCost: number;
+  costPerPerson: number;
   type: string;
   beds: number;
   bedrooms: number;
   bathrooms: number;
-  livingRoom: boolean;
   area: number;
   description: string;
+  livingRoom: boolean;
+  internet: boolean;
+  ac: boolean;
+  heating: boolean;
+  kitchen: boolean;
+  tv: boolean;
+  parking: boolean;
+  elevator: boolean;
 }
 
 export class AccommodationLocation {
@@ -26,4 +37,5 @@ export class AccommodationRules {
   pets: boolean;
   events: boolean;
   minDays: number;
+  maxPeople: number;
 }

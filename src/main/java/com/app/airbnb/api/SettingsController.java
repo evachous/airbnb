@@ -59,20 +59,8 @@ public class SettingsController {
                 oldUser.setIsGuest(newUser.getIsGuest());
 
                 if (profilePicture != null) {
-                    byte[] bytes = profilePicture.getBytes();
-                    String UPLOADED_FOLDER = "C://temp//";
-                    File folder = new File(UPLOADED_FOLDER);
-                    if (!folder.exists()) {
-                        folder.mkdir();
-                    }
-                    Path path = Paths.get(UPLOADED_FOLDER
-                            + profilePicture.getOriginalFilename()
-                            .substring(0, profilePicture.getOriginalFilename().lastIndexOf('.'))
-                            + new Random().nextInt(1 << 20)
-                            + profilePicture.getOriginalFilename().substring(profilePicture.getOriginalFilename().lastIndexOf("."))
-                    );
-                    Files.write(path, bytes);
-                    oldUser.setProfilePicture(new Image(path.toString()));
+                    String path = this.userRepository.uploadImage(profilePicture);
+                    oldUser.setProfilePicture(new Image(path));
                 }
 
                 this.userRepository.save(oldUser);

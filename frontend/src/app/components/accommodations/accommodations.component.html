@@ -39,17 +39,60 @@
                 <div class="tab-pane fade show active" id="newAccommodation" role="tabpanel" aria-labelledby="newAccommodation-tab">
 
                   <h4 style="font-style: italic">Basic Info</h4><hr />
-                  <div class="d-flex justify-content-start">
+                  <div class="col-12 d-flex justify-content-center">
                     <form [formGroup]="infoForm">
-                      <div class="form-row form-group" style="width: 800px">
-                        <div class="col-6 mb-3">
+                      <div class="form-row form-group">
+                        <ng-template #t let-date let-focused="focused" let-disabled="disabled">
+                          <span class="custom-day"
+                                [class.text-muted]="disabled"
+                                [class.focused]="focused"
+                                [class.range]="isRange(date)"
+                                [class.faded]="isHovered(date) || isInside(date)"
+                                (mouseenter)="hoveredDate = date"
+                                (mouseleave)="hoveredDate = null">
+                            {{ date.day }}
+                          </span>
+                        </ng-template>
+
+                        <div class="col-4 mb-3">
+                          <label class="form-label">Start date</label>
+                          <input class="col-12" ngbDatepicker (click)="datePicker1.toggle()" #datePicker1="ngbDatepicker" formControlName="startDate"
+                                 placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="minDate" [maxDate]="f1.endDate.value">
+                        </div>
+                        <div class="col-4 mb-3">
+                          <label class="form-label">End date</label>
+                          <input class="col-12" ngbDatepicker (click)="datePicker2.toggle()" #datePicker2="ngbDatepicker" formControlName="endDate"
+                                 placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="f1.startDate.value">
+                        </div>
+                        <div class="col-4 mb-3">
                           <label class="form-label">Type</label>
-                          <input type="text" formControlName="type" class="form-control" />
-                          <div *ngIf="f1.type.invalid && f1.type.touched" class="alert alert-danger">
-                            <div *ngIf="f1.type.errors.required">Type is required</div>
+                          <div ngbDropdown class="d-block" container="body">
+                            <button class="btn btn-outline-secondary" id="typeMenu" ngbDropdownToggle>
+                              {{f1.type.value || 'Select accommodation type'}}
+                            </button>
+                            <div ngbDropdownMenu aria-labelledby="typeMenu">
+                              <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private room')">Private room</button>
+                              <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Shared room')">Shared room</button>
+                              <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private residence')">Private residence</button>
+                            </div>
                           </div>
                         </div>
-                        <div class="col-6 mb-3">
+
+                        <div class="col-4 mb-3">
+                          <label class="form-label">Minimum cost</label>
+                          <input type="number" min="1" formControlName="minCost" class="form-control" />
+                          <div *ngIf="f1.minCost.invalid && f1.minCost.touched" class="alert alert-danger">
+                            <div *ngIf="f1.minCost.errors.required">Minimum cost is required</div>
+                          </div>
+                        </div>
+                        <div class="col-4 mb-3">
+                          <label class="form-label">Cost per person</label>
+                          <input type="number" min="1" formControlName="costPerPerson" class="form-control" />
+                          <div *ngIf="f1.costPerPerson.invalid && f1.costPerPerson.touched" class="alert alert-danger">
+                            <div *ngIf="f1.costPerPerson.errors.required">Cost per person is required</div>
+                          </div>
+                        </div>
+                        <div class="col-4 mb-3">
                           <label class="form-label">Beds</label>
                           <input type="number" min="1" formControlName="beds" class="form-control" />
                           <div *ngIf="f1.beds.invalid && f1.beds.touched" class="alert alert-danger">
@@ -57,32 +100,68 @@
                           </div>
                         </div>
 
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                           <label class="form-label">Bedrooms</label>
                           <input type="number" min="0" formControlName="bedrooms" class="form-control" />
                           <div *ngIf="f1.bedrooms.invalid && f1.bedrooms.touched" class="alert alert-danger">
                             <div *ngIf="f1.bedrooms.errors.required">Number of bedrooms is required</div>
                           </div>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                           <label class="form-label">Bathrooms</label>
                           <input type="number" min="1" formControlName="bathrooms" class="form-control" />
                           <div *ngIf="f1.bathrooms.invalid && f1.bathrooms.touched" class="alert alert-danger">
                             <div *ngIf="f1.bathrooms.errors.required">Number of bathrooms is required</div>
                           </div>
                         </div>
-
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                           <label class="form-label">Area</label>
                           <input type="number" min="1" formControlName="area" class="form-control" />
                           <div *ngIf="f1.area.invalid && f1.area.touched" class="alert alert-danger">
                             <div *ngIf="f1.area.errors.required">Area is required</div>
                           </div>
                         </div>
-                        <div class="col-6 mb-3">
-                          <div><label class="form-label">Living Room</label></div>
-                          <div class="ml-1 form-check form-check-inline">
+
+                        <div class="col-4 mb-3">
+                          <label class="form-label">Images</label>
+                          <input type="file" multiple formControlName="images" class="form-control" (change)="onFileChange($event)"/>
+                          <div *ngIf="f1.images.invalid && f1.images.touched" class="alert alert-danger">
+                            <div *ngIf="f1.images.errors.required">Image is required</div>
+                          </div>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                          <div class="form-check form-check-inline mr-3">
                             <input type="checkbox" formControlName="livingRoom" class="form-control form-check-input" id="livingRoom" />
+                            <label class="form-check-label" for="smoking">Living&nbsp;Room</label>
+                          </div>
+                          <div class="form-check form-check-inline mr-3">
+                            <input type="checkbox" formControlName="internet" class="form-control form-check-input" id="internet" />
+                            <label class="form-check-label" for="livingRoom">Internet</label>
+                          </div>
+                          <div class="form-check form-check-inline mr-3">
+                            <input type="checkbox" formControlName="ac" class="form-control form-check-input" id="ac" />
+                            <label class="form-check-label" for="ac">A/C</label>
+                          </div>
+                          <div class="form-check form-check-inline mr-3">
+                            <input type="checkbox" formControlName="heating" class="form-control form-check-input" id="heating" />
+                            <label class="form-check-label" for="heating">Heating</label>
+                          </div>
+                          <div class="form-check form-check-inline mr-3">
+                            <input type="checkbox" formControlName="kitchen" class="form-control form-check-input" id="kitchen" />
+                            <label class="form-check-label" for="kitchen">Kitchen</label>
+                          </div>
+                          <div class="form-check form-check-inline mr-3">
+                            <input type="checkbox" formControlName="tv" class="form-control form-check-input" id="tv" />
+                            <label class="form-check-label" for="tv">TV</label>
+                          </div>
+                          <div class="form-check form-check-inline mr-3">
+                            <input type="checkbox" formControlName="parking" class="form-control form-check-input" id="parking" />
+                            <label class="form-check-label" for="parking">Parking</label>
+                          </div>
+                          <div class="form-check form-check-inline mr-3">
+                            <input type="checkbox" formControlName="elevator" class="form-control form-check-input" id="elevator" />
+                            <label class="form-check-label" for="elevator">Elevator</label>
                           </div>
                         </div>
 
@@ -99,17 +178,17 @@
                   </div>
 
                   <h4 class="mt-1" style="font-style: italic">Location</h4><hr />
-                  <div class="d-flex justify-content-start">
+                  <div class="col-12 d-flex justify-content-center">
                     <form [formGroup]="locationForm">
-                      <div class="form-row form-group" style="width: 800px">
-                        <div class="col-6 mb-3">
+                      <div class="form-row form-group">
+                        <div class="col-4 mb-3">
                           <label class="form-label">Address</label>
                           <input type="text" formControlName="address" class="form-control" />
                           <div *ngIf="f2.address.invalid && f2.address.touched" class="alert alert-danger">
                             <div *ngIf="f2.address.errors.required">Address is required</div>
                           </div>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                           <label class="form-label">Neighborhood</label>
                           <input type="text" formControlName="neighborhood" class="form-control" />
                           <div *ngIf="f2.neighborhood.invalid && f2.neighborhood.touched" class="alert alert-danger">
@@ -117,7 +196,7 @@
                           </div>
                         </div>
 
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                           <label class="form-label">Transportation</label>
                           <input type="text" formControlName="transportation" class="form-control" />
                           <div *ngIf="f2.transportation.invalid && f2.transportation.touched" class="alert alert-danger">
@@ -130,19 +209,19 @@
                   </div>
 
                   <h4 class="mt-1" style="font-style: italic">Rules</h4><hr />
-                  <div class="d-flex justify-content-start">
+                  <div class="col-12 d-flex justify-content-center">
                     <form [formGroup]="rulesForm" (ngSubmit)="onSubmit()">
-                      <div class="form-row form-group" style="width: 800px">
+                      <div class="form-row form-group">
                         <div class="col-12 mb-3">
-                          <div class="form-check form-check-inline">
+                          <div class="form-check form-check-inline mr-3">
                             <input type="checkbox" formControlName="smoking" class="form-control form-check-input" id="smoking" />
                             <label class="form-check-label" for="smoking">Smoking</label>
                           </div>
-                          <div class="form-check form-check-inline">
+                          <div class="form-check form-check-inline mr-3">
                             <input type="checkbox" formControlName="pets" class="form-control form-check-input" id="pets" />
                             <label class="form-check-label" for="pets">Pets</label>
                           </div>
-                          <div class="form-check form-check-inline">
+                          <div class="form-check form-check-inline mr-3">
                             <input type="checkbox" formControlName="events" class="form-control form-check-input" id="events" />
                             <label class="form-check-label" for="events">Events</label>
                           </div>
@@ -152,14 +231,21 @@
                           <label class="form-label">Minimum Days</label>
                           <input type="number" min="1" formControlName="minDays" class="form-control" />
                           <div *ngIf="f3.minDays.invalid && f3.minDays.touched" class="alert alert-danger">
-                            <div *ngIf="f3.minDays.errors.required">Minimum days is required</div>
+                            <div *ngIf="f3.minDays.errors.required">Minimum number of days is required</div>
+                          </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                          <label class="form-label">Maximum people</label>
+                          <input type="number" min="1" formControlName="maxPeople" class="form-control" />
+                          <div *ngIf="f3.maxPeople.invalid && f3.maxPeople.touched" class="alert alert-danger">
+                            <div *ngIf="f3.maxPeople.errors.required">Maximum number of people is required</div>
                           </div>
                         </div>
 
                       </div>
 
-                      <button type="submit" [disabled]="infoForm.invalid || locationForm.invalid || rulesForm.invalid" class="form-button btn btn-lg"
-                              style="float: right;">Save</button>
+                      <button type="submit" [disabled]="infoForm.invalid || locationForm.invalid || rulesForm.invalid"
+                              class="form-button btn btn-lg" style="float: right;">Save</button>
                     </form>
                   </div>
                 </div>

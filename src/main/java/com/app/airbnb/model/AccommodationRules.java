@@ -13,6 +13,7 @@ public class AccommodationRules {
     private Boolean pets;
     private Boolean events;
     private Integer minDays;
+    private Integer maxPeople;
 
     @OneToOne(mappedBy = "rules")
     @JsonIgnoreProperties("rules")

@@ -46,21 +46,8 @@ class SignupController {
             else {
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-                String UPLOADED_FOLDER = "C://temp//";
-                File folder = new File(UPLOADED_FOLDER);
-                if (!folder.exists()) {
-                    folder.mkdir();
-                }
-
-                byte[] bytes = profilePicture.getBytes();
-                Path path = Paths.get(UPLOADED_FOLDER
-                        + profilePicture.getOriginalFilename()
-                        .substring(0, profilePicture.getOriginalFilename().lastIndexOf('.'))
-                        + new Random().nextInt(1 << 20)
-                        + profilePicture.getOriginalFilename().substring(profilePicture.getOriginalFilename().lastIndexOf("."))
-                );
-                Files.write(path, bytes);
-                newUser.setProfilePicture(new Image(path.toString()));
+                String path = this.userRepository.uploadImage(profilePicture);
+                newUser.setProfilePicture(new Image(path));
 
                 this.userRepository.save(newUser);
                 return new ResponseEntity<>(HttpStatus.OK);

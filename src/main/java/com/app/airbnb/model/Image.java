@@ -15,6 +15,11 @@ public class Image {
     @JsonIgnoreProperties("profilePicture")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "accommodationImages", insertable = false, updatable = false)
+    @JsonIgnoreProperties("images")
+    private Accommodation accommodation;
+
     public Image() {}
 
     public Image(String path) {

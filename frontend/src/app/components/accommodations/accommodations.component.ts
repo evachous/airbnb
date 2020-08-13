@@ -6,6 +6,7 @@ import {Accommodation, AccommodationInfo} from "../../model/accommodation";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
+import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-accommodations',
@@ -16,20 +17,29 @@ export class AccommodationsComponent implements OnInit {
   username: string;
   user: User;
   accommodations: Accommodation[] = null;
-  info: AccommodationInfo;
   emptyAcc: boolean;
+  selectedImages: FileList;
+
   infoForm: FormGroup;
   locationForm: FormGroup;
   rulesForm: FormGroup;
+
   message: string = null;
   successMessage: boolean;
+
+  hoveredDate: NgbDate | null = null;
+  minDate: NgbDate;
+  invalidDate: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
     private dataService: DataService,
-    private alertService: AlertService
-  ) { }
+    private alertService: AlertService,
+    private calendar: NgbCalendar
+  ) {
+    this.minDate = calendar.getToday();
+  }
 
   ngOnInit(): void {
     this.username = this.authenticationService.getTokenUsername;
@@ -60,13 +70,25 @@ export class AccommodationsComponent implements OnInit {
 
   initForms(): void {
     this.infoForm = this.formBuilder.group({
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      minCost: ['', Validators.required],
+      costPerPerson: ['', Validators.required],
       type: ['', Validators.required],
       beds: ['', Validators.required],
       bedrooms: ['', Validators.required],
       bathrooms: ['', Validators.required],
-      livingRoom: false,
       area: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      images: ['', Validators.required],
+      livingRoom: false,
+      internet: false,
+      ac: false,
+      heating: false,
+      kitchen: false,
+      tv: false,
+      parking: false,
+      elevator: false
     });
 
     this.locationForm = this.formBuilder.group({
@@ -79,8 +101,34 @@ export class AccommodationsComponent implements OnInit {
       smoking: false,
       pets: false,
       events: false,
-      minDays: ['', Validators.required]
+      minDays: ['', Validators.required],
+      maxPeople: ['', Validators.required]
     });
+  }
+
+  isHovered(date: NgbDate): boolean {
+    return this.f1.startDate.value && !this.f1.endDate.value && this.hoveredDate && date.after(this.f1.startDate.value)
+      && date.before(this.hoveredDate);
+  }
+
+  isInside(date: NgbDate): boolean {
+    return this.f1.endDate.value && date.after(this.f1.startDate.value) && date.before(this.f1.endDate.value);
+  }
+
+  isRange(date: NgbDate): boolean {
+    return date.equals(this.f1.startDate.value) || (this.f1.endDate.value && date.equals(this.f1.endDate.value))
+      || this.isInside(date) || this.isHovered(date);
+  }
+
+  changeType(newType: string) {
+    this.f1.type.setValue(newType);
+  }
+
+  onFileChange(event): void {
+    if (event.target.files && event.target.files.length) {
+      this.selectedImages = event.target.files;
+      console.log(this.selectedImages);
+    }
   }
 
   onSubmit(): void {
@@ -93,6 +141,14 @@ export class AccommodationsComponent implements OnInit {
     formData.append('location', jsonLocation);
     formData.append('rules', jsonRules);
     formData.append('username', this.username);
+    formData.append('startDate',this.f1.startDate.value.year + '-' + this.f1.startDate.value.month + '-'
+                                          + this.f1.startDate.value.day);
+    formData.append('endDate', this.f1.endDate.value.year + '-' + this.f1.endDate.value.month + '-'
+                                          + this.f1.endDate.value.day);
+
+    for (let i = 0; i < this.selectedImages.length; i++) {
+      formData.append('images', this.selectedImages[i]);
+    }
 
     console.log(jsonInfo);
     console.log(jsonLocation);
@@ -112,6 +168,16 @@ export class AccommodationsComponent implements OnInit {
   }
 
   stringifyForm(form: FormGroup): string {
-    return JSON.stringify(form.value);
+    return JSON.stringify(form.value, ((key, val) => {
+      if (key === 'startDate' || key === 'endDate') {
+        return null;
+      }
+      else if (key === 'images') {
+        return undefined;
+      }
+      else {
+        return val;
+      }
+    }));
   }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,6 +27,11 @@ public class Accommodation {
     @JoinColumn(name = "host", insertable = false, updatable = false)
     @JsonIgnoreProperties("accommodations")
     private User host;
+
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name = "accommodationImages")
+    @JsonIgnoreProperties("accommodationImages")
+    private List<Image> images;
 
     public Accommodation() {}
 
