@@ -7,6 +7,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
 import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {latLng, MapOptions, tileLayer, Map, Marker, icon, Popup} from 'leaflet';
 
 @Component({
   selector: 'app-accommodations',
@@ -18,6 +19,10 @@ export class AccommodationsComponent implements OnInit {
   user: User;
   accommodations: Accommodation[] = null;
   emptyAcc: boolean;
+
+  map: Map;
+  mapOptions: MapOptions;
+  marker: Marker = null;
   selectedImages: FileList;
 
   infoForm: FormGroup;
@@ -52,8 +57,45 @@ export class AccommodationsComponent implements OnInit {
       this.successMessage = this.message != null && (this.message === 'Added accommodation successfully!');
       localStorage.removeItem('message');
 
+      this.initMapOptions();
       this.initForms();
     });
+  }
+
+  initMapOptions(): void {
+    this.mapOptions = {
+      center: latLng(51.505, 0),
+      zoom: 9,
+      layers: [
+        tileLayer(
+          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            maxZoom: 18,
+            attribution: 'Map data © OpenStreetMap contributors'
+          })
+      ],
+    };
+  }
+
+  onMapReady(map: Map) {
+    this.map = map;
+  }
+
+  onMapClick(e) {
+    if (this.marker != null) {
+      this.map.removeLayer(this.marker);
+    }
+    this.marker = new Marker(e.latlng)
+      .setIcon(
+        icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          popupAnchor: [1, -34],
+          iconUrl: 'assets/marker-icon.png'
+        }));
+    this.marker.addTo(this.map);
+
+    this.marker.bindPopup("You clicked the map at " + e.latlng.toString()).openPopup();
   }
 
   get f1(): { [p: string]: AbstractControl } {
