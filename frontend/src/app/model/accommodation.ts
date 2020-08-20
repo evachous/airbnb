@@ -5,6 +5,18 @@ export class Accommodation {
   rules: AccommodationRules;
 }
 
+export class Address {
+  label: string;
+  road: string;
+  city: string;
+  country: string;
+  postcode: string;
+  suburb: string;
+  number: string;
+  lat: number;
+  lng: number;
+}
+
 export class AccommodationInfo {
   startDate: any;
   endDate: any;
@@ -27,8 +39,7 @@ export class AccommodationInfo {
 }
 
 export class AccommodationLocation {
-  address: string;
-  neighborhood: string;
+  address: Address;
   transportation: string;
 }
 

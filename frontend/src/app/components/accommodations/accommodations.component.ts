@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../../services/authentication.service";
 import {User} from "../../model/user";
 import {DataService} from "../../services/data.service";
-import {Accommodation, AccommodationInfo} from "../../model/accommodation";
+import {Accommodation, Address} from "../../model/accommodation";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
 import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {latLng, MapOptions, tileLayer, Map, Marker, icon, Popup} from 'leaflet';
+import {latLng, MapOptions, tileLayer, Map, Marker, icon, Popup, LocationEvent} from 'leaflet';
+import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
 
 @Component({
   selector: 'app-accommodations',
@@ -23,6 +24,10 @@ export class AccommodationsComponent implements OnInit {
   map: Map;
   mapOptions: MapOptions;
   marker: Marker = null;
+  provider: OpenStreetMapProvider;
+  searchControl: GeoSearchControl;
+  selectedAddress: Address = new Address();
+
   selectedImages: FileList;
 
   infoForm: FormGroup;
@@ -57,8 +62,8 @@ export class AccommodationsComponent implements OnInit {
       this.successMessage = this.message != null && (this.message === 'Added accommodation successfully!');
       localStorage.removeItem('message');
 
-      this.initMapOptions();
       this.initForms();
+      this.initMapOptions();
     });
   }
 
@@ -75,27 +80,6 @@ export class AccommodationsComponent implements OnInit {
           })
       ],
     };
-  }
-
-  onMapReady(map: Map) {
-    this.map = map;
-  }
-
-  onMapClick(e) {
-    if (this.marker != null) {
-      this.map.removeLayer(this.marker);
-    }
-    this.marker = new Marker(e.latlng)
-      .setIcon(
-        icon({
-          iconSize: [25, 41],
-          iconAnchor: [13, 41],
-          popupAnchor: [1, -34],
-          iconUrl: 'assets/marker-icon.png'
-        }));
-    this.marker.addTo(this.map);
-
-    this.marker.bindPopup("You clicked the map at " + e.latlng.toString()).openPopup();
   }
 
   get f1(): { [p: string]: AbstractControl } {
@@ -134,8 +118,7 @@ export class AccommodationsComponent implements OnInit {
     });
 
     this.locationForm = this.formBuilder.group({
-      address: ['', Validators.required],
-      neighborhood: ['', Validators.required],
+      address: [null, Validators.required],
       transportation: ['', Validators.required]
     });
 
@@ -147,6 +130,82 @@ export class AccommodationsComponent implements OnInit {
       maxPeople: ['', Validators.required]
     });
   }
+
+  onMapReady(map: Map) {
+    this.map = map;
+
+    this.provider = new OpenStreetMapProvider({
+      params: {
+        addressdetails: 1, // include additional address detail parts
+      },
+    });
+
+    this.searchControl = new GeoSearchControl({
+      provider: this.provider,
+      style: 'bar',
+      showMarker: true,
+      showPopup: true,
+      marker: {
+        icon: icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          popupAnchor: [0, -34],
+          iconUrl: 'assets/marker-icon.png'
+        })
+      },
+      autoClose: true,
+      keepResult: true
+    }).addTo(map);
+
+    this.map.on('geosearch/showlocation', (result: any) => {
+      console.log(result);
+      this.fillAddress(result.location.raw.address, result.location.label, result.location.x, result.location.y);
+      this.f2.address.setValue(this.selectedAddress);
+    });
+  }
+
+  fillAddress(address, label, lat, lng): void {
+    this.selectedAddress.label = label;
+    this.selectedAddress.road = address.road;
+
+    if (address.city == null) {
+      this.selectedAddress.city = address.municipality;
+    }
+    else {
+      this.selectedAddress.city = address.city;
+    }
+
+    this.selectedAddress.country = address.country;
+    this.selectedAddress.postcode = address.postcode;
+    this.selectedAddress.suburb = address.suburb;
+
+    if (address.house_number != null) {
+      this.selectedAddress.number = address.house_number;
+    }
+    else {
+      this.selectedAddress.number = null;
+    }
+
+    this.selectedAddress.lat = lat;
+    this.selectedAddress.lng = lng;
+  }
+
+  /*onMapClick(e) {
+    if (this.marker != null) {
+      this.map.removeLayer(this.marker);
+    }
+    this.marker = new Marker(e.latlng)
+      .setIcon(
+        icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          popupAnchor: [1, -34],
+          iconUrl: 'assets/marker-icon.png'
+        }));
+    this.marker.addTo(this.map);
+
+    this.marker.bindPopup("You clicked the map at " + e.latlng.toString()).openPopup();
+  }*/
 
   isHovered(date: NgbDate): boolean {
     return this.f1.startDate.value && !this.f1.endDate.value && this.hoveredDate && date.after(this.f1.startDate.value)
@@ -169,7 +228,6 @@ export class AccommodationsComponent implements OnInit {
   onFileChange(event): void {
     if (event.target.files && event.target.files.length) {
       this.selectedImages = event.target.files;
-      console.log(this.selectedImages);
     }
   }
 

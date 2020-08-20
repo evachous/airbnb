@@ -9,9 +9,11 @@ import javax.persistence.*;
 @Entity
 public class AccommodationLocation {
     @Id @GeneratedValue private Long id;
-    private String address;
-    private String neighborhood;
     private String transportation;
+
+    @OneToOne(cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("location")
+    private Address address;
 
     @OneToOne(mappedBy = "location")
     @JsonIgnoreProperties("location")
