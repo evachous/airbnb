@@ -6,7 +6,8 @@ import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import { UsersettingsComponent } from './components/usersettings/usersettings.component';
-import { AccommodationsComponent } from "./components/accommodations/accommodations.component";
+import { HostaccommodationsComponent } from "./components/hostaccommodations/hostaccommodations.component";
+import { AccommodationComponent } from "./components/accommodation/accommodation.component";
 import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
 import { AdminGuard } from './guards/admin.guard';
@@ -21,7 +22,13 @@ const appRoutes: Routes = [
       { path: ':username', component: UserprofileComponent, canActivate: [AdminGuard] }
     ]
   },
-  { path: 'accommodations', component: AccommodationsComponent, canActivate: [HostGuard] },
+  {
+    path: 'accommodations',
+    children: [
+      { path: '', component: HostaccommodationsComponent, canActivate: [HostGuard] },
+      { path: ':id', component: AccommodationComponent }
+    ]
+  },
   { path: 'settings', component: UsersettingsComponent, canActivate: [AuthGuard] },
   { path: 'signup', component: SignupComponent, canActivate: [SignupGuard] },
   { path: 'login', component: LoginComponent },

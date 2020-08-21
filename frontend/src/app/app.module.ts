@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { AppComponent } from './app.component';
@@ -17,8 +18,8 @@ import { DataService } from './services/data.service';
 import { AuthGuard } from './guards/auth.guard';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
 import { UsersettingsComponent } from './components/usersettings/usersettings.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AccommodationsComponent } from './components/accommodations/accommodations.component';
+import { HostaccommodationsComponent } from './components/hostaccommodations/hostaccommodations.component';
+import { AccommodationComponent } from './components/accommodation/accommodation.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AccommodationsComponent } from './components/accommodations/accommodati
     LoginComponent,
     UserprofileComponent,
     UsersettingsComponent,
-    AccommodationsComponent,
+    HostaccommodationsComponent,
+    AccommodationComponent,
   ],
   imports: [
     BrowserModule,

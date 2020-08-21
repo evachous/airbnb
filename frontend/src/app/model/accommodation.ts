@@ -1,8 +1,12 @@
+import {User} from "./user";
+
 export class Accommodation {
   id: number;
   info: AccommodationInfo;
   location: AccommodationLocation;
   rules: AccommodationRules;
+  host: User;
+  images: any;
 }
 
 export class Address {

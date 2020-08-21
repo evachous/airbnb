@@ -5,12 +5,16 @@ import com.app.airbnb.repositories.AccommodationRepository;
 import com.app.airbnb.repositories.UserRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -70,5 +74,19 @@ class AccommodationController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/accommodations/{id}")
+    Accommodation returnAccommodation(@PathVariable Long id) {
+        return this.accommodationRepository.findById(id)
+                .orElseThrow(() -> new AccommodationNotFoundException(id));
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping(value = "/getAccommodationImage/{id}/{index}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody byte[] getAccommodationImage(@PathVariable Long id, @PathVariable Integer index) throws IOException {
+        Accommodation accommodation = this.accommodationRepository.getOne(id);
+        return Base64.encodeBase64(Files.readAllBytes(Paths.get(accommodation.getImages().get(index).getPath())));
     }
 }

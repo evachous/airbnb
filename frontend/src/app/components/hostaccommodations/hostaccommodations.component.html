@@ -254,13 +254,41 @@
 
                 <div class="tab-pane fade" id="userAccommodations" role="tabpanel" aria-labelledby="userAccommodations-tab">
                   <div class="d-flex justify-content-start">
-                    <div *ngIf="emptyAcc">no accommodation</div>
-                    <div *ngIf="!emptyAcc">
-                      <ol>
-                        <li *ngFor="let a of accommodations">
-                          {{a.id}} - {{a.info.description}} - {{a.location.address.label}}
-                        </li>
-                      </ol>
+                    <div *ngIf="emptyAcc">No accommodations!</div>
+                    <div *ngIf="!emptyAcc" class="col-12">
+                      <ngb-pagination
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="accommodations.length">
+                      </ngb-pagination>
+
+                      <table class="col-12">
+                        <tr *ngFor="let a of accommodations | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                          <div class="card mb-3">
+                            <div class="card-body">
+                              <div class="card-title">
+                                <div class="d-flex justify-content-start">
+                                  <!--<div *ngFor="let img of accommodationsImages[i + (page-1) * pageSize]">
+                                    <div class="image-container">
+                                      <img [src]="img" class="img-thumbnail" />
+                                    </div>
+                                  </div>-->
+                                  <div class="image-container">
+                                    <img [src]="accommodationsImages[i + (page-1) * pageSize][0]" class="img-thumbnail" />
+                                  </div>
+
+                                  <div class="col-9">
+                                    <a [routerLink]="['/accommodations', a.id]" class="d-block accommodation-link mb-1">Accommodation {{a.id}}</a>
+                                    <h6 class="d-block"><i class="fa fa-globe" aria-hidden="true"></i> {{a.location.address.label}}</h6>
+                                    <h6 class="d-block">{{a.info.description}}</h6>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </tr>
+                      </table>
+
                     </div>
                   </div>
                 </div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Accommodation} from "../model/accommodation";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json', 'Access-Control-Allow-Origin': '*' })
@@ -54,4 +55,13 @@ export class DataService {
   addAccommodation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'addAccommodation', formData, {observe: 'response'});
   }
+
+  getAccommodation(id): Observable<Accommodation> {
+    return this.http.get<Accommodation>(this.url + 'accommodations/' + id);
+  }
+
+  getAccommodationImage(id, image): any {
+    return this.http.get(this.url + 'getAccommodationImage/' + id + '/' + image,{responseType: "text"});
+  }
 }
+

@@ -12,13 +12,15 @@ import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
 
 @Component({
   selector: 'app-accommodations',
-  templateUrl: './accommodations.component.html',
-  styleUrls: ['./accommodations.component.css']
+  templateUrl: './hostaccommodations.component.html',
+  styleUrls: ['./hostaccommodations.component.css']
 })
-export class AccommodationsComponent implements OnInit {
+export class HostaccommodationsComponent implements OnInit {
   username: string;
   user: User;
   accommodations: Accommodation[] = null;
+  accommodationsImages: string[][] = new Array<string[]>();
+  img: any;
   emptyAcc: boolean;
 
   map: Map;
@@ -41,6 +43,9 @@ export class AccommodationsComponent implements OnInit {
   minDate: NgbDate;
   invalidDate: boolean;
 
+  page = 1;
+  pageSize = 2;
+
   constructor(
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
@@ -57,6 +62,30 @@ export class AccommodationsComponent implements OnInit {
       this.user = user;
       this.accommodations = this.user.accommodations;
       this.emptyAcc = this.accommodations.length == 0;
+
+      for (let i = 0; i < this.accommodations.length; i++) {
+        console.log(this.accommodations[i].id);
+        console.log(this.accommodations[i].images.length);
+
+        this.accommodationsImages[i] = new Array<string>();
+
+        for (let j = 0; j < this.accommodations[i].images.length; j++) {
+          this.dataService.getAccommodationImage(this.accommodations[i].id, j).subscribe(image => {
+            this.img = 'data:image/jpeg;base64,' + image;
+            this.accommodationsImages[i][j] = 'data:image/jpeg;base64,' + image;
+          })
+        }
+
+        /*this.dataService.getAccommodationImages(this.accommodations[i].id).subscribe(images => {
+          console.log(this.accommodations[i].id);
+          //console.log(typeof('data:image/jpeg;base64,' + image));
+          //console.log("HA " + typeof(images[0]));
+          //this.img = 'data:image/jpeg;base64,' + images[0];
+          //for (let j = 0; j < images.length; j++) {
+          //  this.accommodationsImages[i][j] = 'data:image/jpeg;base64,' + images[j];
+          //}
+        });*/
+      }
 
       this.message = this.alertService.getMessage;
       this.successMessage = this.message != null && (this.message === 'Added accommodation successfully!');
