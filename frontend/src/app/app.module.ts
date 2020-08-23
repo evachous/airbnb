@@ -21,6 +21,9 @@ import { UsersettingsComponent } from './components/usersettings/usersettings.co
 import { HostaccommodationsComponent } from './components/hostaccommodations/hostaccommodations.component';
 import { AccommodationComponent } from './components/accommodation/accommodation.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { HostchatsComponent } from './components/hostchats/hostchats.component';
+import { AccommodationchatsComponent } from './components/accommodationchats/accommodationchats.component';
+import { GuestchatsComponent } from './components/guestchats/guestchats.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { ChatComponent } from './components/chat/chat.component';
     HostaccommodationsComponent,
     AccommodationComponent,
     ChatComponent,
+    HostchatsComponent,
+    AccommodationchatsComponent,
+    GuestchatsComponent,
   ],
   imports: [
     BrowserModule,

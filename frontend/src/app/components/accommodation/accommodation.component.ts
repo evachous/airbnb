@@ -17,8 +17,9 @@ export class AccommodationComponent implements OnInit {
   accommodation: Accommodation;
   accommodationImages: string[] = new Array<string>();
   host: User;
-  currentUsername: string;
   hostPicture: any;
+  currentUsername: string;
+  currentUser: User;
 
   constructor(
     private router: Router,
@@ -31,6 +32,12 @@ export class AccommodationComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.accommodationID = params.id;
       this.currentUsername = this.authenticationService.getTokenUsername;
+
+      this.dataService.getUser(this.currentUsername).subscribe( user => {
+        this.currentUser = user;
+      },error => {
+        this.found = false;
+      })
 
       this.loadAccommodation();
     });

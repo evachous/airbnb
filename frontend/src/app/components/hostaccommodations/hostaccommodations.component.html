@@ -286,7 +286,7 @@
                                   </div>
 
                                   <div class="col-9">
-                                    <a [routerLink]="['/accommodations', a.id]" class="d-block accommodation-link mb-1">Accommodation {{a.id}}</a>
+                                    <a [routerLink]="['/accommodations', a.id]" class="d-block accommodation-link mb-1">{{a.info.name}}</a>
                                     <h6 class="d-block"><i class="fa fa-globe" aria-hidden="true"></i> {{a.location.address.label}}</h6>
                                     <h6 class="d-block">{{a.info.description}}</h6>
                                   </div>

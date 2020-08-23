@@ -10,8 +10,13 @@
 
           <div class="card-body">
             <div class="card-title mb-4">
-              <button *ngIf="currentUsername === host.username" type="submit" class="btn btn-secondary ml-auto"
-                      style="height: 10%; float: right">Edit</button>
+              <div style="float: right;">
+                <button *ngIf="currentUsername === host.username" type="submit" class="btn btn-secondary ml-auto mr-2"
+                        style="height: 10%;"><i class="fa fa-pencil"></i> Edit</button>
+                <button *ngIf="currentUsername === host.username" [routerLink]="['/accommodationchats', accommodationID]"
+                        type="submit" class="btn btn-secondary ml-auto"
+                        style="height: 10%;"><i class="fa fa-commenting"></i> Chat</button>
+              </div>
               <h3 style="font-weight: bold">{{accommodation.info.name}}</h3>
               <h7>{{accommodation.location.address.suburb}}, {{accommodation.location.address.city}},
                 {{accommodation.location.address.country}}</h7>
@@ -35,7 +40,7 @@
                 <hr />
                 <div class="mt-4">
                   <h5 class="d-block"><b>€ {{accommodation.info.minCost}}</b> / night</h5>
-                  <button *ngIf="currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn">Reserve</button>
+                  <button *ngIf="!currentUser.isAdmin && currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn">Reserve</button>
                 </div>
               </div>
             </div>
@@ -55,18 +60,10 @@
               <div class="col-3">
                 <h5 class="mb-2" style="font-weight: 600;">Host: {{accommodation.host.firstName}} {{accommodation.host.lastName}}</h5>
                 <h6>Rating: </h6>
-                <button *ngIf="currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn"
+                <button *ngIf="!currentUser.isAdmin && currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn"
                 (click)="onChatClick()">Chat</button>
               </div>
             </div>
-            <!--<div class="col-12 mb-4">
-              <h5 class="mb-2" style="font-weight: 600; text-decoration-line: underline">Description</h5>
-              <h7 style="font-size: 0.95em">{{accommodation.info.description}}</h7>
-            </div>
-            <div class="col-12">
-              <h5 class="mb-2" style="font-weight: 600; text-decoration-line: underline">Host Info</h5>
-              <h7 style="font-size: 0.95em">{{accommodation.host.firstName}} {{accommodation.host.lastName}}</h7>
-            </div>-->
 
             <div class="row col-12 mt-4">
               <div class="col-12 accommodation-data">

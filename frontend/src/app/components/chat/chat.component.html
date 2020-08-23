@@ -1,7 +1,7 @@
 <div class="container chat">
   <div *ngIf="!found">
     <h2>Oops...</h2>
-    <p>Chat with ID {{accommodationID}} & {{guestUsername}} could not be found!</p>
+    <p>Chat with Accommodation {{accommodationID}} & Guest '{{guestUsername}}' could not be found!</p>
   </div>
   <div *ngIf="chat && found">
     <div class="row justify-content-center">
@@ -12,14 +12,23 @@
             <div class="card-title mb-4">
               <div class="d-flex justify-content-center">
                 <div class="image-container">
-                  <div *ngIf="hostPicture">
+                  <div *ngIf="currentUsername === host.username">
+                    <img [src]="guestPicture" class="host-thumbnail" />
+                  </div>
+                  <div *ngIf="currentUsername !== host.username">
                     <img [src]="hostPicture" class="host-thumbnail" />
                   </div>
                 </div>
 
                 <div class="ml-3">
-                  <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{host.firstName}} {{host.lastName}} (@{{host.username}})</h2>
-                  <h6 class="d-block">Accommodation: {{accommodation.info.name}}</h6>
+                  <div *ngIf="currentUsername === host.username">
+                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{guest.firstName}} {{guest.lastName}} (@{{guestUsername}})</h2>
+                  </div>
+                  <div *ngIf="currentUsername !== host.username">
+                    <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{host.firstName}} {{host.lastName}} (@{{host.username}})</h2>
+                  </div>
+                  <h6 class="d-block">Accommodation: <a class="accommodation-link" [routerLink]="['/accommodations', accommodationID]">
+                    {{accommodation.info.name}}</a></h6>
                 </div>
               </div>
             </div>

@@ -55,3 +55,11 @@
   background-color: #e6477f;
   border-color: #e6477f;
 }
+
+.accommodation-link {
+  color: #fc5892;
+}
+
+.accommodation-link:hover {
+  color: #e6477f;
+}

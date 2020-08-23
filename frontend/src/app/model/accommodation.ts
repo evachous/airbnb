@@ -1,4 +1,5 @@
 import {User} from "./user";
+import {Chat} from "./chat";
 
 export class Accommodation {
   id: number;
@@ -7,6 +8,7 @@ export class Accommodation {
   rules: AccommodationRules;
   host: User;
   images: any;
+  chats: Chat[];
 }
 
 export class Address {

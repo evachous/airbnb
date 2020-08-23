@@ -73,6 +73,10 @@ export class DataService {
     return this.http.get<Chat>(this.url + 'getChat/' + accommodationID + '/' + guestUsername);
   }
 
+  chatCheck(accommodationID, guestUsername, currentUsername): Observable<boolean> {
+    return this.http.get<boolean>(this.url + 'chatCheck/' + + accommodationID + '/' + guestUsername + '/' + currentUsername);
+  }
+
   sendMessage(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'sendMessage', formData, {observe: 'response'});
   }

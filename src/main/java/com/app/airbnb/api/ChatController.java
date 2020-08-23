@@ -70,6 +70,18 @@ class ChatController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("/chatCheck/{accommodationID}/{guestUsername}/{currentUsername}")
+    boolean chatCheck(@PathVariable Long accommodationID, @PathVariable String guestUsername,
+                      @PathVariable String currentUsername) {
+        Chat chat = this.chatRepository.findByAccommodationAndGuest(accommodationID, guestUsername);
+        if (chat == null) {
+            return false;
+        }
+        return (chat.getAccommodation().getHost().getUsername().equals(currentUsername) ||
+                guestUsername.equals(currentUsername));
+    }
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/sendMessage")
     ResponseEntity<String> sendMessage(@RequestParam("chatID") String chatID, @RequestParam("senderUsername") String senderUsername,
                                        @RequestParam("message") String message) {
