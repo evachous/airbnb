@@ -22,6 +22,7 @@ export class Address {
 }
 
 export class AccommodationInfo {
+  name: string;
   startDate: any;
   endDate: any;
   minCost: number;

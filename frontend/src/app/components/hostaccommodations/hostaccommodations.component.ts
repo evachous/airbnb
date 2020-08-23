@@ -75,16 +75,6 @@ export class HostaccommodationsComponent implements OnInit {
             this.accommodationsImages[i][j] = 'data:image/jpeg;base64,' + image;
           })
         }
-
-        /*this.dataService.getAccommodationImages(this.accommodations[i].id).subscribe(images => {
-          console.log(this.accommodations[i].id);
-          //console.log(typeof('data:image/jpeg;base64,' + image));
-          //console.log("HA " + typeof(images[0]));
-          //this.img = 'data:image/jpeg;base64,' + images[0];
-          //for (let j = 0; j < images.length; j++) {
-          //  this.accommodationsImages[i][j] = 'data:image/jpeg;base64,' + images[j];
-          //}
-        });*/
       }
 
       this.message = this.alertService.getMessage;
@@ -125,6 +115,7 @@ export class HostaccommodationsComponent implements OnInit {
 
   initForms(): void {
     this.infoForm = this.formBuilder.group({
+      name: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       minCost: ['', Validators.required],

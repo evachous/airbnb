@@ -23,15 +23,26 @@ public class Accommodation {
     @JsonIgnoreProperties("accommodation")
     private AccommodationRules rules;
 
-    @ManyToOne
-    @JoinColumn(name = "host", insertable = false, updatable = false)
+    @ManyToOne(cascade=CascadeType.ALL)
+    // @JoinColumn(name = "host", insertable = false, updatable = false)
     @JsonIgnoreProperties("accommodations")
     private User host;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name = "accommodationImages")
-    @JsonIgnoreProperties("accommodationImages")
+    @OneToMany(mappedBy = "accommodation")
+    // @JoinColumn(name = "accommodationImages")
+    @JsonIgnoreProperties("accommodation")
     private List<Image> images;
+
+    @OneToMany(mappedBy = "accommodation")
+    // @JoinColumn(name = "accommodationReservations")
+    @JsonIgnoreProperties("accommodation")
+    private List<Reservation> reservations;
+
+    @OneToMany(mappedBy = "accommodation")
+    @JsonIgnoreProperties("accommodation")
+    private List<Chat> chats;
+
+    private Double avgRating;
 
     public Accommodation() {}
 
@@ -40,5 +51,6 @@ public class Accommodation {
         this.location = location;
         this.rules = rules;
         this.host = host;
+        this.avgRating = 0.0;
     }
 }

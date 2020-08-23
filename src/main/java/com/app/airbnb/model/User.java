@@ -9,28 +9,35 @@ import java.util.List;
 @Data
 @Entity
 public class User {
-    @Id @GeneratedValue @Column(name="id") private Long id;
-    @Column(name="username") private String username;
-    @Column(name="password") private String password;
-    @Column(name="firstName") private String firstName;
-    @Column(name="lastName") private String lastName;
-    @Column(name="email") private String email;
-    @Column(name="phone") private String phone;
-    @Column(name="city") private String city;
-    @Column(name="country") private String country;
-    @Column(name="isAdmin") private Boolean isAdmin;
-    @Column(name="isHost") private Boolean isHost;
-    @Column(name="isGuest") private Boolean isGuest;
-    @Column(name="isApproved") private Boolean isApproved;
+    @Id @GeneratedValue private Long id;
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private String city;
+    private String country;
+    private Boolean isAdmin;
+    private Boolean isHost;
+    private Boolean isGuest;
+    private Boolean isApproved;
 
-    @OneToMany
-    @JoinColumn(name = "host")
+    @OneToMany(mappedBy = "host")
+    // @JoinColumn(name = "host")
     @JsonIgnoreProperties("host")
     private List<Accommodation> accommodations;
 
     @OneToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private Image profilePicture;
+
+    private Double rating;
+
+    @OneToMany(mappedBy = "guest")
+    //@JoinColumn(name = "guestReservations")
+    @JsonIgnoreProperties("guest")
+    private List<Reservation> reservations;
 
     public User() {}
 
@@ -49,5 +56,6 @@ public class User {
         this.isHost = isHost;
         this.isGuest = isGuest;
         this.isApproved = isApproved;
+        this.rating = 0.0;
     }
 }

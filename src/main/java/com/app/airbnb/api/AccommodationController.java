@@ -2,6 +2,7 @@ package com.app.airbnb.api;
 
 import com.app.airbnb.model.*;
 import com.app.airbnb.repositories.AccommodationRepository;
+import com.app.airbnb.repositories.ImageRepository;
 import com.app.airbnb.repositories.UserRepository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,11 +25,13 @@ import java.util.List;
 class AccommodationController {
     AccommodationRepository accommodationRepository;
     UserRepository userRepository;
+    ImageRepository imageRepository;
 
-    AccommodationController(AccommodationRepository accommodationRepository,
-                            UserRepository userRepository) {
+    AccommodationController(AccommodationRepository accommodationRepository, UserRepository userRepository,
+                            ImageRepository imageRepository) {
         this.accommodationRepository = accommodationRepository;
         this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
     }
 
     @CrossOrigin(origins = "*")
@@ -54,13 +57,14 @@ class AccommodationController {
 
             // upload accommodation images
             if (images != null) {
-                List<Image> accommodationImages = new ArrayList<>();
+                // List<Image> accommodationImages = new ArrayList<>();
                 for (MultipartFile image : images) {
                     String path = this.userRepository.uploadImage(image);
-                    Image newImage = new Image(path);
-                    accommodationImages.add(newImage);
+                    Image newImage = new Image(path, accommodation);
+                    // accommodationImages.add(newImage);
+                    this.imageRepository.save(newImage);
                 }
-                accommodation.setImages(accommodationImages);
+                // accommodation.setImages(accommodationImages);
             }
             this.accommodationRepository.save(accommodation);
 

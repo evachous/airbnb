@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @Entity
 public class AccommodationInfo {
     @Id @GeneratedValue private Long id;
+    private String name;
+
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -35,6 +37,4 @@ public class AccommodationInfo {
     @OneToOne(mappedBy = "info")
     @JsonIgnoreProperties("info")
     private Accommodation accommodation;
-
-    public AccommodationInfo() {}
 }

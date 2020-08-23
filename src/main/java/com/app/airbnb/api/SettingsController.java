@@ -60,7 +60,7 @@ public class SettingsController {
 
                 if (profilePicture != null) {
                     String path = this.userRepository.uploadImage(profilePicture);
-                    oldUser.setProfilePicture(new Image(path));
+                    oldUser.setProfilePicture(new Image(path, null));
                 }
 
                 this.userRepository.save(oldUser);

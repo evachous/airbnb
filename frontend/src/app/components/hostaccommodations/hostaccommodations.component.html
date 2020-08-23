@@ -61,7 +61,7 @@
 
                         <div class="col-12 mb-3">
                           <label class="form-label">Transportation</label>
-                          <textarea rows="3" cols="50" formControlName="transportation" class="form-control"></textarea>
+                          <textarea rows="3" cols="50" maxlength="100" formControlName="transportation" class="form-control"></textarea>
                           <div *ngIf="f2.transportation.invalid && f2.transportation.touched" class="alert alert-danger">
                             <div *ngIf="f2.transportation.errors.required">Transportation is required</div>
                           </div>
@@ -86,6 +86,14 @@
                             {{ date.day }}
                           </span>
                         </ng-template>
+
+                        <div class="col-12 mb-3">
+                          <label class="form-label">Name</label>
+                          <input type="text" formControlName="name" class="form-control" />
+                          <div *ngIf="f1.name.invalid && f1.name.touched" class="alert alert-danger">
+                            <div *ngIf="f1.name.errors.required">Name is required</div>
+                          </div>
+                        </div>
 
                         <div class="col-4 mb-3">
                           <label class="form-label">Start date</label>
@@ -200,7 +208,7 @@
 
                         <div class="col-12 mb-3">
                           <label class="form-label">Description</label>
-                          <textarea rows="4" cols="50" formControlName="description" class="form-control"></textarea>
+                          <textarea rows="4" cols="50" maxlength="250" formControlName="description" class="form-control"></textarea>
                           <div *ngIf="f1.description.invalid && f1.description.touched" class="alert alert-danger">
                             <div *ngIf="f1.description.errors.required">Description is required</div>
                           </div>

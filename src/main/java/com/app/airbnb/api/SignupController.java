@@ -47,7 +47,7 @@ class SignupController {
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
                 String path = this.userRepository.uploadImage(profilePicture);
-                newUser.setProfilePicture(new Image(path));
+                newUser.setProfilePicture(new Image(path, null));
 
                 this.userRepository.save(newUser);
                 return new ResponseEntity<>(HttpStatus.OK);
