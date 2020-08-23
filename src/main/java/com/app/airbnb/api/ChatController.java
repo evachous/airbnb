@@ -32,16 +32,13 @@ class ChatController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/createChat")
-    ResponseEntity<String> createChat(@RequestParam("accommodationID") Long accommodationID, @RequestParam("guestUsername") String guestUsername) {
-        if (this.chatRepository.findByAccommodationAndGuest(accommodationID, guestUsername) != null) {
-            return ResponseEntity.badRequest().body("Chat exists");
-        }
-        else {
-            Accommodation accommodation = this.accommodationRepository.getOne(accommodationID);
+    ResponseEntity<String> createChat(@RequestParam("accommodationID") String accommodationID, @RequestParam("guestUsername") String guestUsername) {
+        if (this.chatRepository.findByAccommodationAndGuest(Long.parseLong(accommodationID), guestUsername) == null) {
+            Accommodation accommodation = this.accommodationRepository.getOne(Long.parseLong(accommodationID));
             Chat chat = new Chat(accommodation, guestUsername);
             this.chatRepository.save(chat);
-            return new ResponseEntity<>(HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "*")
@@ -74,20 +71,14 @@ class ChatController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/sendMessage")
-    ResponseEntity<String> sendMessage(@RequestParam("chatID") Long chatID, @RequestParam("chatHistory") String jsonChatHistory) {
-        try {
-            Chat chat = this.chatRepository.getOne(chatID);
-            ChatMessage chatMessage = new ObjectMapper().readValue(jsonChatHistory, ChatMessage.class);
+    ResponseEntity<String> sendMessage(@RequestParam("chatID") String chatID, @RequestParam("senderUsername") String senderUsername,
+                                       @RequestParam("message") String message) {
+        Chat chat = this.chatRepository.getOne(Long.parseLong(chatID));
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        ChatMessage chatMessage = new ChatMessage(chat, senderUsername, message, timestamp);
 
-            chatMessage.setChat(chat);
-            Timestamp timestamp = new Timestamp(new Date().getTime());
-            chatMessage.setTimestamp(timestamp);
+        this.chatMessageRepository.save(chatMessage);
 
-            this.chatMessageRepository.save(chatMessage);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

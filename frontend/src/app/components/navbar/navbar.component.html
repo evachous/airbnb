@@ -10,7 +10,7 @@
           <a class="nav-link" routerLink="/"><i class="fa fa-home fa-fw mr-1"></i>Home</a>
         </li>
         <li class="nav-item text-center" *ngIf="user && user.isAdmin">
-          <a class="nav-link" href="#">Admin</a>
+          <a class="nav-link" routerLink="/users">Users</a>
         </li>
         <li class="nav-item text-center" *ngIf="user && user.isHost">
           <a class="nav-link" routerLink="/accommodations">Accommodations</a>

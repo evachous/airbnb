@@ -3,6 +3,7 @@ import { User } from '../model/user';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Accommodation} from "../model/accommodation";
+import {Chat} from "../model/chat";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json', 'Access-Control-Allow-Origin': '*' })
@@ -62,6 +63,18 @@ export class DataService {
 
   getAccommodationImage(id, image): any {
     return this.http.get(this.url + 'getAccommodationImage/' + id + '/' + image,{responseType: "text"});
+  }
+
+  createChat(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'createChat', formData, {observe: 'response'});
+  }
+
+  getChat(accommodationID, guestUsername): Observable<Chat> {
+    return this.http.get<Chat>(this.url + 'getChat/' + accommodationID + '/' + guestUsername);
+  }
+
+  sendMessage(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'sendMessage', formData, {observe: 'response'});
   }
 }
 

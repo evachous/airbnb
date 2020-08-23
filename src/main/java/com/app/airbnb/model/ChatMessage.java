@@ -19,4 +19,12 @@ public class ChatMessage {
     private String message;
     private Timestamp timestamp;
 
+    public ChatMessage() {}
+
+    public ChatMessage(Chat chat, String senderUsername, String message, Timestamp timestamp) {
+        this.chat = chat;
+        this.senderUsername = senderUsername;
+        this.message = message;
+        this.timestamp = timestamp;
+    }
 }

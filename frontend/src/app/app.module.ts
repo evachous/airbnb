@@ -20,6 +20,7 @@ import { UserprofileComponent } from './components/userprofile/userprofile.compo
 import { UsersettingsComponent } from './components/usersettings/usersettings.component';
 import { HostaccommodationsComponent } from './components/hostaccommodations/hostaccommodations.component';
 import { AccommodationComponent } from './components/accommodation/accommodation.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AccommodationComponent } from './components/accommodation/accommodation
     UsersettingsComponent,
     HostaccommodationsComponent,
     AccommodationComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import { UserprofileComponent } from './components/userprofile/userprofile.compo
 import { UsersettingsComponent } from './components/usersettings/usersettings.component';
 import { HostaccommodationsComponent } from "./components/hostaccommodations/hostaccommodations.component";
 import { AccommodationComponent } from "./components/accommodation/accommodation.component";
+import { ChatComponent } from './components/chat/chat.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
 import { AdminGuard } from './guards/admin.guard';
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
       { path: ':id', component: AccommodationComponent }
     ]
   },
+  { path: 'chat/:id/:guestUsername', component: ChatComponent },
   { path: 'settings', component: UsersettingsComponent, canActivate: [AuthGuard] },
   { path: 'signup', component: SignupComponent, canActivate: [SignupGuard] },
   { path: 'login', component: LoginComponent },

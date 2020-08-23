@@ -55,7 +55,8 @@
               <div class="col-3">
                 <h5 class="mb-2" style="font-weight: 600;">Host: {{accommodation.host.firstName}} {{accommodation.host.lastName}}</h5>
                 <h6>Rating: </h6>
-                <button *ngIf="currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn">Chat</button>
+                <button *ngIf="currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn"
+                (click)="onChatClick()">Chat</button>
               </div>
             </div>
             <!--<div class="col-12 mb-4">

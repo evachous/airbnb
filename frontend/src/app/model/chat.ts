@@ -4,10 +4,10 @@ export class Chat {
   id: number;
   accommodation: Accommodation;
   guestUsername: string;
-  history: ChatHistory[];
+  messages: ChatMessage[];
 }
 
-export class ChatHistory {
+export class ChatMessage {
   senderUsername: string;
   message: string;
   timestamp: string;
