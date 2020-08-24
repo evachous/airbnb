@@ -49,6 +49,10 @@ export class DataService {
     return this.http.get<boolean>(this.url + 'hostCheck/' + username);
   }
 
+  guestCheck(username): Observable<boolean> {
+    return this.http.get<boolean>(this.url + 'guestCheck/' + username);
+  }
+
   approveHost(username): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'approveHost', username, {observe: 'response'});
   }

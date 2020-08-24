@@ -57,17 +57,26 @@ export class ChatComponent implements OnInit {
           this.hostPicture = 'http://placehold.it/150x150';
         else
           this.hostPicture = 'data:image/jpeg;base64,' + pic;
-      }, error => {
-        this.hostPicture = 'http://placehold.it/150x150';
-        console.log(error);
+        }, error => {
+          this.hostPicture = 'http://placehold.it/150x150';
+          console.log(error);
       });
-
-      this.getGuestInfo();
 
       this.dataService.getChat(this.accommodationID, this.guestUsername)
         .subscribe(chat => {
           this.chat = chat;
+          this.guest = this.chat.guest;
           this.chatMessages = this.chat.messages;
+
+          this.dataService.getUserPicture(this.guest.username).subscribe(pic => {
+            if (pic === '')
+              this.guestPicture = 'http://placehold.it/150x150';
+            else
+              this.guestPicture = 'data:image/jpeg;base64,' + pic;
+            }, error => {
+              this.guestPicture = 'http://placehold.it/150x150';
+              console.log(error);
+          });
 
           this.messageForm = this.formBuilder.group({
             message: ['', Validators.required]
@@ -79,24 +88,6 @@ export class ChatComponent implements OnInit {
     },error => {
       this.found = false;
     })
-  }
-
-  getGuestInfo(): void {
-    this.dataService.getUser(this.guestUsername).subscribe( guest => {
-      this.guest = guest;
-    },error => {
-      this.found = false;
-    })
-
-    this.dataService.getUserPicture(this.guestUsername).subscribe(pic => {
-      if (pic === '')
-        this.guestPicture = 'http://placehold.it/150x150';
-      else
-        this.guestPicture = 'data:image/jpeg;base64,' + pic;
-    }, error => {
-      this.guestPicture = 'http://placehold.it/150x150';
-      console.log(error);
-    });
   }
 
   onSend(): void {

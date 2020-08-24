@@ -24,7 +24,6 @@ public class User {
     private Boolean isApproved;
 
     @OneToMany(mappedBy = "host")
-    // @JoinColumn(name = "host")
     @JsonIgnoreProperties("host")
     private List<Accommodation> accommodations;
 
@@ -34,10 +33,13 @@ public class User {
 
     private Double rating;
 
-    @OneToMany(mappedBy = "guest")
-    //@JoinColumn(name = "guestReservations")
+    /*@OneToMany(mappedBy = "guest")
     @JsonIgnoreProperties("guest")
-    private List<Reservation> reservations;
+    private List<Reservation> reservations;*/
+
+    @OneToMany(mappedBy = "guest")
+    @JsonIgnoreProperties("guest")
+    private List<Chat> chats;
 
     public User() {}
 

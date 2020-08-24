@@ -48,8 +48,17 @@ class UserController {
         if (user == null) {
             throw new UserNotFoundException(username);
         }
-
         return user.getIsHost();
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/guestCheck/{username}")
+    boolean guestCheck(@PathVariable String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException(username);
+        }
+        return user.getIsGuest();
     }
 
     @CrossOrigin(origins = "*")

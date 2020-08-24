@@ -24,19 +24,16 @@ public class Accommodation {
     private AccommodationRules rules;
 
     @ManyToOne(cascade=CascadeType.ALL)
-    // @JoinColumn(name = "host", insertable = false, updatable = false)
     @JsonIgnoreProperties("accommodations")
     private User host;
 
     @OneToMany(mappedBy = "accommodation")
-    // @JoinColumn(name = "accommodationImages")
     @JsonIgnoreProperties("accommodation")
     private List<Image> images;
 
-    @OneToMany(mappedBy = "accommodation")
-    // @JoinColumn(name = "accommodationReservations")
+    /*@OneToMany(mappedBy = "accommodation")
     @JsonIgnoreProperties("accommodation")
-    private List<Reservation> reservations;
+    private List<Reservation> reservations;*/
 
     @OneToMany(mappedBy = "accommodation")
     @JsonIgnoreProperties("accommodation")

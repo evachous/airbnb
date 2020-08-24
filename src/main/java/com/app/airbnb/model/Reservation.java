@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class Reservation {
     @Id @GeneratedValue private Long id;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    /*@ManyToOne(cascade=CascadeType.ALL)
     // @JoinColumn(name = "guestReservations", insertable = false, updatable = false)
     @JsonIgnoreProperties("reservations")
     private User guest;
@@ -19,7 +19,7 @@ public class Reservation {
     @ManyToOne(cascade=CascadeType.ALL)
     // @JoinColumn(name = "accommodationReservations", insertable = false, updatable = false)
     @JsonIgnoreProperties("reservations")
-    private Accommodation accommodation;
+    private Accommodation accommodation;*/
 
     private String review;
     private Double rating;

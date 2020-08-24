@@ -18,6 +18,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { HostGuard } from './guards/host.guard';
+import { GuestGuard } from './guards/guest.guard';
 import { ChatGuard } from './guards/chat.guard';
 
 const appRoutes: Routes = [
@@ -38,7 +39,7 @@ const appRoutes: Routes = [
   },
   { path: 'hostchats', component: HostchatsComponent, canActivate: [AuthGuard, HostGuard] },
   { path: 'accommodationchats/:id', component: AccommodationchatsComponent, canActivate: [AuthGuard, HostGuard] },
-  { path: 'guestchats', component: GuestchatsComponent, canActivate: [AuthGuard, HostGuard] },
+  { path: 'guestchats', component: GuestchatsComponent, canActivate: [AuthGuard, GuestGuard] },
   { path: 'chat/:id/:guestUsername', component: ChatComponent, canActivate: [AuthGuard, ChatGuard] },
   { path: 'settings', component: UsersettingsComponent, canActivate: [AuthGuard] },
   { path: 'signup', component: SignupComponent, canActivate: [SignupGuard] },

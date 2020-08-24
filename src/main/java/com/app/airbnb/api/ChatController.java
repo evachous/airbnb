@@ -1,12 +1,10 @@
 package com.app.airbnb.api;
 
-import com.app.airbnb.model.Accommodation;
-import com.app.airbnb.model.Chat;
-import com.app.airbnb.model.ChatMessage;
-import com.app.airbnb.model.ChatNotFoundException;
+import com.app.airbnb.model.*;
 import com.app.airbnb.repositories.AccommodationRepository;
 import com.app.airbnb.repositories.ChatMessageRepository;
 import com.app.airbnb.repositories.ChatRepository;
+import com.app.airbnb.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,21 +20,35 @@ class ChatController {
     ChatRepository chatRepository;
     ChatMessageRepository chatMessageRepository;
     AccommodationRepository accommodationRepository;
+    UserRepository userRepository;
 
     ChatController(ChatRepository chatRepository, ChatMessageRepository chatMessageRepository,
-                   AccommodationRepository accommodationRepository) {
+                   AccommodationRepository accommodationRepository, UserRepository userRepository) {
         this.chatRepository = chatRepository;
         this.chatMessageRepository = chatMessageRepository;
         this.accommodationRepository = accommodationRepository;
+        this.userRepository = userRepository;
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/createChat")
-    ResponseEntity<String> createChat(@RequestParam("accommodationID") String accommodationID, @RequestParam("guestUsername") String guestUsername) {
+    ResponseEntity<String> createChat(@RequestParam("accommodationID") String accommodationID,
+                                      @RequestParam("guestUsername") String guestUsername) {
+        User guest = this.userRepository.findByUsername(guestUsername);
         if (this.chatRepository.findByAccommodationAndGuest(Long.parseLong(accommodationID), guestUsername) == null) {
             Accommodation accommodation = this.accommodationRepository.getOne(Long.parseLong(accommodationID));
-            Chat chat = new Chat(accommodation, guestUsername);
+            Chat chat = new Chat(accommodation, guest);
             this.chatRepository.save(chat);
+
+            List<Chat> accommodationChats = accommodation.getChats();
+            accommodationChats.add(chat);
+            accommodation.setChats(accommodationChats);
+            this.accommodationRepository.save(accommodation);
+
+            List<Chat> guestChats = guest.getChats();
+            guestChats.add(chat);
+            guest.setChats(guestChats);
+            this.userRepository.save(guest);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -90,6 +102,11 @@ class ChatController {
         ChatMessage chatMessage = new ChatMessage(chat, senderUsername, message, timestamp);
 
         this.chatMessageRepository.save(chatMessage);
+
+        List<ChatMessage> chatMessages = chat.getMessages();
+        chatMessages.add(chatMessage);
+        chat.setMessages(chatMessages);
+        this.chatRepository.save(chat);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

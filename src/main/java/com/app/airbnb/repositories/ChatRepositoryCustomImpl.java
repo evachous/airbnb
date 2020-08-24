@@ -32,7 +32,7 @@ public class ChatRepositoryCustomImpl implements ChatRepositoryCustom {
 
     @Override
     public List<Chat> findByGuestUsername(String username) {
-        Query query = entityManager.createQuery("SELECT c FROM Chat c WHERE c.guestUsername = ?1");
+        Query query = entityManager.createQuery("SELECT c FROM Chat c WHERE c.guest.username = ?1");
         query.setParameter(1, username);
         return query.getResultList();
     }
@@ -40,7 +40,7 @@ public class ChatRepositoryCustomImpl implements ChatRepositoryCustom {
     @Override
     public Chat findByAccommodationAndGuest(Long accommodationID, String guestUsername) {
         Chat chat = null;
-        Query query = entityManager.createQuery("SELECT c FROM Chat c WHERE c.accommodation.id = ?1 AND c.guestUsername = ?2");
+        Query query = entityManager.createQuery("SELECT c FROM Chat c WHERE c.accommodation.id = ?1 AND c.guest.username = ?2");
         query.setParameter(1, accommodationID);
         query.setParameter(2, guestUsername);
         List<Chat> chats = query.getResultList();

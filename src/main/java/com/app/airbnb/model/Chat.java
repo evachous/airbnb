@@ -15,7 +15,9 @@ public class Chat {
     @JsonIgnoreProperties("chats")
     private Accommodation accommodation;
 
-    private String guestUsername;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("chats")
+    private User guest;
 
     @OneToMany(mappedBy = "chat")
     @JsonIgnoreProperties("chat")
@@ -23,8 +25,8 @@ public class Chat {
 
     public Chat() {}
 
-    public Chat(Accommodation accommodation, String guestUsername) {
+    public Chat(Accommodation accommodation, User guest) {
         this.accommodation = accommodation;
-        this.guestUsername = guestUsername;
+        this.guest = guest;
     }
 }

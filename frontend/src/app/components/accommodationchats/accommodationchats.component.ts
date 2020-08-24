@@ -51,10 +51,10 @@ export class AccommodationchatsComponent implements OnInit {
       else {
         this.found = true;
         this.chats = this.accommodation.chats;
-        this.emptyChats = this.accommodation.chats.length == 0;
+        this.emptyChats = this.chats.length == 0;
 
         for (let i = 0; i < this.chats.length; i++) {
-          this.dataService.getUserPicture(this.chats[i].guestUsername)
+          this.dataService.getUserPicture(this.chats[i].guest.username)
             .subscribe(pic => {
               if (pic === '')
                 this.guestPictures[i] = 'http://placehold.it/150x150';

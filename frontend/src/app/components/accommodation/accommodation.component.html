@@ -40,7 +40,7 @@
                 <hr />
                 <div class="mt-4">
                   <h5 class="d-block"><b>€ {{accommodation.info.minCost}}</b> / night</h5>
-                  <button *ngIf="!currentUser.isAdmin && currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn">Reserve</button>
+                  <button *ngIf="!currentUser.isAdmin && currentUsername !== host.username" type="submit" class="reserve-button btn">Reserve</button>
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@
               <div class="col-3">
                 <h5 class="mb-2" style="font-weight: 600;">Host: {{accommodation.host.firstName}} {{accommodation.host.lastName}}</h5>
                 <h6>Rating: </h6>
-                <button *ngIf="!currentUser.isAdmin && currentUsername !== accommodation.host.username" type="submit" class="reserve-button btn"
+                <button *ngIf="!currentUser.isAdmin && currentUsername !== host.username" type="submit" class="reserve-button btn"
                 (click)="onChatClick()">Chat</button>
               </div>
             </div>
