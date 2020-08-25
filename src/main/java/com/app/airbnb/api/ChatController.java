@@ -72,12 +72,23 @@ class ChatController {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/getChat/{accommodationID}/{guestUsername}")
-    Chat returnChat(@PathVariable Long accommodationID, @PathVariable String guestUsername) {
+    @GetMapping("/getChat/{accommodationID}/{guestUsername}/{currentUsername}")
+    Chat returnChat(@PathVariable Long accommodationID, @PathVariable String guestUsername,
+                    @PathVariable String currentUsername) {
         Chat chat = this.chatRepository.findByAccommodationAndGuest(accommodationID, guestUsername);
+        User user = this.userRepository.findByUsername(currentUsername);
         if (chat == null) {
             throw new ChatNotFoundException();
         }
+
+        if (user.getIsGuest()) {
+            chat.setGuestRead(true);
+        }
+        else if (user.getIsHost()) {
+            chat.setHostRead(true);
+        }
+
+        this.chatRepository.save(chat);
         return chat;
     }
 
@@ -98,6 +109,8 @@ class ChatController {
     ResponseEntity<String> sendMessage(@RequestParam("chatID") String chatID, @RequestParam("senderUsername") String senderUsername,
                                        @RequestParam("message") String message) {
         Chat chat = this.chatRepository.getOne(Long.parseLong(chatID));
+        User user = this.userRepository.findByUsername(senderUsername);
+
         Timestamp timestamp = new Timestamp(new Date().getTime());
         ChatMessage chatMessage = new ChatMessage(chat, senderUsername, message, timestamp);
 
@@ -106,8 +119,43 @@ class ChatController {
         List<ChatMessage> chatMessages = chat.getMessages();
         chatMessages.add(chatMessage);
         chat.setMessages(chatMessages);
+
+        if (user.getIsGuest()) {
+            chat.setGuestRead(true);
+            chat.setHostRead(false);
+        }
+        else if (user.getIsHost()) {
+            chat.setGuestRead(false);
+            chat.setHostRead(true);
+        }
+
         this.chatRepository.save(chat);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @DeleteMapping("/deleteChat/{id}")
+    void deleteChat(@PathVariable Long id) {
+        Chat chat = this.chatRepository.getOne(id);
+        List<ChatMessage> messages = chat.getMessages();
+
+        System.out.println("hello!");
+
+        for (ChatMessage message : messages) {
+            this.chatMessageRepository.deleteById(message.getId());
+        }
+
+        Accommodation accommodation = chat.getAccommodation();
+        List<Chat> accommodationChats = accommodation.getChats();
+        accommodationChats.remove(chat);
+        this.accommodationRepository.save(accommodation);
+
+        User guest = chat.getGuest();
+        List<Chat> guestChats = guest.getChats();
+        guestChats.remove(chat);
+        this.userRepository.save(guest);
+
+        this.chatRepository.deleteById(id);
     }
 }

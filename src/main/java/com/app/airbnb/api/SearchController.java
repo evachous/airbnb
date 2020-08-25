@@ -52,7 +52,7 @@ class SearchController {
                     accommodation.getLocation().getAddress().getLat(),
                     accommodation.getLocation().getAddress().getLng());
 
-            if (dist < 50.0 && guests < rules.getMaxPeople() && maxCost < info.getMinCost() &&
+            if (dist < 50.0 && guests <= rules.getMaxPeople() && maxCost < info.getMinCost() &&
                     !(localCheckin.isBefore(info.getStartDate()) || localCheckin.isAfter(info.getEndDate())) &&
                     !(localCheckout.isBefore(info.getStartDate()) || localCheckout.isAfter(info.getEndDate())) &&
                     localCheckin.until(localCheckout, ChronoUnit.DAYS)+1 >= rules.getMinDays() &&

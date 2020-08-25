@@ -26,6 +26,8 @@ export class NavbarComponent implements OnInit {
       this.username = name;
       this.loggedin = !(this.username == null || this.username === 'undefined');
       this.findRoles();
+    }, error => {
+      console.log(error);
     });
   }
 

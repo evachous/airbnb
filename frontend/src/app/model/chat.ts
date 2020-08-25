@@ -6,6 +6,8 @@ export class Chat {
   accommodation: Accommodation;
   guest: User;
   messages: ChatMessage[];
+  guestRead: boolean;
+  hostRead: boolean;
 }
 
 export class ChatMessage {

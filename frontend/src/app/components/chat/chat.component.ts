@@ -62,7 +62,7 @@ export class ChatComponent implements OnInit {
           console.log(error);
       });
 
-      this.dataService.getChat(this.accommodationID, this.guestUsername)
+      this.dataService.getChat(this.accommodationID, this.guestUsername, this.currentUsername)
         .subscribe(chat => {
           this.chat = chat;
           this.guest = this.chat.guest;
@@ -102,7 +102,7 @@ export class ChatComponent implements OnInit {
       console.log('Sent ' + this.messageForm.controls.message.value);
       this.messageForm.reset();
 
-      this.dataService.getChat(this.accommodationID, this.guestUsername)
+      this.dataService.getChat(this.accommodationID, this.guestUsername, this.currentUsername)
         .subscribe(chat => {
           this.chat = chat;
           this.chatMessages = this.chat.messages;

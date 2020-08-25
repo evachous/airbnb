@@ -65,7 +65,7 @@
             <form class="col-12" [formGroup]="messageForm" (ngSubmit)="onSend()">
               <div class="form-row form-group">
                 <div class="col-12">
-                  <input type="text" formControlName="message" class="form-control" placeholder="Type a message...">
+                  <input type="text" maxlength="250" formControlName="message" class="form-control" placeholder="Type a message...">
                 </div>
               </div>
               <button type="submit" [disabled]="messageForm.invalid" class="message-button btn" style="float: right;">Send</button>

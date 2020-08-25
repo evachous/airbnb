@@ -97,6 +97,8 @@ export class SearchComponent implements OnInit {
       this.accommodations = acc;
       this.emptyAcc = this.accommodations.length == 0;
 
+      this.accommodations.sort(compareCosts);
+
       for (let i = 0; i < this.accommodations.length; i++) {
         this.dataService.getAccommodationImage(this.accommodations[i].id, 0).subscribe(image => {
           this.accommodationsImages[i] = 'data:image/jpeg;base64,' + image;
@@ -106,4 +108,12 @@ export class SearchComponent implements OnInit {
       console.log(error);
     })
   }
+}
+
+function compareCosts(a1: Accommodation, a2: Accommodation): number {
+  if (a1.info.minCost < a2.info.minCost)
+    return -1;
+  if (a1.info.minCost > a2.info.minCost)
+    return 1;
+  return 0;
 }

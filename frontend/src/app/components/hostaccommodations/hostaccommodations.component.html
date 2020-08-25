@@ -83,12 +83,12 @@
 
                         <div class="col-4 mb-3">
                           <label class="form-label">Start date</label>
-                          <input class="col-12" ngbDatepicker (click)="datePicker1.toggle()" #datePicker1="ngbDatepicker" formControlName="startDate"
-                                 placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="minDate" [maxDate]="f1.endDate.value">
+                          <input class="col-12 form-control" ngbDatepicker (click)="datePicker1.toggle()" #datePicker1="ngbDatepicker" formControlName="startDate"
+                                 placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [maxDate]="f1.endDate.value">
                         </div>
                         <div class="col-4 mb-3">
                           <label class="form-label">End date</label>
-                          <input class="col-12" ngbDatepicker (click)="datePicker2.toggle()" #datePicker2="ngbDatepicker" formControlName="endDate"
+                          <input class="col-12 form-control" ngbDatepicker (click)="datePicker2.toggle()" #datePicker2="ngbDatepicker" formControlName="endDate"
                                  placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="f1.startDate.value">
                         </div>
                         <div class="col-4 mb-3">

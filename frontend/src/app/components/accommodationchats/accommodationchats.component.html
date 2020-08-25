@@ -23,7 +23,7 @@
                   [collectionSize]="chats.length">
                 </ngb-pagination>
 
-                <table class="col-12">
+                <table class="col-12" style="table-layout: fixed">
                   <tr *ngFor="let c of chats | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
                     <div class="card mb-3">
                       <div class="card-body">
@@ -33,9 +33,14 @@
                               <img [src]="guestPictures[i + (page-1) * pageSize]" class="img-thumbnail" />
                             </div>
 
-                            <div class="col-9">
+                            <div class="col-8">
                               <a [routerLink]="['/chat', accommodationID, c.guest.username]" class="d-block chat-link mb-1">@{{c.guest.username}}</a>
-                              <h6 class="d-block mb-2"> {{accommodation.info.name}}</h6>
+                              <h6 class="d-block mb-2" *ngIf="!c.hostRead && c.messages.length" style="font-weight: 600; white-space:nowrap;
+                                overflow:hidden; text-overflow:ellipsis"><i class="fa fa-comment"></i> {{c.messages[c.messages.length-1].message}}</h6>
+                              <h6 class="d-block mb-2" *ngIf="c.messages.length">{{c.messages[c.messages.length-1].timestamp | date: 'short'}}</h6>
+                            </div>
+                            <div class="col-2 ml-4">
+                              <button type="submit" (click)="onDeleteChat(c)" class="d-block btn btn-danger ml-auto"><i class="fa fa-times"></i> Delete</button>
                             </div>
                           </div>
                         </div>

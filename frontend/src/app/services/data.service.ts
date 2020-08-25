@@ -73,8 +73,8 @@ export class DataService {
     return this.http.post<string>(this.url + 'createChat', formData, {observe: 'response'});
   }
 
-  getChat(accommodationID, guestUsername): Observable<Chat> {
-    return this.http.get<Chat>(this.url + 'getChat/' + accommodationID + '/' + guestUsername);
+  getChat(accommodationID, guestUsername, currentUsername): Observable<Chat> {
+    return this.http.get<Chat>(this.url + 'getChat/' + accommodationID + '/' + guestUsername + '/' + currentUsername);
   }
 
   chatCheck(accommodationID, guestUsername, currentUsername): Observable<boolean> {
@@ -83,6 +83,10 @@ export class DataService {
 
   sendMessage(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'sendMessage', formData, {observe: 'response'});
+  }
+
+  deleteChat(chatID) {
+    return this.http.delete(this.url + 'deleteChat/' + chatID);
   }
 
   searchAccommodations(params: HttpParams): Observable<Accommodation[]> {
