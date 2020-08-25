@@ -18,8 +18,8 @@ export class AccommodationComponent implements OnInit {
   accommodationImages: string[] = new Array<string>();
   host: User;
   hostPicture: any;
-  currentUsername: string;
-  currentUser: User;
+  currentUsername: string = null;
+  currentUser: User = null;
 
   constructor(
     private router: Router,
@@ -33,11 +33,14 @@ export class AccommodationComponent implements OnInit {
       this.accommodationID = params.id;
       this.currentUsername = this.authenticationService.getTokenUsername;
 
-      this.dataService.getUser(this.currentUsername).subscribe( user => {
-        this.currentUser = user;
-      },error => {
-        this.found = false;
-      })
+      if (this.currentUsername != null) {
+        this.dataService.getUser(this.currentUsername).subscribe(user => {
+          this.currentUser = user;
+        }, error => {
+          // this.found = false;
+          this.currentUser = null;
+        })
+      }
 
       this.loadAccommodation();
     });

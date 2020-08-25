@@ -1,0 +1,129 @@
+<div class="container search">
+  <div *ngIf="missing">
+    <h2>Oops...</h2>
+    <p>Search results could not be fetch: missing queries!</p>
+  </div>
+  <div *ngIf="accommodations && !missing">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="card">
+
+          <div class="card-body">
+            <div class="card-title mb-4">
+              <h3 style="font-size:1.5em; font-weight: bold">{{queryParams.location}}</h3>
+              <h7>{{queryParams.checkin | date: 'mediumDate' }} - {{queryParams.checkout | date: 'mediumDate'}},
+                {{queryParams.guests}} guests</h7>
+              <hr />
+            </div>
+
+            <div class="d-flex justify-content-start">
+              <div class="col-3 mr-2">
+                <h5 class="d-block" style="font-weight: 600;">Filters</h5>
+                <hr />
+
+                <form [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+                  <div class="mb-3">
+                    <label class="form-label">Maximum cost</label>
+                    <input type="number" min="1" formControlName="maxCost" class="form-control" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Type</label>
+                    <div ngbDropdown class="d-block" container="body">
+                      <button class="btn btn-outline-secondary" id="typeMenu" ngbDropdownToggle>
+                        {{f.type.value || 'Select accommodation type'}}
+                      </button>
+                      <div ngbDropdownMenu aria-labelledby="typeMenu">
+                        <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private room')">Private room</button>
+                        <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Shared room')">Shared room</button>
+                        <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private residence')">Private residence</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" formControlName="internet" class="form-control form-check-input" id="internet" />
+                    <label class="form-check-label" for="internet">Internet</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" formControlName="ac" class="form-control form-check-input" id="ac" />
+                    <label class="form-check-label" for="ac">A/C</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" formControlName="heating" class="form-control form-check-input" id="heating" />
+                    <label class="form-check-label" for="heating">Heating</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" formControlName="kitchen" class="form-control form-check-input" id="kitchen" />
+                    <label class="form-check-label" for="kitchen">Kitchen</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" formControlName="tv" class="form-control form-check-input" id="tv" />
+                    <label class="form-check-label" for="tv">TV</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" formControlName="parking" class="form-control form-check-input" id="parking" />
+                    <label class="form-check-label" for="parking">Parking</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox" formControlName="elevator" class="form-control form-check-input" id="elevator" />
+                    <label class="form-check-label" for="elevator">Elevator</label>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" [disabled]="filterForm.invalid" class="form-button btn" style="float: right;">Search</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="vl"></div>
+
+              <div class="col-9 ml-2">
+                <h5 class="d-block" style="font-weight: 600;">Search results</h5>
+                <hr />
+                <div *ngIf="emptyAcc">No accommodations!</div>
+                <div *ngIf="!emptyAcc" class="col-12">
+                  <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="accommodations.length">
+                  </ngb-pagination>
+
+                  <table class="col-12">
+                    <tr *ngFor="let a of accommodations | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                      <div class="card mb-3">
+                        <div class="card-body">
+                          <div class="card-title">
+                            <div class="d-flex justify-content-start">
+                              <div class="image-container">
+                                <img [src]="accommodationsImages[i + (page-1) * pageSize]" class="img-thumbnail" />
+                              </div>
+
+                              <div class="col-9">
+                                <a [routerLink]="['/accommodations', a.id]" class="d-block accommodation-link mb-1">{{a.info.name}}</a>
+                                <h6 class="d-block">{{a.info.type}} with {{a.info.beds}} beds</h6>
+                                <h6 class="d-block">Rating</h6>
+                                <h5 class="d-block mt-4 mb-0" style="float: right;"><b>€ {{a.info.minCost}}</b> / night</h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </tr>
+                  </table>
+
+                  <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="accommodations.length">
+                  </ngb-pagination>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

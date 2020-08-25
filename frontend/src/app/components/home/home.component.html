@@ -1,7 +1,7 @@
 <img class="home-bg" src="https://picsum.photos/id/288/3888/2592"/>
 <div class="container welcome">
   <div class="row justify-content-center">
-    <div class="col-10">
+    <div class="col-11">
       <div class="card">
 
         <div class="card-body">
@@ -31,28 +31,45 @@
                 </span>
               </ng-template>
 
-              <div class="col-4">
+              <div class="col-5">
                 <label class="form-label">Location</label>
-                <input type="text" formControlName="location" class="form-control" placeholder="Where are you going?" />
+                <input type="text" class="form-control" name="input" value="{{value}}"
+                       placeholder="Where are you going?" (input)="onChange($event)" />
+                <div class="search-result">
+                  <div *ngFor="let r of results" (click)="onResultClick(r)">
+                    {{r.label}}
+                  </div>
+                </div>
               </div>
               <div class="col-2">
                 <label class="form-label">Check in</label>
-                <input class="col-12" ngbDatepicker (click)="datePicker1.toggle()" #datePicker1="ngbDatepicker" formControlName="checkin"
+                <input class="col-12 form-control" ngbDatepicker (click)="datePicker1.toggle()" #datePicker1="ngbDatepicker" formControlName="checkin"
                        placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="minDate" [maxDate]="f.checkout.value">
               </div>
               <div class="col-2">
                 <label class="form-label">Check out</label>
-                <input class="col-12" ngbDatepicker (click)="datePicker2.toggle()" #datePicker2="ngbDatepicker" formControlName="checkout"
+                <input class="col-12 form-control" ngbDatepicker (click)="datePicker2.toggle()" #datePicker2="ngbDatepicker" formControlName="checkout"
                        placeholder="yyyy-mm-dd" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden" [minDate]="f.checkin.value">
               </div>
-              <div class="col-3 mr-2">
+              <div class="col-2 mr-2">
                 <label class="form-label">Guests</label>
-                <input type="text" formControlName="guests" class="form-control" placeholder="Add guests" />
+                <input type="number" min="1" formControlName="guests" class="form-control" placeholder="Add guests" />
               </div>
 
               <button type="submit" [disabled]="searchForm.invalid" class="search-button btn btn-lg"><i class="fa fa-search" aria-hidden="true"></i></button>
             </div>
           </form>
+
+          <!--<div class="search-module">
+            <form>
+              <input type="text" placeholder="search" name="input" (input)="onChange($event)">
+            </form>
+            <div class="search-module-result">
+              <div *ngFor="let r of results" (click)="onResultClick(r)">
+                {{r.label}}
+              </div>
+            </div>
+          </div>-->
 
         </div>
 

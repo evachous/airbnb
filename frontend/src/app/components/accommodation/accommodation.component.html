@@ -11,9 +11,10 @@
           <div class="card-body">
             <div class="card-title mb-4">
               <div style="float: right;">
-                <button *ngIf="currentUsername === host.username" type="submit" class="btn btn-secondary ml-auto mr-2"
+                <button *ngIf="currentUsername && currentUsername === host.username" type="submit" class="btn btn-secondary ml-auto mr-2"
                         style="height: 10%;"><i class="fa fa-pencil"></i> Edit</button>
-                <button *ngIf="currentUsername === host.username" [routerLink]="['/accommodationchats', accommodationID]"
+                <button *ngIf="currentUsername && currentUsername === host.username"
+                        [routerLink]="['/accommodationchats', accommodationID]"
                         type="submit" class="btn btn-secondary ml-auto"
                         style="height: 10%;"><i class="fa fa-commenting"></i> Chat</button>
               </div>
@@ -40,7 +41,8 @@
                 <hr />
                 <div class="mt-4">
                   <h5 class="d-block"><b>€ {{accommodation.info.minCost}}</b> / night</h5>
-                  <button *ngIf="!currentUser.isAdmin && currentUsername !== host.username" type="submit" class="reserve-button btn">Reserve</button>
+                  <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username"
+                          type="submit" class="reserve-button btn">Reserve</button>
                 </div>
               </div>
             </div>
@@ -60,7 +62,8 @@
               <div class="col-3">
                 <h5 class="mb-2" style="font-weight: 600;">Host: {{accommodation.host.firstName}} {{accommodation.host.lastName}}</h5>
                 <h6>Rating: </h6>
-                <button *ngIf="!currentUser.isAdmin && currentUsername !== host.username" type="submit" class="reserve-button btn"
+                <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username"
+                        type="submit" class="reserve-button btn"
                 (click)="onChatClick()">Chat</button>
               </div>
             </div>

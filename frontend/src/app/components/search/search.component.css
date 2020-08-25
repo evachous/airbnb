@@ -1,0 +1,54 @@
+.search {
+  margin-top: 5%;
+  margin-bottom: 2%;
+}
+
+.vl {
+  border-left: 1px solid rgba(0,0,0,0.1);
+}
+
+.form-button {
+  color: #fff;
+  background-color: #fc5892;
+  border-color: #fc5892;
+}
+
+.form-button:hover {
+  color: #fff;
+  background-color: #e6477f;
+  border-color: #e6477f;
+}
+
+.img-thumbnail {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+ngb-pagination ::ng-deep a {
+  color: #495057 !important;
+}
+
+ngb-pagination ::ng-deep .page-item.active .page-link {
+  color: #fff !important;
+  background-color: #fc5892;
+  border-color: #fc5892;
+}
+
+ngb-pagination ::ng-deep .page-item.active:hover .page-link {
+  color: #fff !important;
+}
+
+ngb-pagination ::ng-deep .page-item:hover .page-link {
+  color: #e6477f !important;
+}
+
+.accommodation-link {
+  color: #fc5892;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.accommodation-link:hover {
+  color: #e6477f;
+}

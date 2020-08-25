@@ -40,6 +40,12 @@
                     </div>
                   </tr>
                 </table>
+
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="accommodations.length">
+                </ngb-pagination>
               </div>
             </div>
           </div>

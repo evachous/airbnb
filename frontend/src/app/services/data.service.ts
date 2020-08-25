@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {Accommodation} from "../model/accommodation";
 import {Chat} from "../model/chat";
 
@@ -78,11 +78,15 @@ export class DataService {
   }
 
   chatCheck(accommodationID, guestUsername, currentUsername): Observable<boolean> {
-    return this.http.get<boolean>(this.url + 'chatCheck/' + + accommodationID + '/' + guestUsername + '/' + currentUsername);
+    return this.http.get<boolean>(this.url + 'chatCheck/' + accommodationID + '/' + guestUsername + '/' + currentUsername);
   }
 
   sendMessage(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'sendMessage', formData, {observe: 'response'});
+  }
+
+  searchAccommodations(params: HttpParams): Observable<Accommodation[]> {
+    return this.http.get<Accommodation[]>(this.url + 'searchAccommodations', {params: params});
   }
 }
 

@@ -44,20 +44,6 @@
 
                       <div class="form-row form-group">
                         <div id="map" leaflet (leafletMapReady)="onMapReady($event)" [leafletOptions]="mapOptions"></div>
-                        <!--<div class="col-4 mb-3">
-                          <label class="form-label">Address</label>
-                          <input type="text" formControlName="address" class="form-control" />
-                          <div *ngIf="f2.address.invalid && f2.address.touched" class="alert alert-danger">
-                            <div *ngIf="f2.address.errors.required">Address is required</div>
-                          </div>
-                        </div>
-                        <div class="col-6 mb-3">
-                          <label class="form-label">Neighborhood</label>
-                          <input type="text" formControlName="neighborhood" class="form-control" />
-                          <div *ngIf="f2.neighborhood.invalid && f2.neighborhood.touched" class="alert alert-danger">
-                            <div *ngIf="f2.neighborhood.errors.required">Neighborhood is required</div>
-                          </div>
-                        </div>-->
 
                         <div class="col-12 mb-3">
                           <label class="form-label">Transportation</label>
@@ -174,11 +160,11 @@
                         <div class="col-12 mb-3">
                           <div class="form-check form-check-inline mr-3">
                             <input type="checkbox" formControlName="livingRoom" class="form-control form-check-input" id="livingRoom" />
-                            <label class="form-check-label" for="smoking">Living&nbsp;Room</label>
+                            <label class="form-check-label" for="livingRoom">Living&nbsp;Room</label>
                           </div>
                           <div class="form-check form-check-inline mr-3">
                             <input type="checkbox" formControlName="internet" class="form-control form-check-input" id="internet" />
-                            <label class="form-check-label" for="livingRoom">Internet</label>
+                            <label class="form-check-label" for="internet">Internet</label>
                           </div>
                           <div class="form-check form-check-inline mr-3">
                             <input type="checkbox" formControlName="ac" class="form-control form-check-input" id="ac" />
@@ -297,6 +283,11 @@
                         </tr>
                       </table>
 
+                      <ngb-pagination
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="accommodations.length">
+                      </ngb-pagination>
                     </div>
                   </div>
                 </div>

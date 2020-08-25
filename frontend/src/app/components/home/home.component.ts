@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
+import {Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import {OpenStreetMapProvider} from 'leaflet-geosearch';
 
 @Component({
   selector: 'app-home',
@@ -14,8 +16,13 @@ export class HomeComponent implements OnInit {
   minDate: NgbDate;
   invalidDate: boolean;
   errorMessage: string;
+  provider: any;
+  results: any;
+  input: any;
+  value: '';
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private dataService: DataService,
     private calendar: NgbCalendar
@@ -24,8 +31,12 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.provider = new OpenStreetMapProvider();
+
     this.searchForm = this.formBuilder.group({
       location: ['', Validators.required],
+      lat: ['', Validators.required],
+      lng: ['', Validators.required],
       checkin: [null, Validators.required],
       checkout: [null, Validators.required],
       guests: ['', Validators.required]
@@ -34,16 +45,6 @@ export class HomeComponent implements OnInit {
 
   get f(): { [p: string]: AbstractControl } {
     return this.searchForm.controls;
-  }
-
-  onDateSelection(): void {
-    const date = this.f.checkout.value;
-    this.invalidDate = false;
-    if (this.f.checkout.value && this.f.checkin.value && !date.after(this.f.checkin.value)) {
-      this.invalidDate = true;
-      this.errorMessage = 'Invalid check out date!';
-      this.f.checkout.setValue(null);
-    }
   }
 
   isHovered(date: NgbDate): boolean {
@@ -60,8 +61,30 @@ export class HomeComponent implements OnInit {
       || this.isInside(date) || this.isHovered(date);
   }
 
+  onChange(e): void {
+    this.provider.search({ query: e.target.value }).then((result: any) => {
+      this.results = result;
+    });
+  }
+
+  onResultClick(r): void {
+    this.value = r.label;
+    this.f.location.setValue(r.label);
+    this.f.lat.setValue(r.x);
+    this.f.lng.setValue(r.y);
+    this.results = [];
+  }
+
   onSubmit(): void {
-    console.log(this.f.checkin.value);
-    console.log(this.f.checkout.value);
+    this.router.navigate(['/search'],{ queryParams: {
+        location: this.f.location.value,
+        lat: this.f.lat.value,
+        lng: this.f.lng.value,
+        checkin: this.f.checkin.value.year + '-' + this.f.checkin.value.month + '-'
+          + this.f.checkin.value.day,
+        checkout: this.f.checkout.value.year + '-' + this.f.checkout.value.month + '-'
+          + this.f.checkout.value.day,
+        guests: this.f.guests.value
+      }})
   }
 }

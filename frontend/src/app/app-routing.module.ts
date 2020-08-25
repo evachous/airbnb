@@ -13,6 +13,7 @@ import { HostchatsComponent } from './components/hostchats/hostchats.component';
 import { AccommodationchatsComponent } from './components/accommodationchats/accommodationchats.component';
 import { GuestchatsComponent } from './components/guestchats/guestchats.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { SearchComponent } from './components/search/search.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
@@ -23,6 +24,7 @@ import { ChatGuard } from './guards/chat.guard';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'search', component: SearchComponent },
   {
     path: 'users',
     children: [
