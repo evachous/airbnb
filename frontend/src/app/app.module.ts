@@ -25,6 +25,7 @@ import { HostchatsComponent } from './components/hostchats/hostchats.component';
 import { AccommodationchatsComponent } from './components/accommodationchats/accommodationchats.component';
 import { GuestchatsComponent } from './components/guestchats/guestchats.component';
 import { SearchComponent } from './components/search/search.component';
+import { AccommodationsettingsComponent } from './components/accommodationsettings/accommodationsettings.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { SearchComponent } from './components/search/search.component';
     AccommodationchatsComponent,
     GuestchatsComponent,
     SearchComponent,
+    AccommodationsettingsComponent,
   ],
   imports: [
     BrowserModule,

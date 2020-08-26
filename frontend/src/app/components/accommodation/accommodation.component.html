@@ -12,6 +12,7 @@
             <div class="card-title mb-4">
               <div style="float: right;">
                 <button *ngIf="currentUsername && currentUsername === host.username" type="submit" class="btn btn-secondary ml-auto mr-2"
+                        [routerLink]="['/accommodationsettings', accommodationID]"
                         style="height: 10%;"><i class="fa fa-pencil"></i> Edit</button>
                 <button *ngIf="currentUsername && currentUsername === host.username"
                         [routerLink]="['/accommodationchats', accommodationID]"
@@ -70,67 +71,230 @@
 
             <div class="row col-12 mt-4">
               <div class="col-12 accommodation-data">
-                <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+                <ul ngbNav #nav="ngbNav" class="nav-tabs mb-4">
+                  <li ngbNavItem>
+                    <a ngbNavLink>Basic Info</a>
+                    <ng-template ngbNavContent>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Name</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.info.name}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Type</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.info.type}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Available from</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.info.startDate | date: 'mediumDate'}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Available until</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.info.endDate | date: 'mediumDate'}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Total area</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.info.area}} cm<sup>2</sup>
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Arrangement</label>
+                          </div>
+                          <div class="col-6">
+                            <div *ngIf="accommodation.info.livingRoom">Living room, {{accommodation.info.bedrooms}} bedrooms, {{accommodation.info.beds}} beds,
+                              {{accommodation.info.bathrooms}} bathrooms</div>
+                            <div *ngIf="!accommodation.info.livingRoom">{{accommodation.info.bedrooms}} bedrooms, {{accommodation.info.beds}} beds,
+                              {{accommodation.info.bathrooms}} bathrooms</div>
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                      </div>
+                    </ng-template>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="location-tab" data-toggle="tab" href="#location" role="tab" aria-controls="location" aria-selected="false">Location</a>
+
+                  <li ngbNavItem>
+                    <a ngbNavLink>Amenities</a>
+                    <ng-template ngbNavContent>
+                      <div class="col-12">
+                        <div class="row" *ngIf="accommodation.info.internet">
+                          <div class="col-2">
+                            <label class="tab-label"><i class="fa fa-wifi" aria-hidden="true"></i> Internet</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" *ngIf="accommodation.info.internet"/>
+                        <div class="row" *ngIf="accommodation.info.ac">
+                          <div class="col-2">
+                            <label class="tab-label"><i class="fa fa-snowflake-o" aria-hidden="true"></i> A/C</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" *ngIf="accommodation.info.ac"/>
+                        <div class="row" *ngIf="accommodation.info.heating">
+                          <div class="col-2">
+                            <label class="tab-label"><i class="fa fa-fire" aria-hidden="true"></i> Heating</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" *ngIf="accommodation.info.heating"/>
+                        <div class="row" *ngIf="accommodation.info.kitchen">
+                          <div class="col-2">
+                            <label class="tab-label"><i class="fa fa-cutlery" aria-hidden="true"></i> Kitchen</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" *ngIf="accommodation.info.kitchen"/>
+                        <div class="row" *ngIf="accommodation.info.tv">
+                          <div class="col-2">
+                            <label class="tab-label"><i class="fa fa-television" aria-hidden="true"></i> TV</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" *ngIf="accommodation.info.tv"/>
+                        <div class="row" *ngIf="accommodation.info.parking">
+                          <div class="col-2">
+                            <label class="tab-label"><i class="fa fa-car" aria-hidden="true"></i> Parking</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" *ngIf="accommodation.info.parking"/>
+                        <div class="row" *ngIf="accommodation.info.elevator">
+                          <div class="col-2">
+                            <label class="tab-label"><i class="fa fa-arrow-up" aria-hidden="true"></i> Elevator</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" *ngIf="accommodation.info.elevator"/>
+                      </div>
+                    </ng-template>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="rules-tab" data-toggle="tab" href="#rules" role="tab" aria-controls="rules" aria-selected="false">Rules</a>
+
+                  <li ngbNavItem>
+                    <a ngbNavLink>Location</a>
+                    <ng-template ngbNavContent>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-12">
+                            <div id="map" leaflet (leafletMapReady)="onMapReady($event)" [leafletOptions]="mapOptions"></div>
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Road</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.location.address.road}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Number</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.location.address.number}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Suburb</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.location.address.suburb}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">City</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.location.address.city}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Country</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.location.address.country}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Postcode</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.location.address.postcode}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label">Transportation</label>
+                          </div>
+                          <div class="col-6">
+                            {{accommodation.location.transportation}}
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                      </div>
+                    </ng-template>
+                  </li>
+
+                  <li ngbNavItem>
+                    <a ngbNavLink>Rules</a>
+                    <ng-template ngbNavContent>
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label" *ngIf="accommodation.rules.smoking"><i class="fa fa-check" aria-hidden="true"></i> Smoking</label>
+                            <label class="tab-label" *ngIf="!accommodation.rules.smoking"><i class="fa fa-times" aria-hidden="true"></i> Smoking</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label" *ngIf="accommodation.rules.pets"><i class="fa fa-check" aria-hidden="true"></i> Pets</label>
+                            <label class="tab-label" *ngIf="!accommodation.rules.pets"><i class="fa fa-times" aria-hidden="true"></i> Pets</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                        <div class="row">
+                          <div class="col-2">
+                            <label class="tab-label" *ngIf="accommodation.rules.events"><i class="fa fa-check" aria-hidden="true"></i> Events</label>
+                            <label class="tab-label" *ngIf="!accommodation.rules.events"><i class="fa fa-times" aria-hidden="true"></i> Events</label>
+                          </div>
+                        </div>
+                        <hr class="mt-2" />
+                      </div>
+                    </ng-template>
                   </li>
                 </ul>
+                <div [ngbNavOutlet]="nav"></div>
 
-                <div class="tab-content ml-1" id="myTabContent">
-                  <div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
-
-                    <div class="row">
-                      <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;">Name</label>
-                      </div>
-                      <div class="col-md-8 col-6">
-                        {{accommodation.info.name}}
-                      </div>
-                    </div>
-                    <hr />
-
-                    <div class="row">
-                      <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;">Type</label>
-                      </div>
-                      <div class="col-md-8 col-6">
-                        {{accommodation.info.type}}
-                      </div>
-                    </div>
-                    <hr />
-                  </div>
-
-                  <div class="tab-pane fade" id="location" role="tabpanel" aria-labelledby="location-tab">
-                    <div class="row">
-                      <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;">Address</label>
-                      </div>
-                      <div class="col-md-8 col-6">
-                        {{accommodation.location.address.label}}
-                      </div>
-                    </div>
-                    <hr />
-
-                    <div class="row">
-                      <div class="col-sm-3 col-md-2 col-5">
-                        <label style="font-weight:bold;">Transportation</label>
-                      </div>
-                      <div class="col-md-8 col-6">
-                        {{accommodation.location.transportation}}
-                      </div>
-                    </div>
-                    <hr />
-                  </div>
-
-                  <div class="tab-pane fade" id="rules" role="tabpanel" aria-labelledby="rules-tab">
-                  </div>
-                </div>
               </div>
             </div>
 

@@ -91,15 +91,12 @@ export class ChatComponent implements OnInit {
   }
 
   onSend(): void {
-    console.log(this.messageForm.controls.message.value);
-
     const formData = new FormData();
     formData.append('chatID', this.chat.id.toString());
     formData.append('senderUsername', this.currentUsername);
     formData.append('message', this.messageForm.controls.message.value);
 
     this.dataService.sendMessage(formData).subscribe(response => {
-      console.log('Sent ' + this.messageForm.controls.message.value);
       this.messageForm.reset();
 
       this.dataService.getChat(this.accommodationID, this.guestUsername, this.currentUsername)

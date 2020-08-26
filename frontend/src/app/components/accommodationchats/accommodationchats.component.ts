@@ -56,9 +56,8 @@ export class AccommodationchatsComponent implements OnInit {
         this.chats.sort(compareChats);
 
         for (let i = 0; i < this.chats.length; i++) {
-          if (this.chats[i].messages.length) {
-            console.log(new Date(this.chats[i].messages[this.chats[i].messages.length-1].timestamp))
-          }
+          console.log(this.chats[i].guestRead);
+          console.log(this.chats[i].hostRead);
 
           this.dataService.getUserPicture(this.chats[i].guest.username)
             .subscribe(pic => {

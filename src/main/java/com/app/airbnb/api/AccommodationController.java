@@ -5,6 +5,7 @@ import com.app.airbnb.repositories.AccommodationRepository;
 import com.app.airbnb.repositories.ImageRepository;
 import com.app.airbnb.repositories.UserRepository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
@@ -92,5 +93,46 @@ class AccommodationController {
     @ResponseBody byte[] getAccommodationImage(@PathVariable Long id, @PathVariable Integer index) throws IOException {
         Accommodation accommodation = this.accommodationRepository.getOne(id);
         return Base64.encodeBase64(Files.readAllBytes(Paths.get(accommodation.getImages().get(index).getPath())));
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/changeAccommodation")
+    ResponseEntity<String> changeAccommodation(@RequestParam("info") String jsonInfo, @RequestParam("location") String jsonLocation,
+                                               @RequestParam("rules") String jsonRules, @RequestParam("id") String id,
+                                               @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
+                                               @RequestParam("images") MultipartFile[] images) {
+        try {
+            Accommodation accommodation = this.accommodationRepository.getOne(Long.parseLong(id));
+            AccommodationInfo info = new ObjectMapper().readValue(jsonInfo, AccommodationInfo.class);
+            AccommodationLocation location = new ObjectMapper().readValue(jsonLocation, AccommodationLocation.class);
+            AccommodationRules rules = new ObjectMapper().readValue(jsonRules, AccommodationRules.class);
+
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("u-M-d");
+            LocalDate localStartDate = LocalDate.parse(startDate, dateFormatter);
+            LocalDate localEndDate = LocalDate.parse(endDate, dateFormatter);
+            info.setStartDate(localStartDate);
+            info.setEndDate(localEndDate);
+
+            if (images != null) {
+                List<Image> accommodationImages = accommodation.getImages();
+                for (MultipartFile image : images) {
+                    String path = this.userRepository.uploadImage(image);
+                    Image newImage = new Image(path, accommodation);
+                    this.imageRepository.save(newImage);
+                    accommodationImages.add(newImage);
+                }
+                accommodation.setImages(accommodationImages);
+            }
+
+            accommodation.setInfo(info);
+            accommodation.setLocation(location);
+            accommodation.setRules(rules);
+
+            this.accommodationRepository.save(accommodation);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

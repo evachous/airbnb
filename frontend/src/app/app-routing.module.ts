@@ -14,6 +14,7 @@ import { AccommodationchatsComponent } from './components/accommodationchats/acc
 import { GuestchatsComponent } from './components/guestchats/guestchats.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { SearchComponent } from './components/search/search.component';
+import { AccommodationsettingsComponent } from './components/accommodationsettings/accommodationsettings.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
@@ -39,6 +40,7 @@ const appRoutes: Routes = [
       { path: ':id', component: AccommodationComponent }
     ]
   },
+  { path: 'accommodationsettings/:id', component: AccommodationsettingsComponent, canActivate: [AuthGuard, HostGuard] },
   { path: 'hostchats', component: HostchatsComponent, canActivate: [AuthGuard, HostGuard] },
   { path: 'accommodationchats/:id', component: AccommodationchatsComponent, canActivate: [AuthGuard, HostGuard] },
   { path: 'guestchats', component: GuestchatsComponent, canActivate: [AuthGuard, GuestGuard] },

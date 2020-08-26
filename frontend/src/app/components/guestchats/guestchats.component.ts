@@ -32,6 +32,9 @@ export class GuestchatsComponent implements OnInit {
       this.emptyChats = this.chats.length == 0;
 
       for (let i = 0; i < this.chats.length; i++) {
+        console.log(this.chats[i].guestRead);
+        console.log(this.chats[i].hostRead);
+
         this.dataService.getUserPicture(this.chats[i].accommodation.host.username)
           .subscribe(pic => {
             if (pic === '')

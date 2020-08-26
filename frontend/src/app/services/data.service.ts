@@ -92,5 +92,9 @@ export class DataService {
   searchAccommodations(params: HttpParams): Observable<Accommodation[]> {
     return this.http.get<Accommodation[]>(this.url + 'searchAccommodations', {params: params});
   }
+
+  changeAccommodation(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'changeAccommodation', formData, {observe: 'response'});
+  }
 }
 

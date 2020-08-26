@@ -5,6 +5,7 @@ import {Accommodation} from "../../model/accommodation";
 import {User} from "../../model/user";
 import {AuthenticationService} from "../../services/authentication.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {icon, LatLng, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet";
 
 @Component({
   selector: 'app-accommodation',
@@ -20,6 +21,10 @@ export class AccommodationComponent implements OnInit {
   hostPicture: any;
   currentUsername: string = null;
   currentUser: User = null;
+
+  map: Map;
+  mapOptions: MapOptions;
+  marker: Marker = null;
 
   constructor(
     private router: Router,
@@ -59,6 +64,8 @@ export class AccommodationComponent implements OnInit {
         })
       }
 
+      this.initMapOptions();
+
       this.dataService.getUserPicture(this.host.username).subscribe(pic => {
         if (pic === '')
           this.hostPicture = 'http://placehold.it/150x150';
@@ -85,6 +92,41 @@ export class AccommodationComponent implements OnInit {
     },(error: HttpErrorResponse) => {
       console.log(error);
     })
+  }
+
+  initMapOptions(): void {
+    this.mapOptions = {
+      center: latLng(this.accommodation.location.address.lat, this.accommodation.location.address.lng),
+      zoom: 20,
+      layers: [
+        tileLayer(
+          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            maxZoom: 18,
+            attribution: 'Map data © OpenStreetMap contributors'
+          })
+      ],
+    };
+  }
+
+  onMapReady(map: Map) {
+    this.map = map;
+
+    this.marker = new Marker([this.accommodation.location.address.lat, this.accommodation.location.address.lng])
+      .setIcon(
+        icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          popupAnchor: [1, -34],
+          iconUrl: 'assets/marker-icon.png'
+        }));
+    this.marker.addTo(this.map);
+
+    this.marker.bindPopup(this.accommodation.location.address.label).openPopup();
+  }
+
+  onTabChange() {
+    this.map.invalidateSize();
   }
 
 }

@@ -1,5 +1,6 @@
 .profile {
   margin-top: 5%;
+  margin-bottom: 2%;
 }
 
 .image-container {
@@ -45,4 +46,13 @@
 
 .accommodation-data .nav-tabs .nav-link.active {
   color: #495057;
+}
+
+.tab-label {
+  font-weight: 600;
+}
+
+#map {
+  height: 300px;
+  width: 100%;
 }

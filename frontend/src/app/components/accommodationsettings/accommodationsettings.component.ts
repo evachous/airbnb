@@ -1,35 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from "../../services/authentication.service";
-import {User} from "../../model/user";
-import {DataService} from "../../services/data.service";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Accommodation, Address} from "../../model/accommodation";
+import {AuthenticationService} from "../../services/authentication.service";
+import {DataService} from "../../services/data.service";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {NgbDate, NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {icon, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet";
+import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
-import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {latLng, MapOptions, tileLayer, Map, Marker, icon, Popup, LocationEvent} from 'leaflet';
-import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
 
 @Component({
-  selector: 'app-accommodations',
-  templateUrl: './hostaccommodations.component.html',
-  styleUrls: ['./hostaccommodations.component.css']
+  selector: 'app-accommodationsettings',
+  templateUrl: './accommodationsettings.component.html',
+  styleUrls: ['./accommodationsettings.component.css']
 })
-export class HostaccommodationsComponent implements OnInit {
-  username: string;
-  user: User;
-  accommodations: Accommodation[] = null;
-  accommodationsImages: string[] = new Array<string>();
-  emptyAcc: boolean;
-
-  map: Map;
-  mapOptions: MapOptions;
-  marker: Marker = null;
-  provider: OpenStreetMapProvider;
-  searchControl: GeoSearchControl;
-  selectedAddress: Address = new Address();
-
-  selectedImages: FileList;
+export class AccommodationsettingsComponent implements OnInit {
+  found = true;
+  accommodationID: number;
+  accommodation: Accommodation;
+  accommodationImages: string[] = new Array<string>();
 
   infoForm: FormGroup;
   locationForm: FormGroup;
@@ -38,43 +28,61 @@ export class HostaccommodationsComponent implements OnInit {
   message: string = null;
   successMessage: boolean;
 
+  oldMap: Map;
+  oldMapOptions: MapOptions;
+  marker: Marker = null;
+  map: Map;
+  mapOptions: MapOptions;
+  provider: OpenStreetMapProvider;
+  searchControl: GeoSearchControl;
+  selectedAddress: Address = new Address();
+
+  selectedImages: FileList;
+  addedImages = false;
+
   hoveredDate: NgbDate | null = null;
   minDate: NgbDate;
   invalidDate: boolean;
-
-  page = 1;
-  pageSize = 2;
+  startDate: NgbDateStruct;
+  endDate: NgbDateStruct;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
     private dataService: DataService,
+    private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private calendar: NgbCalendar
-  ) {
-    this.minDate = calendar.getToday();
-  }
+    private parserFormatter: NgbDateParserFormatter
+  ) { }
 
   ngOnInit(): void {
-    this.username = this.authenticationService.getTokenUsername;
-    this.dataService.getUser(this.username).subscribe( user => {
-      this.user = user;
-      this.accommodations = this.user.accommodations;
-      this.emptyAcc = this.accommodations.length == 0;
+    this.route.params.subscribe((params) => {
+      this.accommodationID = params.id;
 
-      for (let i = 0; i < this.accommodations.length; i++) {
-        this.dataService.getAccommodationImage(this.accommodations[i].id, 0).subscribe(image => {
-          this.accommodationsImages[i] = 'data:image/jpeg;base64,' + image;
+      this.loadSettings();
+    });
+  }
+
+  loadSettings(): void {
+    this.dataService.getAccommodation(this.accommodationID).subscribe(acc => {
+      this.accommodation = acc;
+      this.found = true;
+
+      for (let i = 0; i < this.accommodation.images.length; i++) {
+        this.dataService.getAccommodationImage(this.accommodationID, i).subscribe(image => {
+          this.accommodationImages[i] = 'data:image/jpeg;base64,' + image;
         })
       }
 
       this.message = this.alertService.getMessage;
-      this.successMessage = this.message != null && (this.message === 'Added accommodation successfully!');
+      this.successMessage = this.message != null && (this.message === 'Changed accommodation settings successfully!');
       localStorage.removeItem('message');
 
       this.initForms();
       this.initMapOptions();
-    });
+    },error => {
+      this.found = false;
+    })
   }
 
   get f1(): { [p: string]: AbstractControl } {
@@ -90,44 +98,59 @@ export class HostaccommodationsComponent implements OnInit {
   }
 
   initForms(): void {
+    this.startDate = this.parserFormatter.parse(this.accommodation.info.startDate);
+    this.endDate = this.parserFormatter.parse(this.accommodation.info.endDate);
     this.infoForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-      minCost: ['', Validators.required],
-      costPerPerson: ['', Validators.required],
-      type: ['', Validators.required],
-      beds: ['', Validators.required],
-      bedrooms: ['', Validators.required],
-      bathrooms: ['', Validators.required],
-      area: ['', Validators.required],
-      description: ['', Validators.required],
-      images: ['', Validators.required],
-      livingRoom: false,
-      internet: false,
-      ac: false,
-      heating: false,
-      kitchen: false,
-      tv: false,
-      parking: false,
-      elevator: false
+      name: this.accommodation.info.name,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      minCost: this.accommodation.info.minCost,
+      costPerPerson: this.accommodation.info.costPerPerson,
+      type: this.accommodation.info.type,
+      beds: this.accommodation.info.beds,
+      bedrooms: this.accommodation.info.bedrooms,
+      bathrooms: this.accommodation.info.bathrooms,
+      area: this.accommodation.info.area,
+      description: this.accommodation.info.description,
+      images: [''],
+      livingRoom: this.accommodation.info.livingRoom,
+      internet: this.accommodation.info.internet,
+      ac: this.accommodation.info.ac,
+      heating: this.accommodation.info.heating,
+      kitchen: this.accommodation.info.kitchen,
+      tv: this.accommodation.info.tv,
+      parking: this.accommodation.info.parking,
+      elevator: this.accommodation.info.elevator
     });
 
     this.locationForm = this.formBuilder.group({
-      address: [null, Validators.required],
-      transportation: ['', Validators.required]
+      address: this.accommodation.location.address,
+      transportation: this.accommodation.location.transportation
     });
 
     this.rulesForm = this.formBuilder.group({
-      smoking: false,
-      pets: false,
-      events: false,
-      minDays: ['', Validators.required],
-      maxPeople: ['', Validators.required]
+      smoking: this.accommodation.rules.smoking,
+      pets: this.accommodation.rules.pets,
+      events: this.accommodation.rules.events,
+      minDays: this.accommodation.rules.minDays,
+      maxPeople: this.accommodation.rules.maxPeople
     });
   }
 
   initMapOptions(): void {
+    this.oldMapOptions = {
+      center: latLng(this.accommodation.location.address.lat, this.accommodation.location.address.lng),
+      zoom: 20,
+      layers: [
+        tileLayer(
+          'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            maxZoom: 18,
+            attribution: 'Map data © OpenStreetMap contributors'
+          })
+      ],
+    };
+
     this.mapOptions = {
       center: latLng(51.505, 0),
       zoom: 9,
@@ -140,6 +163,22 @@ export class HostaccommodationsComponent implements OnInit {
           })
       ],
     };
+  }
+
+  onOldMapReady(oldMap: Map) {
+    this.oldMap = oldMap;
+
+    this.marker = new Marker([this.accommodation.location.address.lat, this.accommodation.location.address.lng])
+      .setIcon(
+        icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          popupAnchor: [1, -34],
+          iconUrl: 'assets/marker-icon.png'
+        }));
+    this.marker.addTo(this.oldMap);
+
+    this.marker.bindPopup(this.accommodation.location.address.label).openPopup();
   }
 
   onMapReady(map: Map) {
@@ -169,7 +208,6 @@ export class HostaccommodationsComponent implements OnInit {
     }).addTo(map);
 
     this.map.on('geosearch/showlocation', (result: any) => {
-      console.log(result);
       this.fillAddress(result.location.raw.address, result.location.label, result.location.y, result.location.x);
       this.f2.address.setValue(this.selectedAddress);
     });
@@ -201,23 +239,6 @@ export class HostaccommodationsComponent implements OnInit {
     this.selectedAddress.lng = lng;
   }
 
-  /*onMapClick(e) {
-    if (this.marker != null) {
-      this.map.removeLayer(this.marker);
-    }
-    this.marker = new Marker(e.latlng)
-      .setIcon(
-        icon({
-          iconSize: [25, 41],
-          iconAnchor: [13, 41],
-          popupAnchor: [1, -34],
-          iconUrl: 'assets/marker-icon.png'
-        }));
-    this.marker.addTo(this.map);
-
-    this.marker.bindPopup("You clicked the map at " + e.latlng.toString()).openPopup();
-  }*/
-
   isHovered(date: NgbDate): boolean {
     return this.f1.startDate.value && !this.f1.endDate.value && this.hoveredDate && date.after(this.f1.startDate.value)
       && date.before(this.hoveredDate);
@@ -238,6 +259,7 @@ export class HostaccommodationsComponent implements OnInit {
 
   onFileChange(event): void {
     if (event.target.files && event.target.files.length) {
+      this.addedImages = true;
       this.selectedImages = event.target.files;
     }
   }
@@ -251,28 +273,26 @@ export class HostaccommodationsComponent implements OnInit {
     formData.append('info', jsonInfo);
     formData.append('location', jsonLocation);
     formData.append('rules', jsonRules);
-    formData.append('username', this.username);
+    formData.append('id', this.accommodationID.toString());
     formData.append('startDate',this.f1.startDate.value.year + '-' + this.f1.startDate.value.month + '-'
-                                          + this.f1.startDate.value.day);
+      + this.f1.startDate.value.day);
     formData.append('endDate', this.f1.endDate.value.year + '-' + this.f1.endDate.value.month + '-'
-                                          + this.f1.endDate.value.day);
+      + this.f1.endDate.value.day);
 
-    for (let i = 0; i < this.selectedImages.length; i++) {
-      formData.append('images', this.selectedImages[i]);
+    if (this.addedImages) {
+      for (let i = 0; i < this.selectedImages.length; i++) {
+        formData.append('images', this.selectedImages[i]);
+      }
     }
 
-    console.log(jsonInfo);
-    console.log(jsonLocation);
-    console.log(jsonRules);
-
-    this.dataService.addAccommodation(formData)
+    this.dataService.changeAccommodation(formData)
       .subscribe(
         response => {
-          this.alertService.changeMessage('Added accommodation successfully!');
+          this.alertService.changeMessage('Changed accommodation settings successfully!');
           window.location.reload();
         },
         (error: HttpErrorResponse) => {
-          this.alertService.changeMessage('Error adding accommodation');
+          this.alertService.changeMessage('Error changing accommodation settings');
           window.location.reload();
         }
       )
