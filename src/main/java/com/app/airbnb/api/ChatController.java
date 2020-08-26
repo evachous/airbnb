@@ -40,15 +40,15 @@ class ChatController {
             Chat chat = new Chat(accommodation, guest);
             this.chatRepository.save(chat);
 
-            List<Chat> accommodationChats = accommodation.getChats();
+            /*List<Chat> accommodationChats = accommodation.getChats();
             accommodationChats.add(chat);
             accommodation.setChats(accommodationChats);
-            this.accommodationRepository.save(accommodation);
+            this.accommodationRepository.save(accommodation);*/
 
-            List<Chat> guestChats = guest.getChats();
+            /*List<Chat> guestChats = guest.getChats();
             guestChats.add(chat);
             guest.setChats(guestChats);
-            this.userRepository.save(guest);
+            this.userRepository.save(guest);*/
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -146,7 +146,7 @@ class ChatController {
             this.chatMessageRepository.deleteById(message.getId());
         }
 
-        Accommodation accommodation = chat.getAccommodation();
+        /*Accommodation accommodation = chat.getAccommodation();
         List<Chat> accommodationChats = accommodation.getChats();
         accommodationChats.remove(chat);
         this.accommodationRepository.save(accommodation);
@@ -154,7 +154,7 @@ class ChatController {
         User guest = chat.getGuest();
         List<Chat> guestChats = guest.getChats();
         guestChats.remove(chat);
-        this.userRepository.save(guest);
+        this.userRepository.save(guest);*/
 
         this.chatRepository.deleteById(id);
     }

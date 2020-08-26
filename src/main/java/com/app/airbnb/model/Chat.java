@@ -18,12 +18,14 @@ public class Chat {
     private Boolean guestRead;
     private Boolean hostRead;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JsonIgnoreProperties("chats")
+    @ManyToOne
+    //@JsonIgnoreProperties("chats")
+    @JoinColumn(name = "accommodation_id")
     private Accommodation accommodation;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JsonIgnoreProperties("chats")
+    @ManyToOne
+    //@JsonIgnoreProperties("chats")
+    @JoinColumn(name = "user_id")
     private User guest;
 
     public Chat() {}

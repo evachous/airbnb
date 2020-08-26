@@ -9,7 +9,11 @@ import java.util.List;
 @Data
 @Entity
 public class User {
-    @Id @GeneratedValue private Long id;
+    @Id
+    @GeneratedValue
+    @Column(name = "user_id")
+    private Long id;
+
     private String username;
     private String password;
     private String firstName;
@@ -37,9 +41,9 @@ public class User {
     @JsonIgnoreProperties("guest")
     private List<Reservation> reservations;*/
 
-    @OneToMany(mappedBy = "guest")
+    /*@OneToMany(mappedBy = "guest")
     @JsonIgnoreProperties("guest")
-    private List<Chat> chats;
+    private List<Chat> chats;*/
 
     public User() {}
 

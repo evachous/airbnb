@@ -7,7 +7,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { UserComponent } from './components/user/user.component';
+import { UsersComponent } from './components/users/users.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SignupComponent } from './components/signup/signup.component';
@@ -30,7 +30,7 @@ import { AccommodationsettingsComponent } from './components/accommodationsettin
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent,
+    UsersComponent,
     HomeComponent,
     NavbarComponent,
     SignupComponent,

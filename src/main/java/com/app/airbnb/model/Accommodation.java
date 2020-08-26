@@ -9,7 +9,10 @@ import java.util.List;
 @Data
 @Entity
 public class Accommodation {
-    @Id @GeneratedValue private Long id;
+    @Id
+    @GeneratedValue
+    @Column(name = "accommodation_id")
+    private Long id;
 
     @OneToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("accommodation")
@@ -35,9 +38,9 @@ public class Accommodation {
     @JsonIgnoreProperties("accommodation")
     private List<Reservation> reservations;*/
 
-    @OneToMany(mappedBy = "accommodation")
-    @JsonIgnoreProperties("accommodation")
-    private List<Chat> chats;
+    //@OneToMany(mappedBy = "accommodation")
+    //@JsonIgnoreProperties("accommodation")
+    //private List<Chat> chats;
 
     private Double avgRating;
 

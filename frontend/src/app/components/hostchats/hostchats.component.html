@@ -26,13 +26,13 @@
                         <div class="card-title">
                           <div class="d-flex justify-content-start">
                             <div class="image-container">
-                              <img [src]="accommodationsImages[i + (page-1) * pageSize][0]" class="img-thumbnail" />
+                              <img [src]="accommodationsImages[i + (page-1) * pageSize]" class="img-thumbnail" />
                             </div>
 
                             <div class="col-9">
                               <a [routerLink]="['/accommodationchats', a.id]" class="d-block accommodation-link mb-1">{{a.info.name}}</a>
                               <h6 class="d-block mb-2"><i class="fa fa-globe" aria-hidden="true"></i> {{a.location.address.label}}</h6>
-                              <h6 class="d-block" style="font-weight: 600"><i class="fa fa-commenting"></i> {{a.chats.length}} chats</h6>
+                              <h6 class="d-block" style="font-weight: 600"><i class="fa fa-commenting"></i> {{chats[i + (page-1) * pageSize]}} chats</h6>
                             </div>
                           </div>
                         </div>

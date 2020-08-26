@@ -3,6 +3,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {DataService} from "../../services/data.service";
 import {User} from "../../model/user";
 import {Accommodation} from "../../model/accommodation";
+import {Chat} from "../../model/chat";
 
 @Component({
   selector: 'app-hostchats',
@@ -13,8 +14,9 @@ export class HostchatsComponent implements OnInit {
   username: string;
   user: User;
   accommodations: Accommodation[] = null;
-  accommodationsImages: string[][] = new Array<string[]>();
+  accommodationsImages: string[] = new Array<string>();
   emptyAcc: boolean;
+  chats: number[] = new Array<number>();
 
   page = 1;
   pageSize = 2;
@@ -32,16 +34,13 @@ export class HostchatsComponent implements OnInit {
       this.emptyAcc = this.accommodations.length == 0;
 
       for (let i = 0; i < this.accommodations.length; i++) {
-        console.log(this.accommodations[i].id);
-        console.log(this.accommodations[i].images.length);
+        this.dataService.getAccommodationImage(this.accommodations[i].id, 0).subscribe(image => {
+          this.accommodationsImages[i] = 'data:image/jpeg;base64,' + image;
+        })
 
-        this.accommodationsImages[i] = new Array<string>();
-
-        for (let j = 0; j < this.accommodations[i].images.length; j++) {
-          this.dataService.getAccommodationImage(this.accommodations[i].id, j).subscribe(image => {
-            this.accommodationsImages[i][j] = 'data:image/jpeg;base64,' + image;
-          })
-        }
+        this.dataService.getAccommodationChats(this.accommodations[i].id).subscribe(chats => {
+          this.chats[i] = chats.length;
+        })
       }
     })
   }

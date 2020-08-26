@@ -15,7 +15,7 @@ export class AccommodationchatsComponent implements OnInit {
   found = true;
   accommodationID: number;
   accommodation: Accommodation;
-  chats: Chat[];
+  chats: Chat[] = new Array<Chat>();
   emptyChats: boolean;
   guestPictures: string[] = new Array<string>();
   host: User;
@@ -45,31 +45,31 @@ export class AccommodationchatsComponent implements OnInit {
       this.accommodation = acc;
       this.host = this.accommodation.host;
 
-      if (this.host.username != this.currentUsername) {
+      if (this.host.username != this.currentUsername) {//TODO: make separate guard
         this.found = false;
       }
       else {
         this.found = true;
-        this.chats = this.accommodation.chats;
-        this.emptyChats = this.chats.length == 0;
+        //this.chats = this.accommodation.chats;
+        this.dataService.getAccommodationChats(this.accommodationID).subscribe(chats => {
+          this.chats = chats;
+          this.emptyChats = this.chats.length == 0;
 
-        this.chats.sort(compareChats);
+          this.chats.sort(compareChats);
 
-        for (let i = 0; i < this.chats.length; i++) {
-          console.log(this.chats[i].guestRead);
-          console.log(this.chats[i].hostRead);
-
-          this.dataService.getUserPicture(this.chats[i].guest.username)
-            .subscribe(pic => {
-              if (pic === '')
+          for (let i = 0; i < this.chats.length; i++) {
+            this.dataService.getUserPicture(this.chats[i].guest.username)
+              .subscribe(pic => {
+                if (pic === '')
+                  this.guestPictures[i] = 'http://placehold.it/150x150';
+                else
+                  this.guestPictures[i] = 'data:image/jpeg;base64,' + pic;
+              }, error => {
                 this.guestPictures[i] = 'http://placehold.it/150x150';
-              else
-                this.guestPictures[i] = 'data:image/jpeg;base64,' + pic;
-            }, error => {
-              this.guestPictures[i] = 'http://placehold.it/150x150';
-              console.log(error);
-            })
-        }
+                console.log(error);
+              })
+          }
+        })
 
       }
 

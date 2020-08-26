@@ -1,0 +1,67 @@
+<div class="container users">
+  <div *ngIf="users">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="card">
+
+          <div class="card-body">
+            <div class="card-title mb-4">
+              <h2 style="font-size: 1.5rem; font-weight: bold">Users</h2>
+              <hr />
+            </div>
+
+            <div class="d-flex justify-content-start">
+              <div class="col-12">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="users.length">
+                </ngb-pagination>
+
+                <table class="col-12" style="table-layout: fixed">
+                  <tr *ngFor="let u of users | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <div class="card-title">
+                          <div class="d-flex justify-content-start">
+                            <div class="image-container">
+                              <img [src]="userPictures[i + (page-1) * pageSize]" class="img-thumbnail" />
+                            </div>
+
+                            <div class="col-10">
+                              <a [routerLink]="['/users', u.username]" class="d-block user-link mb-1">@{{u.username}}</a>
+                              <h6 class="d-block mb-2" style="font-weight: 600">{{u.firstName}} {{u.lastName}}</h6>
+                              <h6 class="d-block" *ngIf="u.isAdmin">Admin</h6>
+                              <h6 class="d-block" *ngIf="u.isHost && u.isGuest && u.isApproved">Host & Guest,
+                                <span style="color: green"> Approved</span></h6>
+                              <h6 class="d-block" *ngIf="u.isHost && u.isGuest && !u.isApproved">Host & Guest,
+                                <span style="color: red"> Not Approved</span></h6>
+                              <h6 class="d-block" *ngIf="u.isHost && !u.isGuest && u.isApproved">Host,
+                                <span style="color: green"> Approved</span></h6>
+                              <h6 class="d-block" *ngIf="u.isHost && !u.isGuest && !u.isApproved">Host,
+                                <span style="color: red"> Not Approved</span></h6>
+                              <h6 class="d-block" *ngIf="!u.isHost && u.isGuest">Guest</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </tr>
+                </table>
+
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="users.length">
+                </ngb-pagination>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

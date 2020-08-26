@@ -70,8 +70,8 @@ export class HomeComponent implements OnInit {
   onResultClick(r): void {
     this.value = r.label;
     this.f.location.setValue(r.label);
-    this.f.lat.setValue(r.x);
-    this.f.lng.setValue(r.y);
+    this.f.lat.setValue(r.y);
+    this.f.lng.setValue(r.x);
     this.results = [];
   }
 

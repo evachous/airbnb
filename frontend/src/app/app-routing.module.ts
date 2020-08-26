@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './components/home/home.component';
-import { UserComponent } from './components/user/user.component';
+import { UsersComponent } from './components/users/users.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserprofileComponent } from './components/userprofile/userprofile.component';
@@ -29,7 +29,7 @@ const appRoutes: Routes = [
   {
     path: 'users',
     children: [
-      { path: '', component: UserComponent, canActivate: [AuthGuard, AdminGuard] },
+      { path: '', component: UsersComponent, canActivate: [AuthGuard, AdminGuard] },
       { path: ':username', component: UserprofileComponent, canActivate: [AdminGuard] }
     ]
   },

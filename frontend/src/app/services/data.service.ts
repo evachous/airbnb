@@ -77,6 +77,14 @@ export class DataService {
     return this.http.get<Chat>(this.url + 'getChat/' + accommodationID + '/' + guestUsername + '/' + currentUsername);
   }
 
+  getGuestChats(username): Observable<Chat[]> {
+    return this.http.get<Chat[]>(this.url + 'getGuestChats/' + username);
+  }
+
+  getAccommodationChats(id): Observable<Chat[]> {
+    return this.http.get<Chat[]>(this.url + 'getAccommodationChats/' + id);
+  }
+
   chatCheck(accommodationID, guestUsername, currentUsername): Observable<boolean> {
     return this.http.get<boolean>(this.url + 'chatCheck/' + accommodationID + '/' + guestUsername + '/' + currentUsername);
   }
