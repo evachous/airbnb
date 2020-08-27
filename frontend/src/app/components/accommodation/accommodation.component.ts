@@ -5,7 +5,8 @@ import {Accommodation} from "../../model/accommodation";
 import {User} from "../../model/user";
 import {AuthenticationService} from "../../services/authentication.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {icon, LatLng, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet";
+import {icon, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet";
+import {AlertService} from "../../services/alert.service";
 
 @Component({
   selector: 'app-accommodation',
@@ -15,6 +16,7 @@ import {icon, LatLng, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet"
 export class AccommodationComponent implements OnInit {
   queryParams: Params;
   missingParams = false;
+  available = true;
 
   found = true;
   accommodationID: number;
@@ -25,6 +27,9 @@ export class AccommodationComponent implements OnInit {
   currentUsername: string = null;
   currentUser: User = null;
 
+  message: string = null;
+  successMessage: boolean;
+
   map: Map;
   mapOptions: MapOptions;
   marker: Marker = null;
@@ -33,13 +38,14 @@ export class AccommodationComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataService,
+    private alertService: AlertService,
     private authenticationService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.queryParams = params;
-      console.log(this.queryParams);
+
       if (this.queryParams.location == undefined || this.queryParams.lat == undefined ||
         this.queryParams.lng == undefined || this.queryParams.checkin == undefined ||
         this.queryParams.checkout == undefined || this.queryParams.guests == undefined) {
@@ -57,6 +63,10 @@ export class AccommodationComponent implements OnInit {
         })
       }
 
+      this.message = this.alertService.getMessage;
+      this.successMessage = this.message != null && (this.message === 'Reserved accommodation successfully!');
+      localStorage.removeItem('message');
+
       this.loadAccommodation();
     });
 
@@ -73,6 +83,15 @@ export class AccommodationComponent implements OnInit {
           this.accommodationImages[i] = 'data:image/jpeg;base64,' + image;
         })
       }
+
+      this.dataService.checkDateAvailability(this.accommodationID, this.queryParams.checkin,
+        this.queryParams.checkout).subscribe(available => {
+          console.log(available);
+          this.available = available;
+      },error => {
+          this.available = false;
+          console.log(error);
+      })
 
       this.initMapOptions();
 
@@ -135,8 +154,30 @@ export class AccommodationComponent implements OnInit {
     this.marker.bindPopup(this.accommodation.location.address.label).openPopup();
   }
 
-  onTabChange() {
-    this.map.invalidateSize();
+  /*openModal(): void {
+    this.modalService.open(new ReservationmodalComponent(this.modal, this.queryParams.checkin,
+      this.queryParams.checkout, this.queryParams.guests))
+      .result.then((result) => {
+        this.onReserve();
+    }, dismiss => {
+    });
+  }*/
+
+  onReserve(): void {
+    const formData = new FormData();
+    formData.append('guestUsername', this.currentUsername);
+    formData.append('accommodationID', this.accommodationID.toString());
+    formData.append('numPeople', this.queryParams.guests);
+    formData.append('startDate', this.queryParams.checkin);
+    formData.append('endDate', this.queryParams.checkout);
+
+    this.dataService.makeReservation(formData).subscribe(response => {
+      this.alertService.changeMessage('Reserved accommodation successfully!');
+      window.location.reload();
+    },(error: HttpErrorResponse) => {
+      this.alertService.changeMessage('Error reserving accommodation');
+      window.location.reload();
+    })
   }
 
 }

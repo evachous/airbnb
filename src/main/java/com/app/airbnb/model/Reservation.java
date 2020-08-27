@@ -11,22 +11,35 @@ import java.time.LocalDate;
 public class Reservation {
     @Id @GeneratedValue private Long id;
 
-    /*@ManyToOne(cascade=CascadeType.ALL)
-    // @JoinColumn(name = "guestReservations", insertable = false, updatable = false)
-    @JsonIgnoreProperties("reservations")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    //@JsonIgnoreProperties("reservations")
     private User guest;
 
-    @ManyToOne(cascade=CascadeType.ALL)
-    // @JoinColumn(name = "accommodationReservations", insertable = false, updatable = false)
-    @JsonIgnoreProperties("reservations")
-    private Accommodation accommodation;*/
+    @ManyToOne
+    @JoinColumn(name = "accommodation_id")
+    //@JsonIgnoreProperties("reservations")
+    private Accommodation accommodation;
 
-    private String review;
-    private Double rating;
-    private Integer days;
-    private Integer people;
+    private Integer numPeople;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Long days;
+
+    @OneToOne(cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("reservation")
+    private Review review;
 
     public Reservation() {}
+
+    public Reservation(User guest, Accommodation accommodation, Integer numPeople, LocalDate startDate,
+                       LocalDate endDate, Long days) {
+        this.guest = guest;
+        this.accommodation = accommodation;
+        this.numPeople = numPeople;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.days = days;
+        this.review = null;
+    }
 }

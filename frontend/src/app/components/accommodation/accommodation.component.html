@@ -25,6 +25,19 @@
               <hr />
             </div>
 
+            <div *ngIf="message && successMessage" class="alert alert-success alert-dismissible fade show">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div *ngIf="message && !successMessage" class="alert alert-danger alert-dismissible fade show">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
             <div class="d-flex justify-content-start">
 
               <ngb-carousel class="col-4" *ngIf="accommodationImages" [interval]="50000">
@@ -46,8 +59,8 @@
                     <h7 class="d-block"><span style="font-weight: 600">Checkin</span>: {{queryParams.checkin | date:'mediumDate'}}</h7>
                     <h7 class="d-block"><span style="font-weight: 600">Checkout</span>: {{queryParams.checkout | date: 'mediumDate'}}</h7>
                     <h7 class="d-block"><span style="font-weight: 600">Guests</span>: {{queryParams.guests}}</h7>
-                    <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username"
-                            type="submit" class="reserve-button btn mt-2">Reserve</button>
+                    <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username && available"
+                           (click)="onReserve()" type="submit" class="reserve-button btn mt-2">Reserve</button>
                   </div>
                 </div>
               </div>

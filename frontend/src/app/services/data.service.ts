@@ -109,5 +109,13 @@ export class DataService {
   deleteAccommodationImage(id, index): Observable<{}> {
     return this.http.delete(this.url + 'deleteAccommodationImage/' + id + '/' + index, httpOptions);
   }
+
+  makeReservation(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'makeReservation', formData, {observe: 'response'});
+  }
+
+  checkDateAvailability(id, checkin, checkout): Observable<boolean> {
+    return this.http.get<boolean>(this.url + 'checkDateAvailability/' + id + '/' + checkin + '/' + checkout);
+  }
 }
 
