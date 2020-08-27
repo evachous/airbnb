@@ -5,6 +5,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DataService} from "../../services/data.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Chat} from "../../model/chat";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-accommodationchats',
@@ -29,6 +31,7 @@ export class AccommodationchatsComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private authenticationService: AuthenticationService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -78,8 +81,15 @@ export class AccommodationchatsComponent implements OnInit {
     })
   }
 
+  openModal(c: Chat): void {
+    this.modalService.open(ModalComponent)
+      .result.then((result) => {
+      this.onDeleteChat(c);
+    }, dismiss => {
+    });
+  }
+
   onDeleteChat(c: Chat): void {
-    console.log(c.id);
     this.dataService.deleteChat(c.id).subscribe(response => {
       this.loadAccommodationChats();
       window.location.reload();

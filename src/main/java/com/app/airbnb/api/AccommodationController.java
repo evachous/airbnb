@@ -100,7 +100,11 @@ class AccommodationController {
     ResponseEntity<String> deleteAccommodationImage(@PathVariable Long id, @PathVariable Integer index) {
         Accommodation accommodation = this.accommodationRepository.getOne(id);
         Image image = accommodation.getImages().get(index);
-        this.imageRepository.deleteById(image.getId());
+
+        image.setUser(null);
+        image.setAccommodation(null);
+
+        this.imageRepository.delete(image);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -133,9 +137,12 @@ class AccommodationController {
                 accommodation.setImages(accommodationImages);
             }
 
-            accommodation.setInfo(info);
-            accommodation.setLocation(location);
-            accommodation.setRules(rules);
+            //accommodation.setInfo(info);
+            //accommodation.setLocation(location);
+            //accommodation.setRules(rules);
+            this.accommodationRepository.replaceAccommodationInfo(accommodation, info);
+            this.accommodationRepository.replaceAccommodationLocation(accommodation, location);
+            this.accommodationRepository.replaceAccommodationRules(accommodation, rules);
 
             this.accommodationRepository.save(accommodation);
 

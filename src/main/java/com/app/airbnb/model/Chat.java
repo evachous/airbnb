@@ -11,10 +11,6 @@ import java.util.List;
 public class Chat {
     @Id @GeneratedValue private Long id;
 
-    @OneToMany(mappedBy = "chat")
-    @JsonIgnoreProperties("chat")
-    private List<ChatMessage> messages;
-
     private Boolean guestRead;
     private Boolean hostRead;
 
@@ -27,6 +23,10 @@ public class Chat {
     //@JsonIgnoreProperties("chats")
     @JoinColumn(name = "user_id")
     private User guest;
+
+    @OneToMany(mappedBy = "chat")
+    @JsonIgnoreProperties("chat")
+    private List<ChatMessage> messages;
 
     public Chat() {}
 

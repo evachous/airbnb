@@ -37,13 +37,18 @@
 
               <div class="col-5">
                 <h5 class="d-block mt-1 mb-2" style="font-weight: 600;">{{accommodation.info.type}} hosted by <u>{{accommodation.host.username}}</u></h5>
-                <h7 class="d-block">{{accommodation.rules.maxPeople}} guests, {{accommodation.info.bedrooms}} bedrooms, {{accommodation.info.beds}} beds,
+                <h7 class="d-block">Max {{accommodation.rules.maxPeople}} guests, {{accommodation.info.bedrooms}} bedrooms, {{accommodation.info.beds}} beds,
                   {{accommodation.info.bathrooms}} bathrooms</h7>
                 <hr />
                 <div class="mt-4">
                   <h5 class="d-block"><b>€ {{accommodation.info.minCost}}</b> / night</h5>
-                  <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username"
-                          type="submit" class="reserve-button btn">Reserve</button>
+                  <div class="mt-3" *ngIf="!missingParams">
+                    <h7 class="d-block"><span style="font-weight: 600">Checkin</span>: {{queryParams.checkin | date:'mediumDate'}}</h7>
+                    <h7 class="d-block"><span style="font-weight: 600">Checkout</span>: {{queryParams.checkout | date: 'mediumDate'}}</h7>
+                    <h7 class="d-block"><span style="font-weight: 600">Guests</span>: {{queryParams.guests}}</h7>
+                    <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username"
+                            type="submit" class="reserve-button btn mt-2">Reserve</button>
+                  </div>
                 </div>
               </div>
             </div>

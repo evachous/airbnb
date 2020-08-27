@@ -1,5 +1,6 @@
 package com.app.airbnb.repositories;
 
+import com.app.airbnb.model.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,5 +20,54 @@ public class AccommodationRepositoryCustomImpl implements AccommodationRepositor
             dist = dist * 60 * 1.1515 * 1.609344;
             return dist;
         }
+    }
+
+    public void replaceAccommodationInfo(Accommodation accommodation, AccommodationInfo newInfo) {
+        AccommodationInfo info = accommodation.getInfo();
+        info.setName(newInfo.getName());
+        info.setStartDate(newInfo.getStartDate());
+        info.setEndDate(newInfo.getEndDate());
+        info.setMinCost(newInfo.getMinCost());
+        info.setCostPerPerson(newInfo.getCostPerPerson());
+        info.setType(newInfo.getType());
+        info.setBeds(newInfo.getBeds());
+        info.setBedrooms(newInfo.getBedrooms());
+        info.setBathrooms(newInfo.getBathrooms());
+        info.setLivingRoom(newInfo.getLivingRoom());
+        info.setArea(newInfo.getArea());
+        info.setDescription(newInfo.getDescription());
+        info.setInternet(newInfo.getInternet());
+        info.setAc(newInfo.getAc());
+        info.setHeating(newInfo.getHeating());
+        info.setKitchen(newInfo.getKitchen());
+        info.setTv(newInfo.getTv());
+        info.setParking(newInfo.getParking());
+        info.setElevator(newInfo.getElevator());
+    }
+
+    public void replaceAccommodationLocation(Accommodation accommodation, AccommodationLocation newLocation) {
+        AccommodationLocation location = accommodation.getLocation();
+        location.setTransportation(newLocation.getTransportation());
+
+        Address address = location.getAddress();
+        Address newAddress = newLocation.getAddress();
+        address.setLabel(newAddress.getLabel());
+        address.setRoad(newAddress.getRoad());
+        address.setCity(newAddress.getCity());
+        address.setCountry(newAddress.getCountry());
+        address.setPostcode(newAddress.getPostcode());
+        address.setSuburb(newAddress.getSuburb());
+        address.setNumber(newAddress.getNumber());
+        address.setLat(newAddress.getLat());
+        address.setLng(newAddress.getLng());
+    }
+
+    public void replaceAccommodationRules(Accommodation accommodation, AccommodationRules newRules) {
+        AccommodationRules rules = accommodation.getRules();
+        rules.setSmoking(newRules.getSmoking());
+        rules.setPets(newRules.getPets());
+        rules.setEvents(newRules.getEvents());
+        rules.setMinDays(newRules.getMinDays());
+        rules.setMaxPeople(newRules.getMaxPeople());
     }
 }

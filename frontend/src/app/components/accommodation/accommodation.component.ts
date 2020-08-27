@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {DataService} from "../../services/data.service";
 import {Accommodation} from "../../model/accommodation";
 import {User} from "../../model/user";
@@ -13,6 +13,9 @@ import {icon, LatLng, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet"
   styleUrls: ['./accommodation.component.css']
 })
 export class AccommodationComponent implements OnInit {
+  queryParams: Params;
+  missingParams = false;
+
   found = true;
   accommodationID: number;
   accommodation: Accommodation;
@@ -35,6 +38,13 @@ export class AccommodationComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
+      this.queryParams = params;
+      console.log(this.queryParams);
+      if (this.queryParams.location == undefined || this.queryParams.lat == undefined ||
+        this.queryParams.lng == undefined || this.queryParams.checkin == undefined ||
+        this.queryParams.checkout == undefined || this.queryParams.guests == undefined) {
+        this.missingParams = true;
+      }
       this.accommodationID = params.id;
       this.currentUsername = this.authenticationService.getTokenUsername;
 

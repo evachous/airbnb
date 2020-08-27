@@ -100,7 +100,7 @@
                               </div>
 
                               <div class="col-9">
-                                <a [routerLink]="['/accommodations', a.id]" class="d-block accommodation-link mb-1">{{a.info.name}}</a>
+                                <a [routerLink]="['/accommodations', a.id, queryParams]" class="d-block accommodation-link mb-1">{{a.info.name}}</a>
                                 <h6 class="d-block">{{a.info.type}} with {{a.info.beds}} beds</h6>
                                 <h6 class="d-block">Rating</h6>
                                 <h5 class="d-block mt-4 mb-0" style="float: right;"><b>€ {{a.info.minCost}}</b> / night</h5>
