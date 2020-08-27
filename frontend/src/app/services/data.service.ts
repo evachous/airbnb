@@ -6,7 +6,8 @@ import {Accommodation} from "../model/accommodation";
 import {Chat} from "../model/chat";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json', 'Access-Control-Allow-Origin': '*' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json',
+    'Access-Control-Allow-Origin': '*' })
 };
 
 @Injectable({
@@ -65,8 +66,8 @@ export class DataService {
     return this.http.get<Accommodation>(this.url + 'accommodations/' + id);
   }
 
-  getAccommodationImage(id, image): any {
-    return this.http.get(this.url + 'getAccommodationImage/' + id + '/' + image,{responseType: "text"});
+  getAccommodationImage(id, index): any {
+    return this.http.get(this.url + 'getAccommodationImage/' + id + '/' + index,{responseType: "text"});
   }
 
   createChat(formData: FormData): Observable<HttpResponse<string>> {
@@ -93,8 +94,8 @@ export class DataService {
     return this.http.post<string>(this.url + 'sendMessage', formData, {observe: 'response'});
   }
 
-  deleteChat(chatID) {
-    return this.http.delete(this.url + 'deleteChat/' + chatID);
+  deleteChat(chatID): Observable<{}> {
+    return this.http.delete(this.url + 'deleteChat/' + chatID, httpOptions);
   }
 
   searchAccommodations(params: HttpParams): Observable<Accommodation[]> {
@@ -103,6 +104,10 @@ export class DataService {
 
   changeAccommodation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'changeAccommodation', formData, {observe: 'response'});
+  }
+
+  deleteAccommodationImage(id, index): Observable<{}> {
+    return this.http.delete(this.url + 'deleteAccommodationImage/' + id + '/' + index, httpOptions);
   }
 }
 

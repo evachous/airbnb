@@ -96,6 +96,15 @@ class AccommodationController {
     }
 
     @CrossOrigin(origins = "*")
+    @DeleteMapping("/deleteAccommodationImage/{id}/{index}")
+    ResponseEntity<String> deleteAccommodationImage(@PathVariable Long id, @PathVariable Integer index) {
+        Accommodation accommodation = this.accommodationRepository.getOne(id);
+        Image image = accommodation.getImages().get(index);
+        this.imageRepository.deleteById(image.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
     @PostMapping("/changeAccommodation")
     ResponseEntity<String> changeAccommodation(@RequestParam("info") String jsonInfo, @RequestParam("location") String jsonLocation,
                                                @RequestParam("rules") String jsonRules, @RequestParam("id") String id,

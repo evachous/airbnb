@@ -136,11 +136,11 @@ class ChatController {
 
     @CrossOrigin(origins = "*")
     @DeleteMapping("/deleteChat/{id}")
-    void deleteChat(@PathVariable Long id) {
+    ResponseEntity<String> deleteChat(@PathVariable Long id) {
         Chat chat = this.chatRepository.getOne(id);
+        //System.out.println(chat.getId());
+        //System.out.println(chat.getAccommodation().getId());
         List<ChatMessage> messages = chat.getMessages();
-
-        System.out.println("hello!");
 
         for (ChatMessage message : messages) {
             this.chatMessageRepository.deleteById(message.getId());
@@ -156,6 +156,7 @@ class ChatController {
         guestChats.remove(chat);
         this.userRepository.save(guest);*/
 
-        this.chatRepository.deleteById(id);
+        //this.chatRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

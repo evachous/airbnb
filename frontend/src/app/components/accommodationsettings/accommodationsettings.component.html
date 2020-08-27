@@ -174,8 +174,12 @@
 
                     <label class="form-label">Images</label>
                     <div class="col-12">
-                      <div *ngFor="let img of accommodationImages" class="mr-2" style="display: inline-block">
+                      <div *ngFor="let img of accommodationImages; let i = index" style="display: inline-block">
+                        <div class="image-container mr-2">
                           <img [src]="img" class="img-thumbnail" />
+                          <button type="submit" class="col-12 btn btn-danger" style="display: block" (click)="openModal(i)">
+                            <i class="fa fa-times" aria-hidden="true"></i> Delete</button>
+                        </div>
                       </div>
                     </div>
 

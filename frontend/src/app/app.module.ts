@@ -26,6 +26,7 @@ import { AccommodationchatsComponent } from './components/accommodationchats/acc
 import { GuestchatsComponent } from './components/guestchats/guestchats.component';
 import { SearchComponent } from './components/search/search.component';
 import { AccommodationsettingsComponent } from './components/accommodationsettings/accommodationsettings.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AccommodationsettingsComponent } from './components/accommodationsettin
     GuestchatsComponent,
     SearchComponent,
     AccommodationsettingsComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

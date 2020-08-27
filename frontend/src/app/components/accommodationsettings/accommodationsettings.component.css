@@ -3,6 +3,37 @@
   margin-bottom: 2%;
 }
 
+.image-container {
+  position: relative;
+}
+
+.image-container .changePicture {
+  position: center;
+  margin-top: -50%;
+  overflow: hidden;
+  width: 50%;
+  font-size: 15px;
+  background: #212529b8;
+  padding: .25rem;
+  border: none;
+  border-radius: 0;
+}
+
+.image-container .changePicture input {
+  position: absolute;
+  opacity: 0;
+  right: 0;
+  top: 0;
+}
+
+.image-container:hover .image {
+  opacity: 0.3;
+}
+
+.image-container:hover .middle {
+  opacity: 1;
+}
+
 .img-thumbnail {
   width: 250px;
   height: 200px;

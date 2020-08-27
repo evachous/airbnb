@@ -3,12 +3,13 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Accommodation, Address} from "../../model/accommodation";
 import {AuthenticationService} from "../../services/authentication.service";
 import {DataService} from "../../services/data.service";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {NgbDate, NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
+import {NgbDate, NgbDateParserFormatter, NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {icon, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet";
 import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-accommodationsettings',
@@ -52,7 +53,8 @@ export class AccommodationsettingsComponent implements OnInit {
     private dataService: DataService,
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private parserFormatter: NgbDateParserFormatter
+    private parserFormatter: NgbDateParserFormatter,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -68,11 +70,7 @@ export class AccommodationsettingsComponent implements OnInit {
       this.accommodation = acc;
       this.found = true;
 
-      for (let i = 0; i < this.accommodation.images.length; i++) {
-        this.dataService.getAccommodationImage(this.accommodationID, i).subscribe(image => {
-          this.accommodationImages[i] = 'data:image/jpeg;base64,' + image;
-        })
-      }
+      this.loadAccommodationImages();
 
       this.message = this.alertService.getMessage;
       this.successMessage = this.message != null && (this.message === 'Changed accommodation settings successfully!');
@@ -83,6 +81,14 @@ export class AccommodationsettingsComponent implements OnInit {
     },error => {
       this.found = false;
     })
+  }
+
+  loadAccommodationImages(): void {
+    for (let i = 0; i < this.accommodation.images.length; i++) {
+      this.dataService.getAccommodationImage(this.accommodationID, i).subscribe(image => {
+        this.accommodationImages[i] = 'data:image/jpeg;base64,' + image;
+      })
+    }
   }
 
   get f1(): { [p: string]: AbstractControl } {
@@ -262,6 +268,25 @@ export class AccommodationsettingsComponent implements OnInit {
       this.addedImages = true;
       this.selectedImages = event.target.files;
     }
+  }
+
+  openModal(i): void {
+    this.modalService.open(ModalComponent)
+      .result.then((result) => {
+      this.onDeleteImage(i);
+    }, dismiss => {
+    });
+  }
+
+  onDeleteImage(i): void {
+    this.dataService.deleteAccommodationImage(this.accommodationID, i)
+      .subscribe(response => {
+        this.accommodation.images.splice(i, 1);
+        this.accommodationImages.splice(i, 1);
+        this.loadAccommodationImages();
+    },error => {
+        console.log(error);
+      })
   }
 
   onSubmit(): void {

@@ -80,8 +80,12 @@ export class AccommodationchatsComponent implements OnInit {
 
   onDeleteChat(c: Chat): void {
     console.log(c.id);
-    //this.dataService.deleteChat(c.id);
-    //this.loadAccommodationChats();
+    this.dataService.deleteChat(c.id).subscribe(response => {
+      this.loadAccommodationChats();
+      window.location.reload();
+    },error => {
+      console.log(error);
+    });
   }
 
 }
