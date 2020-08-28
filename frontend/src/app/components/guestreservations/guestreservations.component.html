@@ -55,13 +55,15 @@
                               <hr />
                               <div class="d-block mt-2 mb-2">
                                 <h5 class="d-block mb-3" style="font-weight: 600">Review:</h5>
-                                <form [formGroup]="reviewForms[i]">
+                                <form [formGroup]="reviewForms[i + (page-1) * pageSize]">
                                   <div class="form-row form-group">
                                     <div class="col-12 mb-3">
                                       <label class="form-label">Text</label>
-                                      <textarea rows="4" cols="50" maxlength="250" formControlName="text" class="form-control"></textarea>
-                                      <div *ngIf="reviewForms[i].controls.text.invalid && reviewForms[i].controls.text.touched" class="alert alert-danger">
-                                        <div *ngIf="reviewForms[i].controls.text.errors.required">Text is required</div>
+                                      <textarea rows="4" cols="50" maxlength="250" formControlName="text" class="form-control"
+                                                placeholder="Write your review here"></textarea>
+                                      <div *ngIf="reviewForms[i + (page-1) * pageSize].controls.text.invalid &&
+                                        reviewForms[i + (page-1) * pageSize].controls.text.touched" class="alert alert-danger">
+                                        <div *ngIf="reviewForms[i + (page-1) * pageSize].controls.text.errors.required">Text is required</div>
                                       </div>
                                     </div>
 

@@ -131,6 +131,10 @@ export class DataService {
     return this.http.get<boolean>(this.url + 'checkDateAvailability/' + id + '/' + checkin + '/' + checkout);
   }
 
+  getAccommodationReservations(id): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(this.url + 'getAccommodationReservations/' + id);
+  }
+
   getGuestReservations(username): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(this.url + 'getGuestReservations/' + username);
   }

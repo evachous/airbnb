@@ -4,7 +4,7 @@
 <div *ngIf="user && user.isHost && !user.isGuest">
   <app-accommodations></app-accommodations>
 </div>
-<div *ngIf="username == null">
+<div *ngIf="username == null || (user && user.isGuest)">
 <img class="home-bg" src="https://picsum.photos/id/288/3888/2592"/>
 <div class="container welcome">
   <div class="row justify-content-center">

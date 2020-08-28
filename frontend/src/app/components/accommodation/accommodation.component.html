@@ -325,34 +325,49 @@
                     <a ngbNavLink>Reviews</a>
                     <ng-template ngbNavContent>
                       <div class="col-12">
-                        <table class="col-12" style="table-layout: fixed">
-                          <tr *ngFor="let r of accommodationReviews | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
-                            <div class="card mb-3">
-                              <div class="card-body">
-                                <div class="card-title">
-                                  <div class="d-flex justify-content-start">
-                                    <div class="image-container">
-                                      <img [src]="reviewPictures[i + (page-1) * pageSize]" class="host-thumbnail" />
-                                    </div>
+                        <div *ngIf="!accommodationReviews.length">No reviews!</div>
+                        <div *ngIf="accommodationReviews.length" class="col-12">
+                          <ngb-pagination
+                            [(page)]="page"
+                            [pageSize]="pageSize"
+                            [collectionSize]="accommodationReviews.length">
+                          </ngb-pagination>
 
-                                    <div class="col-12">
-                                      <h5 class="d-block mb-2" style="font-weight: 600">@{{r.reservation.guest.username}}</h5>
-                                      <h6 class="d-block">{{r.text}}</h6>
-                                      <div>
-                                        <ng-template #t let-fill="fill">
-                                          <span class="star" [class.full]="fill === 100">
-                                            <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
-                                          </span>
-                                        </ng-template>
-                                        <ngb-rating [(rate)]="r.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+                          <table class="col-12" style="table-layout: fixed">
+                            <tr *ngFor="let r of accommodationReviews | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                              <div class="card mb-3">
+                                <div class="card-body">
+                                  <div class="card-title">
+                                    <div class="d-flex justify-content-start">
+                                      <div class="image-container">
+                                        <img [src]="reviewPictures[i + (page-1) * pageSize]" class="host-thumbnail" />
                                       </div>
-                                      </div>
+
+                                      <div class="col-12">
+                                        <h5 class="d-block mb-2" style="font-weight: 600">@{{r.reservation.guest.username}}</h5>
+                                        <h6 class="d-block">{{r.text}}</h6>
+                                        <div>
+                                          <ng-template #t let-fill="fill">
+                                            <span class="star" [class.full]="fill === 100">
+                                              <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                                            </span>
+                                          </ng-template>
+                                          <ngb-rating [(rate)]="r.rating" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+                                        </div>
+                                        </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </tr>
-                        </table>
+                            </tr>
+                          </table>
+
+                          <ngb-pagination
+                            [(page)]="page"
+                            [pageSize]="pageSize"
+                            [collectionSize]="accommodationReviews.length">
+                          </ngb-pagination>
+                        </div>
                       </div>
                     </ng-template>
                   </li>

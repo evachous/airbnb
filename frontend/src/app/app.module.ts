@@ -28,6 +28,8 @@ import { SearchComponent } from './components/search/search.component';
 import { AccommodationsettingsComponent } from './components/accommodationsettings/accommodationsettings.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { GuestreservationsComponent } from './components/guestreservations/guestreservations.component';
+import { HostreservationsComponent } from './components/hostreservations/hostreservations.component';
+import { AccommodationreservationsComponent } from './components/accommodationreservations/accommodationreservations.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { GuestreservationsComponent } from './components/guestreservations/guest
     AccommodationsettingsComponent,
     ModalComponent,
     GuestreservationsComponent,
+    HostreservationsComponent,
+    AccommodationreservationsComponent,
   ],
   imports: [
     BrowserModule,

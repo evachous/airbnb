@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from "../../services/authentication.service";
-import {DataService} from "../../services/data.service";
 import {User} from "../../model/user";
 import {Accommodation} from "../../model/accommodation";
-import {Chat} from "../../model/chat";
+import {AuthenticationService} from "../../services/authentication.service";
+import {DataService} from "../../services/data.service";
 
 @Component({
-  selector: 'app-hostchats',
-  templateUrl: './hostchats.component.html',
-  styleUrls: ['./hostchats.component.css']
+  selector: 'app-hostreservations',
+  templateUrl: './hostreservations.component.html',
+  styleUrls: ['./hostreservations.component.css']
 })
-export class HostchatsComponent implements OnInit {
+export class HostreservationsComponent implements OnInit {
   username: string;
   user: User;
   accommodations: Accommodation[] = null;
   accommodationsImages: string[] = new Array<string>();
   emptyAcc: boolean;
-  chats: number[] = new Array<number>();
+  reservations: number[] = new Array<number>();
 
   page = 1;
   pageSize = 2;
@@ -42,8 +41,9 @@ export class HostchatsComponent implements OnInit {
           })
         }
 
-        this.dataService.getAccommodationChats(this.accommodations[i].id).subscribe(chats => {
-          this.chats[i] = chats.length;
+        this.dataService.getAccommodationReservations(this.accommodations[i].id)
+          .subscribe(reservations => {
+            this.reservations[i] = reservations.length;
         })
       }
     })

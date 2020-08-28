@@ -1,0 +1,57 @@
+.reservations {
+  margin-top: 5%;
+  margin-bottom: 2%;
+}
+
+.img-thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+ngb-pagination ::ng-deep a {
+  color: #495057 !important;
+}
+
+ngb-pagination ::ng-deep .page-item.active .page-link {
+  color: #fff !important;
+  background-color: #fc5892;
+  border-color: #fc5892;
+}
+
+ngb-pagination ::ng-deep .page-item.active:hover .page-link {
+  color: #fff !important;
+}
+
+ngb-pagination ::ng-deep .page-item:hover .page-link {
+  color: #e6477f !important;
+}
+
+.accommodation-link {
+  color: #fc5892;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.accommodation-link:hover {
+  color: #e6477f;
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  font-size: 1.5rem;
+  color: #d3d3d3;
+}
+
+.full {
+  color: red;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: red;
+}
