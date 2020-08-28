@@ -4,6 +4,8 @@ import {Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import {OpenStreetMapProvider} from 'leaflet-geosearch';
+import {AuthenticationService} from "../../services/authentication.service";
+import {User} from "../../model/user";
 
 @Component({
   selector: 'app-home',
@@ -11,11 +13,13 @@ import {OpenStreetMapProvider} from 'leaflet-geosearch';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  username: string;
+  user: User;
+
   searchForm: FormGroup;
   hoveredDate: NgbDate | null = null;
   minDate: NgbDate;
-  invalidDate: boolean;
-  errorMessage: string;
+
   provider: any;
   results: any;
   input: any;
@@ -25,12 +29,24 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private dataService: DataService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private authenticationService: AuthenticationService,
   ) {
     this.minDate = calendar.getToday();
   }
 
   ngOnInit(): void {
+    this.username = this.authenticationService.getTokenUsername;
+    if (this.username != null) {
+      this.dataService.getUser(this.username).subscribe(user => {
+        this.user = user;
+      }, error => {
+        this.user = null;
+      })
+    }
+    else
+      this.user = null;
+
     this.provider = new OpenStreetMapProvider();
 
     this.searchForm = this.formBuilder.group({

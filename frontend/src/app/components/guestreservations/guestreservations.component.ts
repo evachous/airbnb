@@ -49,16 +49,20 @@ export class GuestreservationsComponent implements OnInit {
           this.emptyReserves = this.reservations.length == 0;
 
           for (let i = 0; i < this.reservations.length; i++) {
-            this.dataService.getAccommodationImage(this.reservations[i].accommodation.id, 0)
-              .subscribe(image => {
-                if (image === '')
+            if (!this.reservations[i].accommodation.images.length)
+              this.accommodationImages[i] = 'http://placehold.it/150x150'
+            else {
+              this.dataService.getAccommodationImage(this.reservations[i].accommodation.id, 0)
+                .subscribe(image => {
+                  if (image === '')
+                    this.accommodationImages[i] = 'http://placehold.it/150x150';
+                  else
+                    this.accommodationImages[i] = 'data:image/jpeg;base64,' + image;
+                }, error => {
                   this.accommodationImages[i] = 'http://placehold.it/150x150';
-                else
-                  this.accommodationImages[i] = 'data:image/jpeg;base64,' + image;
-              }, error => {
-                this.accommodationImages[i] = 'http://placehold.it/150x150';
-                console.log(error);
-              })
+                  console.log(error);
+                })
+            }
 
             this.initForm(i);
           }

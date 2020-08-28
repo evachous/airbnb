@@ -7,8 +7,8 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
 import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {latLng, MapOptions, tileLayer, Map, Marker, icon, LatLngBounds} from 'leaflet';
-import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
+import {latLng, MapOptions, tileLayer, Map, Marker, icon} from 'leaflet';
+import {OpenStreetMapProvider} from 'leaflet-geosearch';
 
 @Component({
   selector: 'app-accommodations',
@@ -29,7 +29,6 @@ export class HostaccommodationsComponent implements OnInit {
   addressValue: '';
   marker: Marker = null;
   provider: OpenStreetMapProvider;
-  searchControl: GeoSearchControl;
   selectedAddress: Address = new Address();
 
   selectedImages: FileList;
@@ -66,9 +65,13 @@ export class HostaccommodationsComponent implements OnInit {
       this.emptyAcc = this.accommodations.length == 0;
 
       for (let i = 0; i < this.accommodations.length; i++) {
-        this.dataService.getAccommodationImage(this.accommodations[i].id, 0).subscribe(image => {
-          this.accommodationsImages[i] = 'data:image/jpeg;base64,' + image;
-        })
+        if (!this.accommodations[i].images.length)
+          this.accommodationsImages[i] = 'http://placehold.it/150x150'
+        else {
+          this.dataService.getAccommodationImage(this.accommodations[i].id, 0).subscribe(image => {
+            this.accommodationsImages[i] = 'data:image/jpeg;base64,' + image;
+          })
+        }
       }
 
       this.message = this.alertService.getMessage;

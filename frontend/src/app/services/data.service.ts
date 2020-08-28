@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Accommodation, NominatimResponse} from "../model/accommodation";
+import {Accommodation} from "../model/accommodation";
 import {Chat} from "../model/chat";
 import {Reservation, Review} from "../model/reservation";
-import {map} from "rxjs/operators";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json',

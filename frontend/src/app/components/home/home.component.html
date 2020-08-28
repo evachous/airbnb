@@ -1,3 +1,10 @@
+<div *ngIf="user && user.isAdmin">
+  <app-users></app-users>
+</div>
+<div *ngIf="user && user.isHost && !user.isGuest">
+  <app-accommodations></app-accommodations>
+</div>
+<div *ngIf="username == null">
 <img class="home-bg" src="https://picsum.photos/id/288/3888/2592"/>
 <div class="container welcome">
   <div class="row justify-content-center">
@@ -5,12 +12,6 @@
       <div class="card">
 
         <div class="card-body">
-          <div *ngIf="invalidDate" class="alert alert-danger alert-dismissible fade show">
-            {{ errorMessage }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
           <div class="card-title mb-4">
             <h2 style="font-size: 1.5rem; font-weight: bold">Welcome!</h2>
             <hr />
@@ -76,4 +77,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

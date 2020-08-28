@@ -24,6 +24,7 @@ export class AccommodationComponent implements OnInit {
   accommodation: Accommodation;
   accommodationImages: string[] = new Array<string>();
   accommodationReviews: Review[] = new Array<Review>();
+  reviewPictures: string[] = new Array<string>();
 
   host: User;
   hostPicture: any;
@@ -38,6 +39,9 @@ export class AccommodationComponent implements OnInit {
   map: Map;
   mapOptions: MapOptions;
   marker: Marker = null;
+
+  page = 1;
+  pageSize = 2;
 
   constructor(
     private router: Router,
@@ -83,6 +87,9 @@ export class AccommodationComponent implements OnInit {
       this.host = this.accommodation.host;
       this.found = true;
 
+      if (!this.accommodation.images.length)
+        this.accommodationImages[0] = 'http://placehold.it/350x300'
+
       for (let i = 0; i < this.accommodation.images.length; i++) {
         this.dataService.getAccommodationImage(this.accommodationID, i).subscribe(image => {
           this.accommodationImages[i] = 'data:image/jpeg;base64,' + image;
@@ -115,6 +122,19 @@ export class AccommodationComponent implements OnInit {
       this.dataService.getAccommodationReviews(this.accommodationID)
         .subscribe(reviews => {
           this.accommodationReviews = reviews;
+
+          for (let j = 0; j < this.accommodationReviews.length; j++) {
+            this.dataService.getUserPicture(this.accommodationReviews[j].reservation.guest.username)
+              .subscribe(pic => {
+                if (pic === '')
+                  this.reviewPictures[j] = 'http://placehold.it/150x150';
+                else
+                  this.reviewPictures[j] = 'data:image/jpeg;base64,' + pic;
+              }, error => {
+                this.reviewPictures[j] = 'http://placehold.it/150x150';
+                console.log(error);
+              })
+          }
         },error => {
           console.log(error);
         })

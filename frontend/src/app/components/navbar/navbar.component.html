@@ -12,21 +12,39 @@
         <li class="nav-item text-center" *ngIf="user && user.isAdmin">
           <a class="nav-link" routerLink="/users">Users</a>
         </li>
-        <li class="nav-item text-center" *ngIf="user && user.isHost">
+        <li class="nav-item text-center" *ngIf="user && user.isHost && !user.isGuest">
           <a class="nav-link" routerLink="/accommodations">Accommodations</a>
         </li>
-        <li class="nav-item text-center" *ngIf="user && user.isHost">
+        <li class="nav-item text-center" *ngIf="user && user.isHost && !user.isGuest">
           <a class="nav-link" routerLink="/hostchats">Chats</a>
         </li>
-        <li class="nav-item text-center" *ngIf="user && user.isGuest">
+        <li class="nav-item text-center" *ngIf="user && user.isHost && !user.isGuest">
+          <a class="nav-link" routerLink="/hostreservations">Reservations</a>
+        </li>
+        <li class="nav-item text-center" *ngIf="user && user.isGuest && !user.isHost">
           <a class="nav-link" routerLink="/guestchats">Chats</a>
         </li>
-        <li class="nav-item text-center" *ngIf="user && user.isGuest">
+        <li class="nav-item text-center" *ngIf="user && user.isGuest && !user.isHost">
           <a class="nav-link" routerLink="/guestreservations">Reservations</a>
+        </li>
+        <li class="nav-item text-center" *ngIf="user && user.isHost && user.isGuest">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw mr-1"></i>Chats </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" routerLink="/hostchats">Host Chats</a>
+            <a class="dropdown-item" routerLink="/guestchats">Guest Chats</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown" *ngIf="user && user.isHost && user.isGuest">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw mr-1"></i>Reservations </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" routerLink="/hostreservations">Host Reservations</a>
+            <a class="dropdown-item" routerLink="/guestreservations">Guest Reservations</a>
+          </div>
         </li>
         <li class="nav-item dropdown">
           <div *ngIf="loggedin">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw mr-1"></i>{{username}} </a>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-user fa-fw mr-1"></i>{{username}} </a>
             <div class="dropdown-menu">
               <a class="dropdown-item" [routerLink]="['/users', username]">Profile</a>
               <a class="dropdown-item" routerLink="/settings">Settings</a>
@@ -34,7 +52,8 @@
             </div>
           </div>
           <div *ngIf="!loggedin">
-            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw mr-1"></i>Profile </a>
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-user fa-fw mr-1"></i>Profile </a>
             <div class="dropdown-menu">
               <a class="dropdown-item" routerLink="/login">Log in</a>
               <a class="dropdown-item" routerLink="/signup">Sign up</a>
