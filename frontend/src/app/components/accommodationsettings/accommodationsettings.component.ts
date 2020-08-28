@@ -6,7 +6,7 @@ import {DataService} from "../../services/data.service";
 import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
 import {NgbDate, NgbDateParserFormatter, NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {icon, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet";
-import {GeoSearchControl, OpenStreetMapProvider} from 'leaflet-geosearch';
+import {OpenStreetMapProvider} from 'leaflet-geosearch';
 import {HttpErrorResponse} from "@angular/common/http";
 import {AlertService} from "../../services/alert.service";
 import {ModalComponent} from "../modal/modal.component";
@@ -31,11 +31,14 @@ export class AccommodationsettingsComponent implements OnInit {
 
   oldMap: Map;
   oldMapOptions: MapOptions;
-  marker: Marker = null;
+  oldMarker: Marker = null;
+
   map: Map;
   mapOptions: MapOptions;
+  addressResults: any;
+  addressValue: '';
+  marker: Marker = null;
   provider: OpenStreetMapProvider;
-  searchControl: GeoSearchControl;
   selectedAddress: Address = new Address();
 
   selectedImages: FileList;
@@ -174,7 +177,7 @@ export class AccommodationsettingsComponent implements OnInit {
   onOldMapReady(oldMap: Map) {
     this.oldMap = oldMap;
 
-    this.marker = new Marker([this.accommodation.location.address.lat, this.accommodation.location.address.lng])
+    this.oldMarker = new Marker([this.accommodation.location.address.lat, this.accommodation.location.address.lng])
       .setIcon(
         icon({
           iconSize: [25, 41],
@@ -182,9 +185,9 @@ export class AccommodationsettingsComponent implements OnInit {
           popupAnchor: [1, -34],
           iconUrl: 'assets/marker-icon.png'
         }));
-    this.marker.addTo(this.oldMap);
+    this.oldMarker.addTo(this.oldMap);
 
-    this.marker.bindPopup(this.accommodation.location.address.label).openPopup();
+    this.oldMarker.bindPopup(this.accommodation.location.address.label).openPopup();
   }
 
   onMapReady(map: Map) {
@@ -192,57 +195,96 @@ export class AccommodationsettingsComponent implements OnInit {
 
     this.provider = new OpenStreetMapProvider({
       params: {
-        addressdetails: 1, // include additional address detail parts
+        addressdetails: 1,
       },
     });
+  }
 
-    this.searchControl = new GeoSearchControl({
-      provider: this.provider,
-      style: 'bar',
-      showMarker: true,
-      showPopup: true,
-      marker: {
-        icon: icon({
+  onAddressChange(e): void {
+    this.provider.search({ query: e.target.value }).then((result: any) => {
+      this.addressResults = result;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  // normal geocoding
+  onResultClick(r): void {
+    this.addressValue = r.label;
+    this.fillAddress(r.raw.address, r.label, r.y, r.x);
+    this.addressResults = [];
+
+    if (this.marker != null) {
+      this.map.removeLayer(this.marker);
+    }
+    this.marker = new Marker([r.y, r.x])
+      .setIcon(
+        icon({
           iconSize: [25, 41],
           iconAnchor: [13, 41],
-          popupAnchor: [0, -34],
+          popupAnchor: [1, -34],
           iconUrl: 'assets/marker-icon.png'
-        })
-      },
-      autoClose: true,
-      keepResult: true
-    }).addTo(map);
+        }));
+    this.marker.addTo(this.map);
 
-    this.map.on('geosearch/showlocation', (result: any) => {
-      this.fillAddress(result.location.raw.address, result.location.label, result.location.y, result.location.x);
-      this.f2.address.setValue(this.selectedAddress);
-    });
+    this.marker.bindPopup(r.label).openPopup();
+
+    this.map.fitBounds(r.bounds);
+  }
+
+  // reverse geocoding
+  onMapClick(e) {
+    this.dataService.addressLookup(e.latlng.lat, e.latlng.lng)
+      .subscribe(r => {
+        this.addressValue = r.display_name;
+        this.fillAddress(r.address, r.display_name, r.lat, r.lon);
+
+        if (this.marker != null) {
+          this.map.removeLayer(this.marker);
+        }
+        this.marker = new Marker(e.latlng)
+          .setIcon(
+            icon({
+              iconSize: [25, 41],
+              iconAnchor: [13, 41],
+              popupAnchor: [1, -34],
+              iconUrl: 'assets/marker-icon.png'
+            }));
+        this.marker.addTo(this.map);
+
+        this.marker.bindPopup(this.addressValue).openPopup();
+
+        this.map.fitBounds([[parseFloat(r.boundingbox[0]), parseFloat(r.boundingbox[2])],
+          [parseFloat(r.boundingbox[1]), parseFloat(r.boundingbox[3])]]);
+      }, error => {
+        console.log(error);
+      })
   }
 
   fillAddress(address, label, lat, lng): void {
     this.selectedAddress.label = label;
+
+    if (address.house_number != null)
+      this.selectedAddress.number = address.house_number;
+    else
+      this.selectedAddress.number = null;
+
     this.selectedAddress.road = address.road;
-
-    if (address.city == null) {
-      this.selectedAddress.city = address.municipality;
-    }
-    else {
-      this.selectedAddress.city = address.city;
-    }
-
-    this.selectedAddress.country = address.country;
-    this.selectedAddress.postcode = address.postcode;
     this.selectedAddress.suburb = address.suburb;
 
-    if (address.house_number != null) {
-      this.selectedAddress.number = address.house_number;
-    }
-    else {
-      this.selectedAddress.number = null;
-    }
+    if (address.city == null)
+      this.selectedAddress.city = address.municipality;
+    else
+      this.selectedAddress.city = address.city;
+
+    this.selectedAddress.state = address.state;
+    this.selectedAddress.postcode = address.postcode;
+    this.selectedAddress.country = address.country;
 
     this.selectedAddress.lat = lat;
     this.selectedAddress.lng = lng;
+
+    this.f2.address.setValue(this.selectedAddress);
   }
 
   isHovered(date: NgbDate): boolean {

@@ -47,7 +47,7 @@
                           <div id="map" leaflet (leafletMapReady)="onMapReady($event)" [leafletOptions]="mapOptions"
                                (leafletClick)="onMapClick($event)"></div>
 
-                          <div class="col-12 mb-3">
+                          <div class="col-12 mt-1 mb-3">
                             <label class="form-label">Transportation</label>
                             <textarea rows="3" cols="50" maxlength="100" formControlName="transportation" class="form-control"></textarea>
                             <div *ngIf="f2.transportation.invalid && f2.transportation.touched" class="alert alert-danger">

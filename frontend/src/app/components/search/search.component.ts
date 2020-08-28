@@ -100,6 +100,8 @@ export class SearchComponent implements OnInit {
       this.accommodations.sort(compareCosts);
 
       for (let i = 0; i < this.accommodations.length; i++) {
+        if (!this.accommodations[i].images.length)
+          this.accommodationsImages[i] = 'http://placehold.it/150x150';
         this.dataService.getAccommodationImage(this.accommodations[i].id, 0).subscribe(image => {
           this.accommodationsImages[i] = 'data:image/jpeg;base64,' + image;
         })
