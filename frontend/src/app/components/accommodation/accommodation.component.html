@@ -21,7 +21,7 @@
               </div>
               <h3 style="font-weight: bold">{{accommodation.info.name}}</h3>
               <h7><i class="fa fa-star" aria-hidden="true"></i> {{accommodation.avgRating}} ({{accommodation.numRatings}}) |
-                {{accommodation.location.address.suburb}}, {{accommodation.location.address.city}},
+                {{accommodation.location.address.road}}, {{accommodation.location.address.city}},
                 {{accommodation.location.address.country}}</h7>
               <hr />
             </div>
@@ -218,19 +218,19 @@
                         <hr class="mt-2" />
                         <div class="row">
                           <div class="col-2">
-                            <label class="tab-label">Road</label>
+                            <label class="tab-label">House number</label>
                           </div>
                           <div class="col-6">
-                            {{accommodation.location.address.road}}
+                            {{accommodation.location.address.number}}
                           </div>
                         </div>
                         <hr class="mt-2" />
                         <div class="row">
                           <div class="col-2">
-                            <label class="tab-label">Number</label>
+                            <label class="tab-label">Road</label>
                           </div>
                           <div class="col-6">
-                            {{accommodation.location.address.number}}
+                            {{accommodation.location.address.road}}
                           </div>
                         </div>
                         <hr class="mt-2" />
@@ -254,19 +254,19 @@
                         <hr class="mt-2" />
                         <div class="row">
                           <div class="col-2">
-                            <label class="tab-label">Country</label>
+                            <label class="tab-label">Postcode</label>
                           </div>
                           <div class="col-6">
-                            {{accommodation.location.address.country}}
+                            {{accommodation.location.address.postcode}}
                           </div>
                         </div>
                         <hr class="mt-2" />
                         <div class="row">
                           <div class="col-2">
-                            <label class="tab-label">Postcode</label>
+                            <label class="tab-label">Country</label>
                           </div>
                           <div class="col-6">
-                            {{accommodation.location.address.postcode}}
+                            {{accommodation.location.address.country}}
                           </div>
                         </div>
                         <hr class="mt-2" />

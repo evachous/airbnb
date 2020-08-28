@@ -15,12 +15,13 @@ export class Accommodation {
 
 export class Address {
   label: string;
-  road: string;
-  city: string;
-  country: string;
-  postcode: string;
-  suburb: string;
   number: string;
+  road: string;
+  suburb: string;
+  city: string;
+  state: string;
+  postcode: string;
+  country: string;
   lat: number;
   lng: number;
 }

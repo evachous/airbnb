@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Accommodation} from "../model/accommodation";
+import {Accommodation, NominatimResponse} from "../model/accommodation";
 import {Chat} from "../model/chat";
 import {Reservation, Review} from "../model/reservation";
+import {map} from "rxjs/operators";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json',
@@ -57,6 +58,12 @@ export class DataService {
 
   approveHost(username): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'approveHost', username, {observe: 'response'});
+  }
+
+  addressLookup(lat, lng): any {
+    const nomUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng +
+      '&addressdetails=1';
+    return this.http.get(nomUrl);
   }
 
   //accommodation

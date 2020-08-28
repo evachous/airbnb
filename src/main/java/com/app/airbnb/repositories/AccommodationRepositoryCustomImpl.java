@@ -52,12 +52,13 @@ public class AccommodationRepositoryCustomImpl implements AccommodationRepositor
         Address address = location.getAddress();
         Address newAddress = newLocation.getAddress();
         address.setLabel(newAddress.getLabel());
-        address.setRoad(newAddress.getRoad());
-        address.setCity(newAddress.getCity());
-        address.setCountry(newAddress.getCountry());
-        address.setPostcode(newAddress.getPostcode());
-        address.setSuburb(newAddress.getSuburb());
         address.setNumber(newAddress.getNumber());
+        address.setRoad(newAddress.getRoad());
+        address.setSuburb(newAddress.getSuburb());
+        address.setCity(newAddress.getCity());
+        address.setState(newAddress.getState());
+        address.setPostcode(newAddress.getPostcode());
+        address.setCountry(newAddress.getCountry());
         address.setLat(newAddress.getLat());
         address.setLng(newAddress.getLng());
     }

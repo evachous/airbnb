@@ -33,7 +33,19 @@
                       <form class="col-12" [formGroup]="locationForm">
 
                         <div class="form-row form-group">
-                          <div id="map" leaflet (leafletMapReady)="onMapReady($event)" [leafletOptions]="mapOptions"></div>
+                          <div class="col-12 mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="addressInput" value="{{addressValue}}"
+                                   placeholder="Enter address" (input)="onAddressChange($event)" />
+                            <div class="search-result">
+                              <div *ngFor="let r of addressResults" (click)="onResultClick(r)">
+                                {{r.label}}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="map" leaflet (leafletMapReady)="onMapReady($event)" [leafletOptions]="mapOptions"
+                               (leafletClick)="onMapClick($event)"></div>
 
                           <div class="col-12 mb-3">
                             <label class="form-label">Transportation</label>
