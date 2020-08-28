@@ -32,10 +32,13 @@
                             <div class="col-10">
                               <a [routerLink]="['/chat', c.accommodation.id, user.username]"
                                  class="d-block chat-link mb-1">@{{c.accommodation.host.username}}</a>
-                              <h6 class="d-block mb-2"> {{c.accommodation.info.name}}</h6>
+                              <h6 class="d-block mb-2" [routerLink]="['/accommodations', c.accommodation.id]">
+                                {{c.accommodation.info.name}}</h6>
                               <h6 class="d-block mb-2" *ngIf="!c.guestRead && c.messages.length" style="font-weight: 600; white-space:nowrap;
-                                overflow:hidden; text-overflow:ellipsis"><i class="fa fa-comment"></i> {{c.messages[c.messages.length-1].message}}</h6>
-                              <h6 class="d-block mb-2" *ngIf="c.messages.length">{{c.messages[c.messages.length-1].timestamp | date: 'short'}}</h6>
+                                overflow:hidden; text-overflow:ellipsis">
+                                <i class="fa fa-comment"></i> {{c.messages[c.messages.length-1].message}}</h6>
+                              <h6 class="d-block mb-2" *ngIf="c.messages.length">
+                                {{c.messages[c.messages.length-1].timestamp | date: 'short'}}</h6>
                             </div>
                           </div>
                         </div>

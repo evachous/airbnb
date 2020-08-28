@@ -15,6 +15,7 @@ import { GuestchatsComponent } from './components/guestchats/guestchats.componen
 import { ChatComponent } from './components/chat/chat.component';
 import { SearchComponent } from './components/search/search.component';
 import { AccommodationsettingsComponent } from './components/accommodationsettings/accommodationsettings.component';
+import {GuestreservationsComponent} from './components/guestreservations/guestreservations.component'
 
 import { AuthGuard } from './guards/auth.guard';
 import { SignupGuard } from './guards/signup.guard';
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
   { path: 'accommodationchats/:id', component: AccommodationchatsComponent, canActivate: [AuthGuard, HostGuard] },
   { path: 'guestchats', component: GuestchatsComponent, canActivate: [AuthGuard, GuestGuard] },
   { path: 'chat/:id/:guestUsername', component: ChatComponent, canActivate: [AuthGuard, ChatGuard] },
+  { path: 'guestreservations', component: GuestreservationsComponent, canActivate: [AuthGuard, GuestGuard] },
   { path: 'settings', component: UsersettingsComponent, canActivate: [AuthGuard] },
   { path: 'signup', component: SignupComponent, canActivate: [SignupGuard] },
   { path: 'login', component: LoginComponent },

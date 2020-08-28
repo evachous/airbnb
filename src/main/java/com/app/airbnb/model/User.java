@@ -35,7 +35,8 @@ public class User {
     @JsonIgnoreProperties("user")
     private Image profilePicture;
 
-    private Double rating;
+    private Integer numRatings;
+    private Double avgRating;
 
     /*@OneToMany(mappedBy = "guest")
     @JsonIgnoreProperties("guest")
@@ -62,6 +63,7 @@ public class User {
         this.isHost = isHost;
         this.isGuest = isGuest;
         this.isApproved = isApproved;
-        this.rating = 0.0;
+        this.numRatings = 0;
+        this.avgRating = 0.0;
     }
 }

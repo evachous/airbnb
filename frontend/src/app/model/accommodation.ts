@@ -8,7 +8,9 @@ export class Accommodation {
   rules: AccommodationRules;
   host: User;
   images: any;
-  chats: Chat[];
+  //chats: Chat[];
+  numRatings: number;
+  avgRating: number;
 }
 
 export class Address {

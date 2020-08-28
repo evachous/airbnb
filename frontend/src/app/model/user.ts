@@ -15,5 +15,7 @@ export class User {
   profilePicture: any;
   rating: number;
   // reservations: any;
-  chats: any[];
+  // chats: any[];
+  numRatings: number;
+  avgRating: number;
 }

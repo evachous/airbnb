@@ -7,6 +7,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {icon, latLng, Map, MapOptions, Marker, tileLayer} from "leaflet";
 import {AlertService} from "../../services/alert.service";
+import {Review} from "../../model/reservation";
 
 @Component({
   selector: 'app-accommodation',
@@ -22,8 +23,12 @@ export class AccommodationComponent implements OnInit {
   accommodationID: number;
   accommodation: Accommodation;
   accommodationImages: string[] = new Array<string>();
+  accommodationReviews: Review[] = new Array<Review>();
+
   host: User;
   hostPicture: any;
+  hostReviews: Review[] = new Array<Review>();
+
   currentUsername: string = null;
   currentUser: User = null;
 
@@ -84,16 +89,16 @@ export class AccommodationComponent implements OnInit {
         })
       }
 
-      this.dataService.checkDateAvailability(this.accommodationID, this.queryParams.checkin,
-        this.queryParams.checkout).subscribe(available => {
+      if (this.queryParams.checkin && this.queryParams.checkout) {
+        this.dataService.checkDateAvailability(this.accommodationID, this.queryParams.checkin,
+          this.queryParams.checkout).subscribe(available => {
           console.log(available);
           this.available = available;
-      },error => {
+        }, error => {
           this.available = false;
           console.log(error);
-      })
-
-      this.initMapOptions();
+        })
+      }
 
       this.dataService.getUserPicture(this.host.username).subscribe(pic => {
         if (pic === '')
@@ -104,6 +109,15 @@ export class AccommodationComponent implements OnInit {
           this.hostPicture = 'http://placehold.it/150x150';
           console.log(error);
       });
+
+      this.initMapOptions();
+
+      this.dataService.getAccommodationReviews(this.accommodationID)
+        .subscribe(reviews => {
+          this.accommodationReviews = reviews;
+        },error => {
+          console.log(error);
+        })
 
       },
       error => {
@@ -153,15 +167,6 @@ export class AccommodationComponent implements OnInit {
 
     this.marker.bindPopup(this.accommodation.location.address.label).openPopup();
   }
-
-  /*openModal(): void {
-    this.modalService.open(new ReservationmodalComponent(this.modal, this.queryParams.checkin,
-      this.queryParams.checkout, this.queryParams.guests))
-      .result.then((result) => {
-        this.onReserve();
-    }, dismiss => {
-    });
-  }*/
 
   onReserve(): void {
     const formData = new FormData();

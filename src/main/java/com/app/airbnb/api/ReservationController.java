@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -60,7 +61,50 @@ class ReservationController {
             Reservation reservation = this.reservationRepository.getOne(Long.parseLong(reservationID));
             Review review = new ObjectMapper().readValue(jsonReview, Review.class);
 
-            reservation.setReview(review);
+            Accommodation accommodation = reservation.getAccommodation();
+            List<Reservation> accommodationReservations = this.reservationRepository.findByAccommodation(accommodation.getId());
+            List<Review> accommodationReviews = this.reservationRepository.findAllReviews(accommodationReservations);
+
+            User host = accommodation.getHost();
+            List<Reservation> hostReservations = this.reservationRepository.findByHostUsername(host.getUsername());
+            List<Review> hostReviews = this.reservationRepository.findAllReviews(hostReservations);
+
+            if (reservation.getReview() == null) {
+                reservation.setReview(review);
+
+                accommodation.setNumRatings(accommodation.getNumRatings() + 1);
+                double total = review.getRating();
+                for (Review accommodationReview : accommodationReviews) {
+                    total = total + accommodationReview.getRating();
+                }
+                accommodation.setAvgRating(total / accommodation.getNumRatings());
+
+                host.setNumRatings(host.getNumRatings() + 1);
+                total = review.getRating();
+                for (Review hostReview : hostReviews) {
+                    total = total + hostReview.getRating();
+                }
+                host.setAvgRating(total / host.getNumRatings());
+            }
+            else {
+                reservation.getReview().setText(review.getText());
+                reservation.getReview().setRating(review.getRating());
+
+                double total = review.getRating();
+                for (Review accommodationReview : accommodationReviews) {
+                    if (!reservation.getId().equals(accommodationReview.getReservation().getId()))
+                        total = total + accommodationReview.getRating();
+                }
+                accommodation.setAvgRating(total / accommodation.getNumRatings());
+
+                total = review.getRating();
+                for (Review hostReview : hostReviews) {
+                    if (!reservation.getId().equals(hostReview.getReservation().getId()))
+                        total = total + hostReview.getRating();
+                }
+                host.setAvgRating(total / host.getNumRatings());
+            }
+
             this.reservationRepository.save(reservation);
 
             return new ResponseEntity<>(HttpStatus.OK);
@@ -90,5 +134,26 @@ class ReservationController {
     @GetMapping("getGuestReservations/{username}")
     List<Reservation> returnGuestReservations(@PathVariable String username) {
         return this.reservationRepository.findByGuestUsername(username);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getAccommodationReviews/{id}")
+    List<Review> returnAccommodationReviews(@PathVariable Long id) {
+        List<Reservation> reservations = this.reservationRepository.findByAccommodation(id);
+        return this.reservationRepository.findAllReviews(reservations);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getGuestReviews/{username}")
+    List<Review> returnGuestReviews(@PathVariable String username) {
+        List<Reservation> reservations = this.reservationRepository.findByGuestUsername(username);
+        return this.reservationRepository.findAllReviews(reservations);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("getHostReviews/{username}")
+    List<Review> returnHostReviews(@PathVariable String username) {
+        List<Reservation> reservations = this.reservationRepository.findByHostUsername(username);
+        return this.reservationRepository.findAllReviews(reservations);
     }
 }

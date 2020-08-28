@@ -20,7 +20,8 @@
                         style="height: 10%;"><i class="fa fa-commenting"></i> Chat</button>
               </div>
               <h3 style="font-weight: bold">{{accommodation.info.name}}</h3>
-              <h7>{{accommodation.location.address.suburb}}, {{accommodation.location.address.city}},
+              <h7><i class="fa fa-star" aria-hidden="true"></i> {{accommodation.avgRating}} ({{accommodation.numRatings}}) |
+                {{accommodation.location.address.suburb}}, {{accommodation.location.address.city}},
                 {{accommodation.location.address.country}}</h7>
               <hr />
             </div>
@@ -80,7 +81,7 @@
               </div>
               <div class="col-3">
                 <h5 class="mb-2" style="font-weight: 600;">Host: {{accommodation.host.firstName}} {{accommodation.host.lastName}}</h5>
-                <h6>Rating: </h6>
+                <h6><i class="fa fa-star" aria-hidden="true"></i> {{host.avgRating}} ({{host.numRatings}})</h6>
                 <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username"
                         type="submit" class="reserve-button btn"
                 (click)="onChatClick()">Chat</button>

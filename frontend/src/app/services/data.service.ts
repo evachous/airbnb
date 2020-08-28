@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {Accommodation} from "../model/accommodation";
 import {Chat} from "../model/chat";
+import {Reservation, Review} from "../model/reservation";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json', Accept: 'application/json',
@@ -58,6 +59,8 @@ export class DataService {
     return this.http.post<string>(this.url + 'approveHost', username, {observe: 'response'});
   }
 
+  //accommodation
+
   addAccommodation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'addAccommodation', formData, {observe: 'response'});
   }
@@ -69,6 +72,20 @@ export class DataService {
   getAccommodationImage(id, index): any {
     return this.http.get(this.url + 'getAccommodationImage/' + id + '/' + index,{responseType: "text"});
   }
+
+  searchAccommodations(params: HttpParams): Observable<Accommodation[]> {
+    return this.http.get<Accommodation[]>(this.url + 'searchAccommodations', {params: params});
+  }
+
+  changeAccommodation(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'changeAccommodation', formData, {observe: 'response'});
+  }
+
+  deleteAccommodationImage(id, index): Observable<{}> {
+    return this.http.delete(this.url + 'deleteAccommodationImage/' + id + '/' + index, httpOptions);
+  }
+
+  //chat
 
   createChat(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'createChat', formData, {observe: 'response'});
@@ -98,17 +115,7 @@ export class DataService {
     return this.http.delete(this.url + 'deleteChat/' + chatID, httpOptions);
   }
 
-  searchAccommodations(params: HttpParams): Observable<Accommodation[]> {
-    return this.http.get<Accommodation[]>(this.url + 'searchAccommodations', {params: params});
-  }
-
-  changeAccommodation(formData: FormData): Observable<HttpResponse<string>> {
-    return this.http.post<string>(this.url + 'changeAccommodation', formData, {observe: 'response'});
-  }
-
-  deleteAccommodationImage(id, index): Observable<{}> {
-    return this.http.delete(this.url + 'deleteAccommodationImage/' + id + '/' + index, httpOptions);
-  }
+  //reservation
 
   makeReservation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'makeReservation', formData, {observe: 'response'});
@@ -116,6 +123,28 @@ export class DataService {
 
   checkDateAvailability(id, checkin, checkout): Observable<boolean> {
     return this.http.get<boolean>(this.url + 'checkDateAvailability/' + id + '/' + checkin + '/' + checkout);
+  }
+
+  getGuestReservations(username): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(this.url + 'getGuestReservations/' + username);
+  }
+
+  //review
+
+  addReview(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'addReview', formData, {observe: 'response'});
+  }
+
+  getAccommodationReviews(id): Observable<Review[]> {
+    return this.http.get<Review[]>(this.url + 'getAccommodationReviews/' + id);
+  }
+
+  getGuestReviews(username): Observable<Review[]> {
+    return this.http.get<Review[]>(this.url + 'getGuestReviews/' + username);
+  }
+
+  getHostReviews(username): Observable<Review[]> {
+    return this.http.get<Review[]>(this.url + 'getHostReviews/' + username);
   }
 }
 

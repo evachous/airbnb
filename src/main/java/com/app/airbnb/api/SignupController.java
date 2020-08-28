@@ -49,6 +49,9 @@ class SignupController {
                 String path = this.userRepository.uploadImage(profilePicture);
                 newUser.setProfilePicture(new Image(path, null));
 
+                newUser.setNumRatings(0);
+                newUser.setAvgRating(0.0);
+
                 this.userRepository.save(newUser);
                 return new ResponseEntity<>(HttpStatus.OK);
             }

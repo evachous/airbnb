@@ -42,6 +42,7 @@ public class Accommodation {
     //@JsonIgnoreProperties("accommodation")
     //private List<Chat> chats;
 
+    private Integer numRatings;
     private Double avgRating;
 
     public Accommodation() {}
@@ -51,6 +52,7 @@ public class Accommodation {
         this.location = location;
         this.rules = rules;
         this.host = host;
+        this.numRatings = 0;
         this.avgRating = 0.0;
     }
 }
