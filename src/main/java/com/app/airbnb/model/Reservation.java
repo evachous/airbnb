@@ -1,6 +1,6 @@
 package com.app.airbnb.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,6 +11,9 @@ import java.time.LocalDate;
 public class Reservation {
     @Id @GeneratedValue private Long id;
 
+    //@JsonProperty("guest_id")
+    //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    //@JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn(name = "user_id")
     //@JsonIgnoreProperties("reservations")
@@ -19,6 +22,7 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "accommodation_id")
     //@JsonIgnoreProperties("reservations")
+    //@JsonIgnore
     private Accommodation accommodation;
 
     private Integer numPeople;

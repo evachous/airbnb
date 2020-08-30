@@ -27,18 +27,22 @@
         <li class="nav-item text-center" *ngIf="user && user.isGuest && !user.isHost">
           <a class="nav-link" routerLink="/guestreservations">Reservations</a>
         </li>
-        <li class="nav-item text-center" *ngIf="user && user.isHost && user.isGuest">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw mr-1"></i>Chats </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" routerLink="/hostchats">Host Chats</a>
-            <a class="dropdown-item" routerLink="/guestchats">Guest Chats</a>
+        <li class="nav-item dropdown">
+          <div *ngIf="user && user.isHost && user.isGuest">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chats </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" routerLink="/hostchats">Host Chats</a>
+              <a class="dropdown-item" routerLink="/guestchats">Guest Chats</a>
+            </div>
           </div>
         </li>
-        <li class="nav-item dropdown" *ngIf="user && user.isHost && user.isGuest">
-          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-fw mr-1"></i>Reservations </a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" routerLink="/hostreservations">Host Reservations</a>
-            <a class="dropdown-item" routerLink="/guestreservations">Guest Reservations</a>
+        <li class="nav-item dropdown">
+          <div *ngIf="user && user.isHost && user.isGuest">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reservations </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" routerLink="/hostreservations">Host Reservations</a>
+              <a class="dropdown-item" routerLink="/guestreservations">Guest Reservations</a>
+            </div>
           </div>
         </li>
         <li class="nav-item dropdown">

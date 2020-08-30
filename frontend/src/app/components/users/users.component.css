@@ -37,3 +37,11 @@ ngb-pagination ::ng-deep .page-item:hover .page-link {
 .user-link:hover {
   color: #e6477f;
 }
+
+.download-link {
+  color: #fc5892;
+}
+
+.download-link:hover {
+  color: #e6477f;
+}

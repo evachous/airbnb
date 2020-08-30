@@ -1,10 +1,12 @@
 package com.app.airbnb.security;
 
+import com.app.airbnb.model.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -15,8 +17,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public JWTAuthorizationFilter(AuthenticationManager authManager,
+                                  CustomUserDetailsService customUserDetailsService) {
         super(authManager);
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -46,7 +52,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                     .getSubject();
 
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(user);
+                return new UsernamePasswordAuthenticationToken(user, null, userDetails.getAuthorities());
             }
             return null;
         }

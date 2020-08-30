@@ -82,6 +82,13 @@ class AccommodationController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("/allAccommodations")
+    List<Accommodation> allAccommodations() {
+
+        return accommodationRepository.findAll();
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("/accommodations/{id}")
     Accommodation returnAccommodation(@PathVariable Long id) {
         return this.accommodationRepository.findById(id)

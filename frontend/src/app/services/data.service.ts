@@ -19,6 +19,8 @@ export class DataService {
 
   constructor( private http: HttpClient ) { }
 
+  // users
+
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.url + 'users');
   }
@@ -69,6 +71,10 @@ export class DataService {
 
   addAccommodation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'addAccommodation', formData, {observe: 'response'});
+  }
+
+  getAllAccommodations(): Observable<Accommodation[]> {
+    return this.http.get<Accommodation[]>(this.url + 'allAccommodations/');
   }
 
   getAccommodation(id): Observable<Accommodation> {
@@ -129,6 +135,10 @@ export class DataService {
 
   checkDateAvailability(id, checkin, checkout): Observable<boolean> {
     return this.http.get<boolean>(this.url + 'checkDateAvailability/' + id + '/' + checkin + '/' + checkout);
+  }
+
+  getAllReservations(): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(this.url + 'allReservations/');
   }
 
   getAccommodationReservations(id): Observable<Reservation[]> {

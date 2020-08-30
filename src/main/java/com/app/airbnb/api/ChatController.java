@@ -138,8 +138,7 @@ class ChatController {
     @DeleteMapping("/deleteChat/{id}")
     ResponseEntity<String> deleteChat(@PathVariable Long id) {
         Chat chat = this.chatRepository.getOne(id);
-        //System.out.println(chat.getId());
-        //System.out.println(chat.getAccommodation().getId());
+
         List<ChatMessage> messages = chat.getMessages();
         if (messages != null) {
             chat.setMessages(null);

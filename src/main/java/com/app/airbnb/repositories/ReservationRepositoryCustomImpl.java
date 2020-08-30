@@ -52,14 +52,4 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
         return true;
     }
 
-    public List<Review> findAllReviews(List<Reservation> reservations) {
-        List<Review> reviews = new ArrayList<>();
-
-        for (Reservation reservation : reservations) {
-            if (reservation.getReview() != null) {
-                reviews.add(reservation.getReview());
-            }
-        }
-        return reviews;
-    }
 }

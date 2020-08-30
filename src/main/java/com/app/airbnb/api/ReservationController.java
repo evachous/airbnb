@@ -6,6 +6,7 @@ import com.app.airbnb.model.Review;
 import com.app.airbnb.model.User;
 import com.app.airbnb.repositories.AccommodationRepository;
 import com.app.airbnb.repositories.ReservationRepository;
+import com.app.airbnb.repositories.ReviewRepository;
 import com.app.airbnb.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,14 @@ import java.util.List;
 class ReservationController {
 
     ReservationRepository reservationRepository;
+    ReviewRepository reviewRepository;
     AccommodationRepository accommodationRepository;
     UserRepository userRepository;
 
-    ReservationController(ReservationRepository reservationRepository, AccommodationRepository accommodationRepository,
-                          UserRepository userRepository) {
+    ReservationController(ReservationRepository reservationRepository, ReviewRepository reviewRepository,
+                          AccommodationRepository accommodationRepository, UserRepository userRepository) {
         this.reservationRepository = reservationRepository;
+        this.reviewRepository = reviewRepository;
         this.accommodationRepository = accommodationRepository;
         this.userRepository = userRepository;
     }
@@ -63,11 +66,11 @@ class ReservationController {
 
             Accommodation accommodation = reservation.getAccommodation();
             List<Reservation> accommodationReservations = this.reservationRepository.findByAccommodation(accommodation.getId());
-            List<Review> accommodationReviews = this.reservationRepository.findAllReviews(accommodationReservations);
+            List<Review> accommodationReviews = this.reviewRepository.findByReservations(accommodationReservations);
 
             User host = accommodation.getHost();
             List<Reservation> hostReservations = this.reservationRepository.findByHostUsername(host.getUsername());
-            List<Review> hostReviews = this.reservationRepository.findAllReviews(hostReservations);
+            List<Review> hostReviews = this.reviewRepository.findByReservations(hostReservations);
 
             if (reservation.getReview() == null) {
                 reservation.setReview(review);
@@ -125,6 +128,13 @@ class ReservationController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("/allReservations")
+    List<Reservation> allReservations() {
+
+        return reservationRepository.findAll();
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("getAccommodationReservations/{id}")
     List<Reservation> returnAccommodationReservations(@PathVariable Long id) {
         return this.reservationRepository.findByAccommodation(id);
@@ -137,23 +147,30 @@ class ReservationController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping("/allReviews")
+    List<Review> allReviews() {
+
+        return this.reviewRepository.findAll();
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping("getAccommodationReviews/{id}")
     List<Review> returnAccommodationReviews(@PathVariable Long id) {
         List<Reservation> reservations = this.reservationRepository.findByAccommodation(id);
-        return this.reservationRepository.findAllReviews(reservations);
+        return this.reviewRepository.findByReservations(reservations);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping("getGuestReviews/{username}")
     List<Review> returnGuestReviews(@PathVariable String username) {
         List<Reservation> reservations = this.reservationRepository.findByGuestUsername(username);
-        return this.reservationRepository.findAllReviews(reservations);
+        return this.reviewRepository.findByReservations(reservations);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping("getHostReviews/{username}")
     List<Review> returnHostReviews(@PathVariable String username) {
         List<Reservation> reservations = this.reservationRepository.findByHostUsername(username);
-        return this.reservationRepository.findAllReviews(reservations);
+        return this.reviewRepository.findByReservations(reservations);
     }
 }

@@ -11,5 +11,4 @@ public interface ReservationRepositoryCustom {
     List<Reservation> findByGuestUsername(String username);
     List<Reservation> findByHostUsername(String username);
     boolean checkDateAvailability(Long accommodationID, LocalDate checkin, LocalDate checkout);
-    List<Review> findAllReviews(List<Reservation> reservations);
 }
