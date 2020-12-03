@@ -1,5 +1,6 @@
 package com.app.airbnb.api;
 
+import com.app.airbnb.bonus.MatrixFactorization;
 import com.app.airbnb.model.Accommodation;
 import com.app.airbnb.model.Reservation;
 import com.app.airbnb.model.Review;
@@ -9,6 +10,9 @@ import com.app.airbnb.repositories.ReservationRepository;
 import com.app.airbnb.repositories.ReviewRepository;
 import com.app.airbnb.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.CommonOps_DDRM;
+import org.ejml.dense.row.RandomMatrices_DDRM;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 class ReservationController {
@@ -143,6 +148,10 @@ class ReservationController {
     @CrossOrigin(origins = "*")
     @GetMapping("getGuestReservations/{username}")
     List<Reservation> returnGuestReservations(@PathVariable String username) {
+        //MatrixFactorization matrixFactorization = new MatrixFactorization(this.reservationRepository, this.userRepository,
+        //        this.accommodationRepository);
+        //matrixFactorization.readCSV();
+        //matrixFactorization.recommend();
         return this.reservationRepository.findByGuestUsername(username);
     }
 
@@ -156,8 +165,12 @@ class ReservationController {
     @CrossOrigin(origins = "*")
     @GetMapping("getAccommodationReviews/{id}")
     List<Review> returnAccommodationReviews(@PathVariable Long id) {
-        List<Reservation> reservations = this.reservationRepository.findByAccommodation(id);
-        return this.reviewRepository.findByReservations(reservations);
+        /*List<Reservation> reservations = this.reservationRepository.findByAccommodation(id);
+        List<Review> reviews = this.reviewRepository.findByReservations(reservations);
+        for (Review rev : reviews) {
+            System.out.println(rev.getId() + rev.getRating());
+        }*/
+        return this.reviewRepository.findByAccommodation(id);
     }
 
     @CrossOrigin(origins = "*")

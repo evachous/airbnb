@@ -20,7 +20,7 @@
                         style="height: 10%;"><i class="fa fa-commenting"></i> Chat</button>
               </div>
               <h3 style="font-weight: bold">{{accommodation.info.name}}</h3>
-              <h7><i class="fa fa-star" aria-hidden="true"></i> {{accommodation.avgRating}} ({{accommodation.numRatings}}) |
+              <h7><i class="fa fa-star" aria-hidden="true"></i> {{accommodation.avgRating.toFixed(2)}} ({{accommodation.numRatings}}) |
                 {{accommodation.location.address.road}}, {{accommodation.location.address.city}},
                 {{accommodation.location.address.country}}</h7>
               <hr />
@@ -81,7 +81,7 @@
               </div>
               <div class="col-3">
                 <h5 class="mb-2" style="font-weight: 600;">Host: {{accommodation.host.firstName}} {{accommodation.host.lastName}}</h5>
-                <h6><i class="fa fa-star" aria-hidden="true"></i> {{host.avgRating}} ({{host.numRatings}})</h6>
+                <h6><i class="fa fa-star" aria-hidden="true"></i> {{host.avgRating.toFixed(2)}} ({{host.numRatings}})</h6>
                 <button *ngIf="currentUser && !currentUser.isAdmin && currentUsername && currentUsername !== host.username"
                         type="submit" class="reserve-button btn"
                 (click)="onChatClick()">Chat</button>
@@ -135,8 +135,8 @@
                           <div class="col-2">
                             <label class="tab-label">Total area</label>
                           </div>
-                          <div class="col-6">
-                            {{accommodation.info.area}} cm<sup>2</sup>
+                          <div class="col-6" *ngIf="accommodation.info.area != 0">
+                            {{accommodation.info.area}} sq. ft
                           </div>
                         </div>
                         <hr class="mt-2" />
@@ -343,8 +343,8 @@
                                         <img [src]="reviewPictures[i + (page-1) * pageSize]" class="host-thumbnail" />
                                       </div>
 
-                                      <div class="col-12">
-                                        <h5 class="d-block mb-2" style="font-weight: 600">@{{r.reservation.guest.username}}</h5>
+                                      <div class="col-10">
+                                        <h5 class="d-block mb-2" style="font-weight: 600">{{r.reservation.guest.firstName}}</h5>
                                         <h6 class="d-block">{{r.text}}</h6>
                                         <div>
                                           <ng-template #t let-fill="fill">

@@ -15,15 +15,16 @@ public class AccommodationInfo {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private Integer minCost;
-    private Integer costPerPerson;
+    private Double minCost;
+    private Double costPerPerson;
 
     private String type;
     private Integer beds;
     private Integer bedrooms;
-    private Integer bathrooms;
+    private Double bathrooms;
     private Boolean livingRoom;
     private Integer area;
+    @Column(length=500)
     private String description;
 
     private Boolean internet;
@@ -37,4 +38,6 @@ public class AccommodationInfo {
     @OneToOne(mappedBy = "info")
     @JsonIgnoreProperties("info")
     private Accommodation accommodation;
+
+    public AccommodationInfo() {}
 }

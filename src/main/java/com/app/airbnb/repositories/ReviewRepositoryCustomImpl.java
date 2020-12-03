@@ -46,4 +46,14 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
         query.setParameter(1, username);
         return query.getResultList();
     }
+
+    /*public List<Long> findAllGuestIDs() {
+        Query query = entityManager.createQuery("SELECT r.reservation.guest.id FROM Review r");
+        return query.getResultList();
+    }
+
+    public List<Long> findAllAccommodationIDs() {
+        Query query = entityManager.createQuery("SELECT r.id FROM Review r");
+        return query.getResultList();
+    }*/
 }

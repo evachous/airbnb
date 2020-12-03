@@ -118,9 +118,6 @@ export class UsersettingsComponent implements OnInit {
     formData.append('oldEmail', this.f1.email.value);
     formData.append('profilePicture', this.newPicture);
 
-    // console.log(formData.get('profilePicture'));
-    // console.log(formData.get('user'));
-
     this.dataService.changeInfo(formData)
       .subscribe(
         response => {

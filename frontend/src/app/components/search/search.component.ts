@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormGroup} from "@angular/forms";
-import {Accommodation} from "../../model/accommodation";
+import {Accommodation, Address} from "../../model/accommodation";
 import {HttpParams} from "@angular/common/http";
 import {DataService} from "../../services/data.service";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-search',
@@ -21,6 +22,12 @@ export class SearchComponent implements OnInit {
   emptyAcc: boolean;
   accommodationsImages: string[] = new Array<string>();
 
+  recommendations: Accommodation[];
+  emptyRec: boolean;
+  recommendationsImages: string[] = new Array<string>();
+
+  currentUsername: string = null;
+
   page = 1;
   pageSize = 10;
 
@@ -28,7 +35,8 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private dataService: DataService
+    private dataService: DataService,
+    private authenticationService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
@@ -41,11 +49,26 @@ export class SearchComponent implements OnInit {
         this.missing = true;
       }
       else {
+        this.currentUsername = this.authenticationService.getTokenUsername;
         this.initFilters();
+        this.getRecommendations();
         this.getResults();
+        //this.addSearchAddress();
       }
 
     })
+  }
+
+  addSearchAddress(): void {
+    const formData = new FormData();
+    formData.append('username', this.currentUsername);
+    formData.append('lat', this.queryParams.lat);
+    formData.append('lng', this.queryParams.lng);
+
+    this.dataService.addSearchAddress(formData).subscribe(
+      response => {},
+      error => { console.log(error) }
+      );
   }
 
   initFilters(): void {
@@ -84,6 +107,23 @@ export class SearchComponent implements OnInit {
       }, queryParamsHandling: 'merge'})
 
     this.getResults();
+  }
+
+  getRecommendations(): void {
+    this.dataService.getRecommendations(this.currentUsername).subscribe(rec => {
+      this.recommendations = rec;
+      this.emptyRec = this.recommendations.length == 0;
+
+      for (let i = 0; i < this.recommendations.length; i++) {
+        if (!this.recommendations[i].images.length)
+          this.recommendationsImages[i] = 'http://placehold.it/150x150';
+        else {
+          this.dataService.getAccommodationImage(this.recommendations[i].id, 0).subscribe(image => {
+            this.recommendationsImages[i] = 'data:image/jpeg;base64,' + image;
+          })
+        }
+      }
+    })
   }
 
   getResults(): void {

@@ -1,10 +1,9 @@
 package com.app.airbnb.api;
 
-import com.app.airbnb.model.Accommodation;
-import com.app.airbnb.model.AccommodationInfo;
-import com.app.airbnb.model.AccommodationRules;
-import com.app.airbnb.repositories.AccommodationRepository;
-import com.app.airbnb.repositories.ReservationRepository;
+import com.app.airbnb.model.*;
+import com.app.airbnb.repositories.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -12,15 +11,24 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 class SearchController {
     AccommodationRepository accommodationRepository;
     ReservationRepository reservationRepository;
+    UserRepository userRepository;
+    SearchHistoryRepository searchHistoryRepository;
+    AddressRepository addressRepository;
 
-    SearchController(AccommodationRepository accommodationRepository, ReservationRepository reservationRepository) {
+    SearchController(AccommodationRepository accommodationRepository, ReservationRepository reservationRepository,
+                     UserRepository userRepository, SearchHistoryRepository searchHistoryRepository,
+                     AddressRepository addressRepository) {
         this.accommodationRepository = accommodationRepository;
         this.reservationRepository = reservationRepository;
+        this.userRepository = userRepository;
+        this.searchHistoryRepository = searchHistoryRepository;
+        this.addressRepository = addressRepository;
     }
 
     @CrossOrigin(origins = "*")
@@ -55,11 +63,12 @@ class SearchController {
 
             if (available) {
                 AccommodationInfo info = accommodation.getInfo();
+                AccommodationLocation location = accommodation.getLocation();
                 AccommodationRules rules = accommodation.getRules();
 
                 double dist = this.accommodationRepository.calcDistance(lat, lng,
-                        accommodation.getLocation().getAddress().getLat(),
-                        accommodation.getLocation().getAddress().getLng());
+                        location.getAddress().getLat(),
+                        location.getAddress().getLng());
 
                 if (dist < 50.0 && guests <= rules.getMaxPeople() && maxCost < info.getMinCost() &&
                         !(localCheckin.isBefore(info.getStartDate()) || localCheckin.isAfter(info.getEndDate())) &&
@@ -75,5 +84,53 @@ class SearchController {
             }
         }
         return newAccommodations;
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/addSearchAccommodation")
+    ResponseEntity<String> addSearchAccommodation(@RequestParam("username") String username, @RequestParam("id") String id) {
+        Accommodation accommodation = this.accommodationRepository.getOne(Long.parseLong(id));
+        User guest = this.userRepository.findByUsername(username);
+        if (guest != null && guest.getIsGuest()) {
+            /*SearchHistory searchHistory = guest.getSearchHistory();
+            searchHistory.addAccommodation(accommodation);
+            this.accommodationRepository.save(accommodation);
+            this.searchHistoryRepository.save(searchHistory);
+            this.userRepository.save(guest);*/
+        }
+        else {
+            System.out.println("Not guest");
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/addSearchAddress")
+    ResponseEntity<String> addSearchAddress(@RequestParam("username") String username, @RequestParam("lat") String strLat,
+                                            @RequestParam("lng") String strLng) {
+        Double lat = Double.parseDouble(strLat);
+        Double lng = Double.parseDouble(strLng);
+
+        User guest = this.userRepository.findByUsername(username);
+        if (guest != null && guest.getIsGuest()) {
+            /*SearchHistory searchHistory = guest.getSearchHistory();
+            Set<Address> searchAddresses = guest.getSearchHistory().getAddresses();
+            Address address = new Address();
+            address.setLat(lat);
+            address.setLng(lng);
+            this.addressRepository.save(address);
+            System.out.println(searchHistory.getGuest().getId());
+
+            searchAddresses.add(address);
+            searchHistory.setAddresses(searchAddresses);
+
+            Set<SearchHistory> searchHistories = address.getSearchHistories();
+            searchHistories.add(guest.getSearchHistory());
+            address.setSearchHistories(searchHistories);
+
+            this.searchHistoryRepository.save(searchHistory);
+            this.addressRepository.save(address);*/
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

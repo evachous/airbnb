@@ -1,5 +1,7 @@
 package com.app.airbnb;
 
+import com.app.airbnb.bonus.MatrixFactorization;
+import com.app.airbnb.repositories.ReviewRepository;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -17,6 +19,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class AirbnbApplication {
 
     public static void main(String[] args) {
+        /*ArrayList<String> comments = new ArrayList<>();
+        comments.add("In this country, \"democracy\" means pro-government. #irony");
+        NLP.init();
+        for(String comment : comments) {
+            System.out.println(comment + " : " + NLP.findSentiment(comment));
+        }*/
+
         SpringApplication.run(AirbnbApplication.class, args);
     }
 

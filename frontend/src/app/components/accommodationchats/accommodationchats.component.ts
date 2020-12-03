@@ -24,7 +24,7 @@ export class AccommodationchatsComponent implements OnInit {
   currentUsername: string;
 
   page = 1;
-  pageSize = 2;
+  pageSize = 10;
 
   constructor(
     private router: Router,

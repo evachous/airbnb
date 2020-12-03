@@ -1,25 +1,26 @@
 package com.app.airbnb.repositories;
 
-import com.app.airbnb.model.Image;
 import com.app.airbnb.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.io.ByteArrayOutputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
+import java.net.URL;
 
 @Repository
 @Transactional(readOnly = true)
@@ -50,9 +51,19 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return user;
     }
 
-    public String uploadImage(MultipartFile image) {
+    public List<User> findAllHosts() {
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.isHost = true");
+        return query.getResultList();
+    }
+
+    public List<User> findAllGuests() {
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.isGuest = true");
+        return query.getResultList();
+    }
+
+    public String uploadImage(MultipartFile image, String type) {
         try {
-            String UPLOADED_FOLDER = "C://temp//";
+            String UPLOADED_FOLDER = "C://temp//" + type + "//";
             File folder = new File(UPLOADED_FOLDER);
             if (!folder.exists()) {
                 folder.mkdir();
@@ -69,6 +80,32 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             return path.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public String uploadImageByURL(String imageURL, String filename, String type) {
+        try {
+            String UPLOADED_FOLDER = "C://temp//" + type + "//";
+            File folder = new File(UPLOADED_FOLDER);
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+
+            URL url = new URL(imageURL);
+            BufferedImage image = ImageIO.read(url);
+            Path path = Paths.get(UPLOADED_FOLDER
+                    + filename
+                    + new Random().nextInt(1 << 20)
+                    + ".jpg"
+            );
+            File file = new File(path.toString());
+            ImageIO.write(image, "jpg", file);
+            byte[] bytes = Files.readAllBytes(path);
+
+            Files.write(path, bytes);
+            return path.toString();
+        } catch (IOException e) {
+            return null;
         }
     }
 }

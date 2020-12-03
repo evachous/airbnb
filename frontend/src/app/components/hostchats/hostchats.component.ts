@@ -19,7 +19,7 @@ export class HostchatsComponent implements OnInit {
   chats: number[] = new Array<number>();
 
   page = 1;
-  pageSize = 2;
+  pageSize = 10;
 
   constructor(
     private authenticationService: AuthenticationService,

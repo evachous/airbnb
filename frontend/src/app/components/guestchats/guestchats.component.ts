@@ -17,7 +17,7 @@ export class GuestchatsComponent implements OnInit {
   hostPictures: string[] = new Array<string>();
 
   page = 1;
-  pageSize = 2;
+  pageSize = 10;
 
   constructor(
     private authenticationService: AuthenticationService,

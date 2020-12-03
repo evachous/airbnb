@@ -18,4 +18,6 @@ public class AccommodationLocation {
     @OneToOne(mappedBy = "location")
     @JsonIgnoreProperties("location")
     private Accommodation accommodation;
+
+    public AccommodationLocation() {}
 }

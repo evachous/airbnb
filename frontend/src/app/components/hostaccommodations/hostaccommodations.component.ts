@@ -45,7 +45,7 @@ export class HostaccommodationsComponent implements OnInit {
   invalidDate: boolean;
 
   page = 1;
-  pageSize = 2;
+  pageSize = 10;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -129,6 +129,7 @@ export class HostaccommodationsComponent implements OnInit {
       pets: false,
       events: false,
       minDays: ['', Validators.required],
+      maxDays: ['', Validators.required],
       maxPeople: ['', Validators.required]
     });
   }

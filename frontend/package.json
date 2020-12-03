@@ -26,6 +26,8 @@
     "leaflet": "^1.6.0",
     "leaflet-geosearch": "^3.0.6",
     "rxjs": "~6.5.5",
+    "stream": "0.0.2",
+    "timers": "^0.1.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },

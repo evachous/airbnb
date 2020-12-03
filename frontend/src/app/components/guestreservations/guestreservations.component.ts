@@ -25,7 +25,7 @@ export class GuestreservationsComponent implements OnInit {
   successMessage: boolean;
 
   page = 1;
-  pageSize = 2;
+  pageSize = 20;
 
   constructor(
     private formBuilder: FormBuilder,

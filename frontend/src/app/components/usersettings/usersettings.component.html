@@ -86,18 +86,6 @@
                               <div *ngIf="f1.phone.errors.minlength">Phone must be 10 digits</div>
                             </div>
                           </div>
-                          <div class="col-md-6 mb-3">
-                            <div><label class="form-label">Role selection</label></div>
-                            <div class="form-check form-check-inline">
-                              <input type="checkbox" formControlName="isHost" class="form-control form-check-input" id="isHost" />
-                              <label class="form-check-label" for="isHost">Host</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input type="checkbox" formControlName="isGuest" class="form-control form-check-input" id="isGuest" />
-                              <label class="form-check-label" for="isGuest">Guest</label>
-                              <div *ngIf="infoForm.errors?.match" class="alert alert-danger">Role required</div>
-                            </div>
-                          </div>
 
                           <div class="col-6 mb-3">
                             <label class="form-label">City</label>

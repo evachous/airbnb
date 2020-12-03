@@ -13,9 +13,12 @@ public class AccommodationRules {
     private Boolean pets;
     private Boolean events;
     private Integer minDays;
+    private Integer maxDays;
     private Integer maxPeople;
 
     @OneToOne(mappedBy = "rules")
     @JsonIgnoreProperties("rules")
     private Accommodation accommodation;
+
+    public AccommodationRules() {}
 }

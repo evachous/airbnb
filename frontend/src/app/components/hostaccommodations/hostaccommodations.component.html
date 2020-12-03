@@ -102,7 +102,7 @@
                               <div ngbDropdownMenu aria-labelledby="typeMenu">
                                 <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private room')">Private room</button>
                                 <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Shared room')">Shared room</button>
-                                <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private residence')">Private residence</button>
+                                <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Entire home/apt')">Entire home/apt</button>
                               </div>
                             </div>
                           </div>
@@ -225,14 +225,21 @@
                             </div>
                           </div>
 
-                          <div class="col-6 mb-3">
+                          <div class="col-4 mb-3">
                             <label class="form-label">Minimum Days</label>
                             <input type="number" min="1" formControlName="minDays" class="form-control" />
                             <div *ngIf="f3.minDays.invalid && f3.minDays.touched" class="alert alert-danger">
                               <div *ngIf="f3.minDays.errors.required">Minimum number of days is required</div>
                             </div>
                           </div>
-                          <div class="col-6 mb-3">
+                          <div class="col-4 mb-3">
+                            <label class="form-label">Maximum Days</label>
+                            <input type="number" min="1" formControlName="maxDays" class="form-control" />
+                            <div *ngIf="f3.maxDays.invalid && f3.maxDays.touched" class="alert alert-danger">
+                              <div *ngIf="f3.maxDays.errors.required">Maximum number of days is required</div>
+                            </div>
+                          </div>
+                          <div class="col-4 mb-3">
                             <label class="form-label">Maximum people</label>
                             <input type="number" min="1" formControlName="maxPeople" class="form-control" />
                             <div *ngIf="f3.maxPeople.invalid && f3.maxPeople.touched" class="alert alert-danger">
@@ -273,7 +280,7 @@
 
                                     <div class="col-9">
                                       <a [routerLink]="['/accommodations', a.id]" class="d-block accommodation-link mb-1">{{a.info.name}}</a>
-                                      <h6 class="d-block"><i class="fa fa-globe" aria-hidden="true"></i> {{a.location.address.label}}</h6>
+                                      <h6 class="d-block"><i class="fa fa-globe" aria-hidden="true"></i> {{a.location.address.road}}</h6>
                                       <h6 class="d-block">{{a.info.description}}</h6>
                                     </div>
                                   </div>

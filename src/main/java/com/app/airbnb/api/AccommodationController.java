@@ -58,14 +58,11 @@ class AccommodationController {
 
             // upload accommodation images
             if (images != null) {
-                // List<Image> accommodationImages = new ArrayList<>();
                 for (MultipartFile image : images) {
-                    String path = this.userRepository.uploadImage(image);
+                    String path = this.userRepository.uploadImage(image, "accommodation");
                     Image newImage = new Image(path, accommodation);
-                    // accommodationImages.add(newImage);
                     this.imageRepository.save(newImage);
                 }
-                // accommodation.setImages(accommodationImages);
             }
             this.accommodationRepository.save(accommodation);
 
@@ -136,7 +133,7 @@ class AccommodationController {
             if (images != null) {
                 List<Image> accommodationImages = accommodation.getImages();
                 for (MultipartFile image : images) {
-                    String path = this.userRepository.uploadImage(image);
+                    String path = this.userRepository.uploadImage(image, "accommodation");
                     Image newImage = new Image(path, accommodation);
                     this.imageRepository.save(newImage);
                     accommodationImages.add(newImage);
@@ -144,9 +141,6 @@ class AccommodationController {
                 accommodation.setImages(accommodationImages);
             }
 
-            //accommodation.setInfo(info);
-            //accommodation.setLocation(location);
-            //accommodation.setRules(rules);
             this.accommodationRepository.replaceAccommodationInfo(accommodation, info);
             this.accommodationRepository.replaceAccommodationLocation(accommodation, location);
             this.accommodationRepository.replaceAccommodationRules(accommodation, rules);

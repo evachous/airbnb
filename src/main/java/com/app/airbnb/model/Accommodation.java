@@ -1,10 +1,13 @@
 package com.app.airbnb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -26,7 +29,7 @@ public class Accommodation {
     @JsonIgnoreProperties("accommodation")
     private AccommodationRules rules;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JsonIgnoreProperties("accommodations")
     private User host;
 
@@ -34,16 +37,13 @@ public class Accommodation {
     @JsonIgnoreProperties("accommodation")
     private List<Image> images;
 
-    /*@OneToMany(mappedBy = "accommodation")
-    @JsonIgnoreProperties("accommodation")
-    private List<Reservation> reservations;*/
-
-    //@OneToMany(mappedBy = "accommodation")
-    //@JsonIgnoreProperties("accommodation")
-    //private List<Chat> chats;
+    @ManyToMany(mappedBy = "accommodations")
+    @JsonIgnore
+    private Set<SearchHistory> searchHistories = new HashSet<>();
 
     private Integer numRatings;
     private Double avgRating;
+    private Long datasetId;
 
     public Accommodation() {}
 
@@ -54,5 +54,12 @@ public class Accommodation {
         this.host = host;
         this.numRatings = 0;
         this.avgRating = 0.0;
+        this.datasetId = (long)-1;
+        //this.searchHistories = new HashSet<>();
+    }
+
+    public void addSearch(SearchHistory searchHistory) {
+        this.searchHistories.add(searchHistory);
+        //searchHistory.getAccommodations().add(this);
     }
 }

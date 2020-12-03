@@ -4,9 +4,27 @@ import com.app.airbnb.model.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
+
 @Repository
 @Transactional(readOnly = true)
 public class AccommodationRepositoryCustomImpl implements AccommodationRepositoryCustom {
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    public Accommodation findByDatasetId(Long id) {
+        Accommodation accommodation = null;
+        Query query = entityManager.createQuery("SELECT a FROM Accommodation a WHERE a.datasetId = ?1");
+        query.setParameter(1, id);
+        List<Accommodation> accommodations = query.getResultList();
+        if (accommodations != null && accommodations.size() > 0)
+            accommodation = accommodations.get(0);
+        return accommodation;
+    }
 
     public double calcDistance(double lat1, double lng1, double lat2, double lng2) {
         if ((lat1 == lat2) && (lng1 == lng2)) {

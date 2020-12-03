@@ -10,4 +10,7 @@ public interface ReviewRepositoryCustom {
     List<Review> findByAccommodation(Long accommodationID);
     List<Review> findByGuestUsername(String username);
     List<Review> findByHostUsername(String username);
+    //List<Long> findAllGuestIDs();
+    //List<Long> findAllAccommodationIDs();
+    //Review findByAccommodationAndGuest(Long accommodationID, String username);
 }

@@ -32,8 +32,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/hostaccommodations", "/hostchats", "/hostreservations", "/accommodationchats/**",
                         "/accommodationreservations", "/accommodationsettings", "/usersettings").hasRole("HOST")
                 .antMatchers("/guestchats", "/guestreservations", "/usersettings").hasRole("GUEST")
-                .antMatchers("/", "/home", "/signup", "/accommodations/*", "/getAccommodationImage/**", "/getUserPicture/**",
-                        "/searchAccommodations", "/checkDateAvailability/**").permitAll()
+                .antMatchers("/", "/home", "/signup", "/accommodations/**", "/getAccommodationImage/**", "/getAccommodationReviews/**",
+                        "/getUserPicture/**", "/searchAccommodations", "/checkDateAvailability/**", "/addSearchAddress",
+                        "/addSearchAccommodation", "/getRecommendations/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

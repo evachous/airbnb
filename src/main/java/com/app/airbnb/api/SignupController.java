@@ -10,12 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Random;
 
 @RestController
 class SignupController {
@@ -46,11 +41,13 @@ class SignupController {
             else {
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-                String path = this.userRepository.uploadImage(profilePicture);
+                String path = this.userRepository.uploadImage(profilePicture, "profile");
                 newUser.setProfilePicture(new Image(path, null));
 
                 newUser.setNumRatings(0);
                 newUser.setAvgRating(0.0);
+
+                newUser.setSearchHistory(new SearchHistory());
 
                 this.userRepository.save(newUser);
                 return new ResponseEntity<>(HttpStatus.OK);

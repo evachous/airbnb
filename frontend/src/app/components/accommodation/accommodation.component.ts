@@ -41,7 +41,7 @@ export class AccommodationComponent implements OnInit {
   marker: Marker = null;
 
   page = 1;
-  pageSize = 2;
+  pageSize = 10;
 
   constructor(
     private router: Router,
@@ -66,6 +66,16 @@ export class AccommodationComponent implements OnInit {
       if (this.currentUsername != null) {
         this.dataService.getUser(this.currentUsername).subscribe(user => {
           this.currentUser = user;
+
+          /*if (this.currentUser.isGuest) {
+            const formData = new FormData();
+            formData.append('username', this.currentUsername);
+            formData.append('id', this.accommodationID.toString());
+            this.dataService.addSearchAccommodation(formData).subscribe(
+              response => {},
+              error => { console.log(error) }
+            );
+          }*/
         }, error => {
           // this.found = false;
           this.currentUser = null;
@@ -99,7 +109,6 @@ export class AccommodationComponent implements OnInit {
       if (this.queryParams.checkin && this.queryParams.checkout) {
         this.dataService.checkDateAvailability(this.accommodationID, this.queryParams.checkin,
           this.queryParams.checkout).subscribe(available => {
-          console.log(available);
           this.available = available;
         }, error => {
           this.available = false;

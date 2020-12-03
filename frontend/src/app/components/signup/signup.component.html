@@ -1,9 +1,9 @@
 <div class="container profile">
   <div class="row justify-content-center">
-    <div class="col-8 card shadow">
+    <div class="col-8 card">
       <div class="card-body">
         <div class="card-title">
-          <h3 class="signup-title">Signup Form</h3>
+          <h3 class="signup-title">Signup</h3>
         </div>
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div *ngIf="invalidSignup" class="alert alert-danger alert-dismissible fade show">

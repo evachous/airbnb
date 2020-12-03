@@ -59,7 +59,7 @@ public class SettingsController {
                 oldUser.setIsGuest(newUser.getIsGuest());
 
                 if (profilePicture != null) {
-                    String path = this.userRepository.uploadImage(profilePicture);
+                    String path = this.userRepository.uploadImage(profilePicture, "profile");
                     oldUser.setProfilePicture(new Image(path, null));
                 }
 

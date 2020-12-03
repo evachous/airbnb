@@ -67,7 +67,8 @@
                                 <span style="color: green"> Approved</span></h6>
                               <h6 class="d-block" *ngIf="u.isHost && !u.isGuest && !u.isApproved">Host,
                                 <span style="color: red"> Not Approved</span></h6>
-                              <h6 class="d-block" *ngIf="!u.isHost && u.isGuest">Guest</h6>
+                              <h6 class="d-block" *ngIf="!u.isHost && u.isGuest">Guest,
+                                <span style="color: green"> Approved</span></h6>
                             </div>
                           </div>
                         </div>
@@ -91,4 +92,3 @@
     </div>
   </div>
 </div>
-

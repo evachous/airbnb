@@ -30,6 +30,7 @@ import { ModalComponent } from './components/modal/modal.component';
 import { GuestreservationsComponent } from './components/guestreservations/guestreservations.component';
 import { HostreservationsComponent } from './components/hostreservations/hostreservations.component';
 import { AccommodationreservationsComponent } from './components/accommodationreservations/accommodationreservations.component';
+import { ScrolltotopComponent } from './components/scrolltotop/scrolltotop.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AccommodationreservationsComponent } from './components/accommodationre
     GuestreservationsComponent,
     HostreservationsComponent,
     AccommodationreservationsComponent,
+    ScrolltotopComponent,
   ],
   imports: [
     BrowserModule,

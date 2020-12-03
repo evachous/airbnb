@@ -36,7 +36,7 @@
                       <div ngbDropdownMenu aria-labelledby="typeMenu">
                         <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private room')">Private room</button>
                         <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Shared room')">Shared room</button>
-                        <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Private residence')">Private residence</button>
+                        <button class="btn btn-secondary" ngbDropdownItem (click)="changeType('Entire home/apt')">Entire home/apt</button>
                       </div>
                     </div>
                   </div>
@@ -81,28 +81,50 @@
               <div class="col-9 ml-2">
                 <h5 class="d-block" style="font-weight: 600;">Search results</h5>
                 <hr />
-                <div *ngIf="emptyAcc">No accommodations!</div>
-                <div *ngIf="!emptyAcc" class="col-12">
+                <div *ngIf="emptyRec">No accommodations!</div>
+                <div *ngIf="!emptyRec" class="col-12">
                   <ngb-pagination
                     [(page)]="page"
                     [pageSize]="pageSize"
-                    [collectionSize]="accommodations.length">
+                    [collectionSize]="recommendations.length + accommodations.length">
                   </ngb-pagination>
 
                   <table class="col-12">
-                    <tr *ngFor="let a of accommodations | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                    <tr *ngFor="let r of recommendations | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                      <div class="card mb-3">
+                        <div class="card-body" style="background-color: aliceblue">
+                          <div class="card-title">
+                            <div class="d-flex justify-content-start">
+                              <div class="image-container">
+                                <img [src]="recommendationsImages[i + (page-1) * pageSize]" class="img-thumbnail" />
+                              </div>
+
+                              <div class="col-9">
+                                <a [routerLink]="['/accommodations', r.id, queryParams]" class="d-block accommodation-link mb-1">{{r.info.name}}</a>
+                                <h6 class="d-block">{{r.info.type}} with {{r.info.beds}} beds</h6>
+                                <h6 class="d-block">Rating: <i class="fa fa-star" aria-hidden="true"></i> {{r.avgRating.toFixed(2)}} ({{r.numRatings}})</h6>
+                                <h5 class="d-block mt-4 mb-0" style="float: right;"><b>€ {{r.info.minCost}}</b> / night</h5>
+                                <h6 class="d-block"><b>Recommended!</b></h6>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </tr>
+
+                    <tr *ngFor="let a of accommodations | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let j = index">
                       <div class="card mb-3">
                         <div class="card-body">
                           <div class="card-title">
                             <div class="d-flex justify-content-start">
                               <div class="image-container">
-                                <img [src]="accommodationsImages[i + (page-1) * pageSize]" class="img-thumbnail" />
+                                <img [src]="accommodationsImages[j + (page-1) * pageSize]" class="img-thumbnail" />
                               </div>
 
                               <div class="col-9">
                                 <a [routerLink]="['/accommodations', a.id, queryParams]" class="d-block accommodation-link mb-1">{{a.info.name}}</a>
                                 <h6 class="d-block">{{a.info.type}} with {{a.info.beds}} beds</h6>
-                                <h6 class="d-block">Rating: <i class="fa fa-star" aria-hidden="true"></i> {{a.avgRating}} ({{a.numRatings}})</h6>
+                                <h6 class="d-block">Rating: <i class="fa fa-star" aria-hidden="true"></i> {{a.avgRating.toFixed(2)}} ({{a.numRatings}})</h6>
                                 <h5 class="d-block mt-4 mb-0" style="float: right;"><b>€ {{a.info.minCost}}</b> / night</h5>
                               </div>
                             </div>
@@ -115,7 +137,7 @@
                   <ngb-pagination
                     [(page)]="page"
                     [pageSize]="pageSize"
-                    [collectionSize]="accommodations.length">
+                    [collectionSize]="recommendations.length + accommodations.length">
                   </ngb-pagination>
                 </div>
               </div>

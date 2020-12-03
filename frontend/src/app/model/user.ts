@@ -1,3 +1,5 @@
+import {Accommodation, Address} from "./accommodation";
+
 export class User {
   username: string;
   password: string;
@@ -14,8 +16,13 @@ export class User {
   accommodations: any;
   profilePicture: any;
   rating: number;
-  // reservations: any;
-  // chats: any[];
   numRatings: number;
   avgRating: number;
+}
+
+export class SearchHistory {
+  id: number;
+  guest: User;
+  accommodations: Accommodation[];
+  addresses: Address[];
 }

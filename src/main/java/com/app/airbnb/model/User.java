@@ -2,6 +2,8 @@ package com.app.airbnb.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,7 +29,7 @@ public class User {
     private Boolean isGuest;
     private Boolean isApproved;
 
-    @OneToMany(mappedBy = "host")
+    @OneToMany(mappedBy = "host", fetch=FetchType.EAGER)
     @JsonIgnoreProperties("host")
     private List<Accommodation> accommodations;
 
@@ -38,13 +40,9 @@ public class User {
     private Integer numRatings;
     private Double avgRating;
 
-    /*@OneToMany(mappedBy = "guest")
+    @OneToOne(cascade=CascadeType.ALL)
     @JsonIgnoreProperties("guest")
-    private List<Reservation> reservations;*/
-
-    /*@OneToMany(mappedBy = "guest")
-    @JsonIgnoreProperties("guest")
-    private List<Chat> chats;*/
+    private SearchHistory searchHistory;
 
     public User() {}
 

@@ -67,7 +67,7 @@ export class DataService {
     return this.http.get(nomUrl);
   }
 
-  //accommodation
+  // accommodation
 
   addAccommodation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'addAccommodation', formData, {observe: 'response'});
@@ -89,6 +89,10 @@ export class DataService {
     return this.http.get<Accommodation[]>(this.url + 'searchAccommodations', {params: params});
   }
 
+  getRecommendations(username): Observable<Accommodation[]> {
+    return this.http.get<Accommodation[]>(this.url + 'getRecommendations/' + username);
+  }
+
   changeAccommodation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'changeAccommodation', formData, {observe: 'response'});
   }
@@ -97,7 +101,7 @@ export class DataService {
     return this.http.delete(this.url + 'deleteAccommodationImage/' + id + '/' + index, httpOptions);
   }
 
-  //chat
+  // chat
 
   createChat(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'createChat', formData, {observe: 'response'});
@@ -127,7 +131,7 @@ export class DataService {
     return this.http.delete(this.url + 'deleteChat/' + chatID, httpOptions);
   }
 
-  //reservation
+  // reservation
 
   makeReservation(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'makeReservation', formData, {observe: 'response'});
@@ -149,7 +153,7 @@ export class DataService {
     return this.http.get<Reservation[]>(this.url + 'getGuestReservations/' + username);
   }
 
-  //review
+  // review
 
   addReview(formData: FormData): Observable<HttpResponse<string>> {
     return this.http.post<string>(this.url + 'addReview', formData, {observe: 'response'});
@@ -165,6 +169,19 @@ export class DataService {
 
   getHostReviews(username): Observable<Review[]> {
     return this.http.get<Review[]>(this.url + 'getHostReviews/' + username);
+  }
+
+  getAllReviews(): Observable<Review[]> {
+    return this.http.get<Review[]>(this.url + 'allReviews/');
+  }
+
+  // search history
+  addSearchAccommodation(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'addSearchAccommodation', formData, {observe: 'response'});
+  }
+
+  addSearchAddress(formData: FormData): Observable<HttpResponse<string>> {
+    return this.http.post<string>(this.url + 'addSearchAddress', formData, {observe: 'response'});
   }
 }
 
